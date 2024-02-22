@@ -3,22 +3,20 @@
 namespace App\Service;
 
 use App\Entity\User;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService
 {
-    private ManagerRegistry $managerRegistry;
+    private UserRepository $userRepository;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->userRepository = $userRepository;
     }
 
     public function registerUser(string $email, string $plaintextPassword, UserPasswordHasherInterface $passwordHasher): void
     {
-        $em = $this->managerRegistry->getManager();
-
         $user = new User();
         $hashedPassword = $passwordHasher->hashPassword(
             $user,
@@ -28,7 +26,6 @@ class UserService
         $user->setEmail($email);
         $user->setUsername($email);
 
-        $em->persist($user);
-        $em->flush();
+        $this->userRepository->save($user);
     }
 }
