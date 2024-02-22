@@ -34,4 +34,16 @@ class MedicalAppointmentService
 
         return $this->medicalAppointmentRepository->save($medicalAppointment);
     }
+
+    public function cancelMedicalAppointment(int $appointmentId): void
+    {
+        $medicalAppointment = $this->medicalAppointmentRepository->find($appointmentId);
+
+        if ($medicalAppointment) {
+            $medicalAppointment->setStatus('CANCELLED');
+            $this->medicalAppointmentRepository->save($medicalAppointment);
+        } else {
+            throw new NotFoundHttpException('Medical appointment not found');
+        }
+    }
 }

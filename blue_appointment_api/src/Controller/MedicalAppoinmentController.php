@@ -5,13 +5,13 @@ namespace App\Controller;
 use App\Dto\MedicalAppointmentDto;
 use App\Service\MedicalAppointmentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-// use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Dompdf\Dompdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/medical-appointments", name="api_medical_appointments_")
@@ -63,6 +63,15 @@ class MedicalAppointmentController extends AbstractController
         );
 
         return $response;
+    }
+
+    /**
+     * @Route("/cancel/{id}", name="cancel", methods={"DELETE"})
+     */
+    public function cancel(int $id): JsonResponse
+    {
+        $this->medicalAppointmentService->cancelMedicalAppointment($id);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     private function imageToBase64($path)

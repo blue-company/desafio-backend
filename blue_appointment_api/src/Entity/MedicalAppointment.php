@@ -17,6 +17,9 @@ class MedicalAppointment
     #[ORM\Column(length: 500)]
     private ?string $notes = null;
 
+    #[ORM\Column(type: 'string', length: 20)]
+    private ?string $status = 'SCHEDULED';
+
     #[ORM\Column(length:180)]
     private ?string $titleReason = null; 
 
@@ -53,6 +56,17 @@ class MedicalAppointment
     {
         $this->notes = $notes;
 
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
         return $this;
     }
 
