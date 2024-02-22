@@ -29,8 +29,16 @@ class UserController extends AbstractController
         $decoded = json_decode($request->getContent());
         $email = $decoded->email;
         $plaintextPassword = $decoded->password;
+        $sex = $decoded->sex;
+        $fullName = $decoded->fullName;
 
-        $this->userService->registerUser($email, $plaintextPassword, $passwordHasher);
+        $this->userService->register(
+            $email, 
+            $plaintextPassword, 
+            $passwordHasher,
+            $sex,
+            $fullName
+        );
 
         return $this->json(['message' => 'Registered Successfully']);
     }

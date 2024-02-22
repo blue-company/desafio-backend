@@ -15,7 +15,13 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function registerUser(string $email, string $plaintextPassword, UserPasswordHasherInterface $passwordHasher): void
+    public function register(
+        string $email, 
+        string $plaintextPassword, 
+        UserPasswordHasherInterface $passwordHasher,
+        string $sex,
+        string $fullName
+        ): void
     {
         $user = new User();
         $hashedPassword = $passwordHasher->hashPassword(
@@ -25,6 +31,9 @@ class UserService
         $user->setPassword($hashedPassword);
         $user->setEmail($email);
         $user->setUsername($email);
+        $user->setSex($sex);
+        $user->setFullName($fullName);
+        $user->setRoles(["ROLE_USER"]);
 
         $this->userRepository->save($user);
     }

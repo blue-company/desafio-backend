@@ -13,8 +13,14 @@ class MedicalAppointment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1000)]
+    #[ORM\Column(length: 500)]
     private ?string $notes = null;
+
+    #[ORM\Column(length:180, unique: true)]
+    private ?string $titleReason = null; 
+
+    #[ORM\Column(length:500, unique: true)]
+    private ?string $descriptionReason = null; 
 
     #[ORM\Column(type: "datetime")]
     private ?\DateTimeInterface $appointmentDate = null;
@@ -37,6 +43,28 @@ class MedicalAppointment
     {
         $this->notes = $notes;
 
+        return $this;
+    }
+
+    public function getTitleReason(): ?string
+    {
+        return $this->titleReason;
+    }
+
+    public function setTitleReason(string $titleReason): static
+    {
+        $this->titleReason = $titleReason;
+        return $this;
+    }
+
+    public function getDescriptionReason(): ?string
+    {
+        return $this->descriptionReason;
+    }
+
+    public function setDescriptionReason(string $descriptionReason): static
+    {
+        $this->descriptionReason = $descriptionReason;
         return $this;
     }
 
