@@ -21,11 +21,13 @@ class MedicalAppointmentRepository extends ServiceEntityRepository
         parent::__construct($registry, MedicalAppointment::class);
     }
 
-    public function save(MedicalAppointment $medicalAppointment): void
+    public function save(MedicalAppointment $medicalAppointment): MedicalAppointment
     {
         $entityManager = $this->getEntityManager();
         $entityManager->persist($medicalAppointment);
         $entityManager->flush();
+        $entityManager->refresh($medicalAppointment);
+        return $medicalAppointment;
     }
 
 //    /**

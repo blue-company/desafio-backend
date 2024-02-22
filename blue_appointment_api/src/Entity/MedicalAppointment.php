@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Dto\MedicalAppointmentDto;
 use App\Repository\MedicalAppointmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,10 +17,10 @@ class MedicalAppointment
     #[ORM\Column(length: 500)]
     private ?string $notes = null;
 
-    #[ORM\Column(length:180, unique: true)]
+    #[ORM\Column(length:180)]
     private ?string $titleReason = null; 
 
-    #[ORM\Column(length:500, unique: true)]
+    #[ORM\Column(length:500)]
     private ?string $descriptionReason = null; 
 
     #[ORM\Column(type: "datetime")]
@@ -28,6 +29,15 @@ class MedicalAppointment
     #[ORM\ManyToOne(inversedBy: 'medicalAppointments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $patient = null;
+
+    public function initializeFromDto(MedicalAppointmentDto $dto, User $patient): void
+    {
+        $this->setPatient($patient);
+        $this->setNotes($dto->notes);
+        $this->setAppointmentDate($dto->appointmentDate);
+        $this->setDescriptionReason($dto->descriptionReason);
+        $this->setTitleReason($dto->titleReason);
+    }
 
     public function getId(): ?int
     {
