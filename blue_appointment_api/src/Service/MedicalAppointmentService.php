@@ -46,4 +46,17 @@ class MedicalAppointmentService
             throw new NotFoundHttpException('Medical appointment not found');
         }
     }
+
+    public function modifyMedicalAppointment(int $id, MedicalAppointmentDto $medicalAppointmentDto): void
+    {
+        $medicalAppointment = $this->medicalAppointmentRepository->find($id);
+
+        if (!$medicalAppointment) {
+            throw new NotFoundHttpException('Medical appointment not found');
+        }
+
+        $medicalAppointment->initializeFromDto($medicalAppointmentDto, $medicalAppointment->getPatient());
+
+        $this->medicalAppointmentRepository->save($medicalAppointment);
+    }
 }

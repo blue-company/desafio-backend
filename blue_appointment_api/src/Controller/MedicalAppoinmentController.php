@@ -74,6 +74,21 @@ class MedicalAppointmentController extends AbstractController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * @Route("/modify/{id}", name="modify", methods={"PUT"})
+     */
+    public function modify(int $id, Request $request): JsonResponse
+    {
+        $requestData = json_decode($request->getContent(), true);
+        $medicalAppointmentDto = new MedicalAppointmentDto($requestData);
+        $this->medicalAppointmentService->modifyMedicalAppointment($id, $medicalAppointmentDto);
+        
+        return new JsonResponse(
+            ['message' => 'Medical appointment modified successfully'], 
+            Response::HTTP_OK
+        );
+    }
+
     private function imageToBase64($path)
     {
         $type = pathinfo($path, PATHINFO_EXTENSION);

@@ -28,3 +28,7 @@ services:
     App\Controller\MedicalAppointmentController:
         arguments:
             $medicalAppointmentService: '@App\Service\MedicalAppointmentService'
+
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception' }
