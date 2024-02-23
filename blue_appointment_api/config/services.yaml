@@ -29,6 +29,11 @@ services:
         arguments:
             $medicalAppointmentService: '@App\Service\MedicalAppointmentService'
 
+    App\Infra\Security\HashHandler:
+        arguments:
+            $salt: '%env(HASHIDS_SALT)%'
+            $minLength: '%env(HASHIDS_MIN_LENGTH)%'
+
     App\EventListener\ExceptionListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception' }

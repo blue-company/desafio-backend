@@ -14,6 +14,7 @@
         "doctrine/orm": "^3.0",
         "dompdf/dompdf": "^2.0",
         "friendsofsymfony/rest-bundle": "^3.6",
+        "hashids/hashids": "^5.0",
         "jms/serializer-bundle": "^5.4",
         "lexik/jwt-authentication-bundle": "*",
         "nelmio/cors-bundle": "^2.4",

@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 
 class ExceptionListener
 {
@@ -24,7 +25,7 @@ class ExceptionListener
 
         $response->setStatusCode($statusCode);
 
-        if ($exception instanceof NotFoundHttpException) {
+        if ($exception instanceof Throwable) {
             $response->setData(['Error' => $exception->getMessage()]);
         } else {
             $response->setData(['Error' => 'Erro interno do servidor']);

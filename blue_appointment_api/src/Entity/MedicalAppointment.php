@@ -26,6 +26,12 @@ class MedicalAppointment
     #[ORM\Column(length:500)]
     private ?string $descriptionReason = null; 
 
+    #[ORM\Column(length:20, nullable: true, unique: true)]
+    private ?string $appointmentToken = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isTokenUsed = false;
+
     #[ORM\Column(type: "datetime")]
     private ?\DateTimeInterface $appointmentDate = null;
 
@@ -42,9 +48,32 @@ class MedicalAppointment
         $this->setTitleReason($dto->titleReason);
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function isTokenUsed(): bool
+    {
+        return $this->isTokenUsed;
+    }
+
+    public function setIsTokenUsed(bool $isTokenUsed): self
+    {
+        $this->isTokenUsed = $isTokenUsed;
+        return $this;
+    }
+
+    public function getAppointmentToken(): ?string
+    {
+        return $this->appointmentToken;
+    }
+
+    public function setAppointmentToken(string $appointmentToken): static
+    {
+        $this->appointmentToken = $appointmentToken;
+        return $this;
     }
 
     public function getNotes(): ?string

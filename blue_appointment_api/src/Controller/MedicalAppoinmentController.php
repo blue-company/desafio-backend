@@ -3,15 +3,17 @@
 namespace App\Controller;
 
 use App\Dto\MedicalAppointmentDto;
+use App\Infra\Security\HashHandler;
+use App\Service\HashidsService;
 use App\Service\MedicalAppointmentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Dompdf\Dompdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Dompdf\Dompdf;
 
 /**
  * @Route("/api/medical-appointments", name="api_medical_appointments_")
@@ -19,48 +21,74 @@ use Symfony\Component\HttpFoundation\Response;
 class MedicalAppointmentController extends AbstractController
 {
     private MedicalAppointmentService $medicalAppointmentService;
+    private HashHandler $hashHandler;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(MedicalAppointmentService $medicalAppointmentService)
+    public function __construct(
+        MedicalAppointmentService $medicalAppointmentService, 
+        HashHandler $hashHandler,
+        UrlGeneratorInterface $urlGenerator
+    )
     {
         $this->medicalAppointmentService = $medicalAppointmentService;
+        $this->hashHandler = $hashHandler;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
      * @Route("/create", name="create", methods={"POST"})
      */
-    public function create(Request $request): BinaryFileResponse
+    public function create(Request $request): Response
     {
         $requestData = json_decode($request->getContent(), true);
         $medicalAppointmentDto = new MedicalAppointmentDto($requestData);
         $appointmentCreated = $this->medicalAppointmentService->createMedicalAppointment($medicalAppointmentDto);
-        $patient = $appointmentCreated->getPatient();
+        
+        $token = $this->hashHandler->encodeId($appointmentCreated->getId());
+        $url = $this->hashHandler->generateUniqueLink($token);
+        $this->medicalAppointmentService->registerToken($appointmentCreated, $token);
+        
+        return new JsonResponse(
+            ['appointment_details_link' => $url], 
+            Response::HTTP_CREATED
+        );
+    }
+    
+
+    /**
+     * @Route("/view/{token}", name="view", methods={"GET"})
+     */
+    public function view(string $token): BinaryFileResponse
+    {
+        $id = $this->hashHandler->decodeId($token);
+        $appointment = $this->medicalAppointmentService->checkLinkMedicalAppointment($id);
+
+        $patient = $appointment->getPatient();
 
         $data = [
-            // 'imageSrc' => $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/img/profile.png'),
-            'notes' => $appointmentCreated->getNotes(),
-            'titleReason' => $appointmentCreated->getTitleReason(),
-            'descriptionReason' => $appointmentCreated->getDescriptionReason(),
-            'appointmentDate' => $appointmentCreated->getAppointmentDate(),
+            'notes' => $appointment->getNotes(),
+            'titleReason' => $appointment->getTitleReason(),
+            'descriptionReason' => $appointment->getDescriptionReason(),
+            'appointmentDate' => $appointment->getAppointmentDate(),
             'fullName' => $patient->getFullName(),
             'email' => $patient->getEmail(),
             'sex' => $patient->getSex(),
             'birthDate' => $patient->getBirthDate()
         ];
+
         $html = $this->renderView('medical_appointment/index.html.twig', $data);
+
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->render();
 
+        $pdfContent = $dompdf->output();
+
         $pdfPath = tempnam(sys_get_temp_dir(), 'pdf');
-        file_put_contents($pdfPath, $dompdf->output());
+        file_put_contents($pdfPath, $pdfContent);
 
         $response = new BinaryFileResponse($pdfPath);
         $response->headers->set('Content-Type', 'application/pdf');
-
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'resume.pdf'
-        );
 
         return $response;
     }

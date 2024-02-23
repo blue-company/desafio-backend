@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Dto\UserDto;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -16,25 +17,18 @@ class UserService
     }
 
     public function register(
-        string $email, 
-        string $plaintextPassword, 
-        UserPasswordHasherInterface $passwordHasher,
-        string $sex,
-        string $fullName
-        ): void
+        UserDto $userDto,
+        UserPasswordHasherInterface $passwordHasher
+    ): void
     {
         $user = new User();
+        $user->initializeFromDto($userDto);
         $hashedPassword = $passwordHasher->hashPassword(
             $user,
-            $plaintextPassword
+            $userDto->password
         );
         $user->setPassword($hashedPassword);
-        $user->setEmail($email);
-        $user->setUsername($email);
-        $user->setSex($sex);
-        $user->setFullName($fullName);
         $user->setRoles(["ROLE_USER"]);
-
         $this->userRepository->save($user);
     }
 }

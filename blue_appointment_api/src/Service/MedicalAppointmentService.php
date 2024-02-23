@@ -35,6 +35,17 @@ class MedicalAppointmentService
         return $this->medicalAppointmentRepository->save($medicalAppointment);
     }
 
+    public function getMedicalAppointmentById(int $appointmentId): MedicalAppointment
+    {
+        $medicalAppointment = $this->medicalAppointmentRepository->find($appointmentId);
+
+        if (!$medicalAppointment) {
+            throw new NotFoundHttpException('Medical appointment not found');
+        }
+
+        return $medicalAppointment;
+    }
+
     public function cancelMedicalAppointment(int $appointmentId): void
     {
         $medicalAppointment = $this->medicalAppointmentRepository->find($appointmentId);
@@ -59,4 +70,24 @@ class MedicalAppointmentService
 
         $this->medicalAppointmentRepository->save($medicalAppointment);
     }
+
+    public function checkLinkMedicalAppointment(int $id) {
+        $appointment = $this->medicalAppointmentRepository->find($id);
+        
+        if($appointment->isTokenUsed()) {
+            throw new \Exception('Link Expired!');
+        }
+
+        $appointment->setIsTokenUsed(true);
+        $this->medicalAppointmentRepository->save($appointment);
+
+        return $appointment;
+    }
+
+    public function registerToken(MedicalAppointment $appointment, string $token): void {
+        $appointment->setAppointmentToken($token);
+        $appointment->setIsTokenUsed(false);
+        $this->medicalAppointmentRepository->save($appointment);
+    }
+
 }
