@@ -1,10 +1,7 @@
 <?php
 
-// src/EventListener/ExceptionListener.php
+namespace App\Infra\EventListener;
 
-namespace App\EventListener;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;

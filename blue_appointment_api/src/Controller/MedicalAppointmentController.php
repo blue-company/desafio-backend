@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Dto\MedicalAppointmentDto;
+use App\Infra\Dto\MedicalAppointmentDto;
 use App\Infra\Security\HashHandler;
-use App\Service\HashidsService;
 use App\Service\MedicalAppointmentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -22,17 +20,14 @@ class MedicalAppointmentController extends AbstractController
 {
     private MedicalAppointmentService $medicalAppointmentService;
     private HashHandler $hashHandler;
-    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         MedicalAppointmentService $medicalAppointmentService, 
         HashHandler $hashHandler,
-        UrlGeneratorInterface $urlGenerator
     )
     {
         $this->medicalAppointmentService = $medicalAppointmentService;
         $this->hashHandler = $hashHandler;
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**

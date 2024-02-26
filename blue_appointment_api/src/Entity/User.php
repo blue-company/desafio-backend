@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Dto\UserDto;
+use App\Infra\Dto\UserDto;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;

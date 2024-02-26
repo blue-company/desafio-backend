@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
-use App\Dto\UserDto;
 use App\Entity\User;
+use App\Infra\Dto\UserDto;
 use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class UserService
 {
@@ -19,16 +20,24 @@ class UserService
     public function register(
         UserDto $userDto,
         UserPasswordHasherInterface $passwordHasher
-    ): void
+    ): string
     {
         $user = new User();
         $user->initializeFromDto($userDto);
+        $isAlreadyUser = $this->userRepository->findBy(
+            ["email"=> $user->getEmail()],
+        );
+
+        if ($isAlreadyUser) {
+            throw new ConflictHttpException("Email is associated to other account!");
+        }
+
         $hashedPassword = $passwordHasher->hashPassword(
             $user,
             $userDto->password
         );
         $user->setPassword($hashedPassword);
         $user->setRoles(["ROLE_USER"]);
-        $this->userRepository->save($user);
+        return $this->userRepository->save($user);
     }
 }

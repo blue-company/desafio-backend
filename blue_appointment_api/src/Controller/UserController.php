@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Dto\UserDto;
+use App\Infra\Dto\UserDto;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -29,8 +30,11 @@ class UserController extends AbstractController
     {
         $requestData = json_decode($request->getContent(), true);
         $userDto = new UserDto($requestData);
-        $this->userService->register($userDto, $passwordHasher);
+        $id = $this->userService->register($userDto, $passwordHasher);
 
-        return $this->json(['message' => 'Registered Successfully']);
+        return new JsonResponse(
+            ['id' => $id], 
+            Response::HTTP_OK
+        );
     }
 }

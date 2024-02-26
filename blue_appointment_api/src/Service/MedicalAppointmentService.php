@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Dto\MedicalAppointmentDto;
 use App\Entity\MedicalAppointment;
+use App\Infra\Dto\MedicalAppointmentDto;
 use App\Repository\MedicalAppointmentRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

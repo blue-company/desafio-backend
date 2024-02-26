@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+    web:
+        container_name: blue_api
+        build: .
+        ports:
+            - 8080:80
+        networks:
+            - blue_net
+        depends_on:
+            db:
+                condition: service_healthy
+
+    db:
+        container_name: blue_db
+        image: mysql:5.7
+        ports:
+            - "3306:3306"
+        networks:
+            - blue_net
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE} 
+            MYSQL_USER: ${MYSQL_USER}
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-hlocalhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+            timeout: 80s
+            retries: 15
+
+networks:
+    net:
+        driver: bridge

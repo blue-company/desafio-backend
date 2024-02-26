@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Dto\MedicalAppointmentDto;
+use App\Infra\Dto\MedicalAppointmentDto;
 use App\Repository\MedicalAppointmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
