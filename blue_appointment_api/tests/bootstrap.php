@@ -13,10 +13,10 @@ passthru(sprintf(
     __DIR__
 ));
 
-// passthru(sprintf(
-//     'APP_ENV=test php "%s/../bin/console" doctrine:schema:create',
-//     __DIR__
-// ));
+passthru(sprintf(
+    'APP_ENV=test php "%s/../bin/console" doctrine:schema:create',
+    __DIR__
+));
 
 passthru(sprintf(
     'APP_ENV=test php "%s/../bin/console" doctrine:fixtures:load --no-interaction',

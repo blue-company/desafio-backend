@@ -9,6 +9,7 @@
          convertDeprecationsToExceptions="false"
 >
     <php>
+        <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test"/>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
@@ -34,5 +35,6 @@
     </listeners>
 
     <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 </phpunit>
