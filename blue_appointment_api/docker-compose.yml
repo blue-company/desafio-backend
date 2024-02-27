@@ -2,18 +2,28 @@ version: '3.8'
 
 services:
     web:
-        container_name: blue_api
+        container_name: blue_api_container
         build: .
         ports:
             - 8080:80
         networks:
             - blue_net
+        environment:
+            DATABASE_URL: ${DATABASE_URL}
+            APP_ENV: ${APP_ENV}
+            APP_SECRET: ${APP_SECRET}
+            CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+            JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+            JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+            JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+            HASHIDS_SALT: ${HASHIDS_SALT}
+            HASHIDS_MIN_LENGTH: ${HASHIDS_MIN_LENGTH}
         depends_on:
             db:
                 condition: service_healthy
 
     db:
-        container_name: blue_db
+        container_name: blue_db_container
         image: mysql:5.7
         ports:
             - "3306:3306"
@@ -26,9 +36,9 @@ services:
             MYSQL_USER: ${MYSQL_USER}
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-hlocalhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
-            timeout: 80s
-            retries: 15
+            timeout: 60s
+            retries: 30
 
 networks:
-    net:
+    blue_net:
         driver: bridge

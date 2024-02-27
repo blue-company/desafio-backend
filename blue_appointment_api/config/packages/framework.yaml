@@ -1,5 +1,8 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    # form:
+    #     enctype: 'multipart/form-data'
+
     error_controller: App\Controller\ErrorController::showError
     
     secret: '%env(APP_SECRET)%'
