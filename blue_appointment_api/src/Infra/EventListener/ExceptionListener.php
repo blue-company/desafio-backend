@@ -22,12 +22,21 @@ class ExceptionListener
 
         $response->setStatusCode($statusCode);
 
+        $errorDetails = [
+            'message' => $exception->getMessage(),
+            'code' => $exception->getCode(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'trace' => $exception->getTrace(),
+        ];
+
         if ($exception instanceof Throwable) {
-            $response->setData(['Error' => $exception->getMessage()]);
+            $response->setData(['error' => $errorDetails]);
         } else {
-            $response->setData(['Error' => 'Erro interno do servidor']);
+            $response->setData(['error' => ['message' => 'Internal Server Error']]);
         }
 
         $event->setResponse($response);
     }
 }
+
