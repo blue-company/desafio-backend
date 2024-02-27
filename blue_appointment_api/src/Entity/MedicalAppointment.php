@@ -48,7 +48,6 @@ class MedicalAppointment
         $this->setTitleReason($dto->titleReason);
     }
 
-
     public function getId(): ?int
     {
         return $this->id;

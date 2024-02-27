@@ -69,7 +69,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getBirthDate(): ?string
     {
-        return $this->birthDate;
+        $dateTime = $this->birthDate;
+        
+        // Check if the birthDate property is set
+        if ($dateTime instanceof \DateTime) {
+            return $dateTime->format('Y-m-d'); // Adjust the format according to your needs
+        }
+        
+        return null;
     }
 
     public function setBirthDate(\DateTimeInterface $birthDate): static

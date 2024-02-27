@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\MedicalAppointment;
 use App\Infra\Dto\MedicalAppointmentDto;
 use App\Infra\Security\HashHandler;
 use App\Service\MedicalAppointmentService;
@@ -33,7 +34,7 @@ class MedicalAppointmentController extends AbstractController
     /**
      * @Route("/create", name="create", methods={"POST"})
      */
-    public function create(Request $request): Response
+    public function create(Request $request): JsonResponse
     {
         $requestData = json_decode($request->getContent(), true);
         $medicalAppointmentDto = new MedicalAppointmentDto($requestData);
@@ -58,26 +59,8 @@ class MedicalAppointmentController extends AbstractController
         $id = $this->hashHandler->decodeId($token);
         $appointment = $this->medicalAppointmentService->checkLinkMedicalAppointment($id);
 
-        $patient = $appointment->getPatient();
-
-        $data = [
-            'notes' => $appointment->getNotes(),
-            'titleReason' => $appointment->getTitleReason(),
-            'descriptionReason' => $appointment->getDescriptionReason(),
-            'appointmentDate' => $appointment->getAppointmentDate(),
-            'fullName' => $patient->getFullName(),
-            'email' => $patient->getEmail(),
-            'sex' => $patient->getSex(),
-            'birthDate' => $patient->getBirthDate()
-        ];
-
-        $html = $this->renderView('medical_appointment/index.html.twig', $data);
-
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-
-        $pdfContent = $dompdf->output();
+        $data = $this->prepareData($appointment);
+        $pdfContent = $this->generatePdf('medical_appointment/index.html.twig', $data);
 
         $pdfPath = tempnam(sys_get_temp_dir(), 'pdf');
         file_put_contents($pdfPath, $pdfContent);
@@ -112,11 +95,45 @@ class MedicalAppointmentController extends AbstractController
         );
     }
 
-    private function imageToBase64($path)
+
+    // Fazer uma rota que o título de uma consulta, em seguida retorna o 
+    // link para ver os detalhes da consulta.
+
+
+    public function generatePdf(string $template, array $data): string 
     {
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        return $base64;
+        $html = $this->renderView($template, $data);
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        return $dompdf->output();
     }
+
+    public function prepareData(MedicalAppointment $appointment): array
+    {
+        $patient = $appointment->getPatient();
+
+        $data = [
+            'notes' => $appointment->getNotes(),
+            'titleReason' => $appointment->getTitleReason(),
+            'descriptionReason' => $appointment->getDescriptionReason(),
+            'appointmentDate' => $appointment->getAppointmentDate(),
+            'fullName' => $patient->getFullName(),
+            'email' => $patient->getEmail(),
+            'sex' => $patient->getSex(),
+            'birthDate' => $patient->getBirthDate()
+        ];
+
+        return $data;
+    }
+
+    // private function imageToBase64($path)
+    // {
+    //     $type = pathinfo($path, PATHINFO_EXTENSION);
+    //     $data = file_get_contents($path);
+    //     $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    //     return $base64;
+    // }
 }
