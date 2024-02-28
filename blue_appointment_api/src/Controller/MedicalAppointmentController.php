@@ -45,7 +45,10 @@ class MedicalAppointmentController extends AbstractController
         $this->medicalAppointmentService->registerToken($appointmentCreated, $token);
         
         return new JsonResponse(
-            ['appointment_details_link' => $url], 
+            [
+                'appointment_details_link' => $url,
+                'appointment_id' => $appointmentCreated->getId(),
+            ], 
             Response::HTTP_CREATED
         );
     }
@@ -67,7 +70,7 @@ class MedicalAppointmentController extends AbstractController
 
         $response = new BinaryFileResponse($pdfPath);
         $response->headers->set('Content-Type', 'application/pdf');
-
+        $response->setStatusCode(Response::HTTP_OK);
         return $response;
     }
 
@@ -95,9 +98,21 @@ class MedicalAppointmentController extends AbstractController
         );
     }
 
-
-    // Fazer uma rota que o título de uma consulta, em seguida retorna o 
-    // link para ver os detalhes da consulta.
+    /**
+     * @Route("/access-link-generator/{id}", name="access_link_generator", methods={"POST"})
+     */
+    public function generateAppointmentAccessLink(int $id): JsonResponse
+    {   
+        $appointmentCreated = $this->medicalAppointmentService->getMedicalAppointmentById($id);
+        $token = $this->hashHandler->encodeId($appointmentCreated->getId());
+        $url = $this->hashHandler->generateUniqueLink($token);
+        $this->medicalAppointmentService->registerToken($appointmentCreated, $token);
+        
+        return new JsonResponse(
+            ['appointment_details_link' => $url], 
+            Response::HTTP_CREATED
+        );
+    }
 
 
     public function generatePdf(string $template, array $data): string 

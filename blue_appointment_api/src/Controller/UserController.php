@@ -33,8 +33,8 @@ class UserController extends AbstractController
         $id = $this->userService->register($userDto, $passwordHasher);
 
         return new JsonResponse(
-            ['id' => $id], 
-            Response::HTTP_OK
+            ['patientId' => $id], 
+            Response::HTTP_CREATED
         );
     }
 }
