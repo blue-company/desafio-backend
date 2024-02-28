@@ -62,8 +62,8 @@ class MedicalAppointmentService
     {
         $medicalAppointment = $this->medicalAppointmentRepository->find($id);
 
-        if (!$medicalAppointment) {
-            throw new NotFoundHttpException('Medical appointment not found');
+        if (!$medicalAppointment || $medicalAppointment->getStatus() == 'CANCELLED') {
+            throw new NotFoundHttpException('Medical appointment not found or was cancelled');
         }
 
         $medicalAppointment->initializeFromDto($medicalAppointmentDto, $medicalAppointment->getPatient());

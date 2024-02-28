@@ -89,7 +89,7 @@
         <h3 class="text-2xl font-bold mb-4 blue-color">Detalhes da Consulta</h3>
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Horário da Consulta:</strong> {{ appointmentDate|date('Y-m-d\\TH:i:sP') }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Dia e Horário da Consulta:</strong> {{ appointmentDate|date('Y-m-d\\TH:i:sP') }}</p>
                 <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Motivo da Consulta:</strong> {{ titleReason }}</p>
                 <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Descrição dos Sintomas:</strong> {{ descriptionReason }}</p>
             </div>

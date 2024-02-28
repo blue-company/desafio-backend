@@ -8,6 +8,7 @@ use App\Infra\Security\HashHandler;
 use App\Service\MedicalAppointmentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -104,6 +105,12 @@ class MedicalAppointmentController extends AbstractController
     public function generateAppointmentAccessLink(int $id): JsonResponse
     {   
         $appointmentCreated = $this->medicalAppointmentService->getMedicalAppointmentById($id);
+        
+        if($appointmentCreated->getStatus() == 'CANCELLED')
+        {
+            throw new NotFoundHttpException('Appointment was cancelled');
+        } 
+        
         $token = $this->hashHandler->encodeId($appointmentCreated->getId());
         $url = $this->hashHandler->generateUniqueLink($token);
         $this->medicalAppointmentService->registerToken($appointmentCreated, $token);
