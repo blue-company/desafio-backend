@@ -5,22 +5,22 @@ Bem-vindo à documentação da API de Marcação de Consultas da Blue Health Tec
 
 ## Tecnologias Utilizadas
 
-> **Symfony Framework (Route Annotation):** Framework PHP versátil para desenvolvimento web, utilizando anotações para definição de rotas.
+- **Symfony Framework (Route Annotation):** Framework PHP versátil para desenvolvimento web, utilizando anotações para definição de rotas.
 
-> **Doctrine ORM:** Biblioteca PHP para mapeamento objeto-relacional, facilitando a manipulação de bancos de dados através de objetos PHP.
+- **Doctrine ORM:** Biblioteca PHP para mapeamento objeto-relacional, facilitando a manipulação de bancos de dados através de objetos PHP.
 
-> **JWT para Autenticação:** JSON Web Token, um padrão aberto que define uma maneira compacta e autocontida de transmitir informações entre as partes para autenticação.
+- **JWT para Autenticação:** JSON Web Token, um padrão aberto que define uma maneira compacta e autocontida de transmitir informações entre as partes para autenticação.
 
-> **MySQL:** Sistema de gerenciamento de banco de dados relacional, amplamente utilizado em aplicações web.
+- **MySQL:** Sistema de gerenciamento de banco de dados relacional, amplamente utilizado em aplicações web.
 
-> **Docker e Docker-Compose:** Plataforma e ferramenta para empacotamento e distribuição de aplicações em contêineres.
+- **Docker e Docker-Compose:** Plataforma e ferramenta para empacotamento e distribuição de aplicações em contêineres.
 
-> **PHPUnit:** Framework de teste unitário para PHP, garantindo a integridade e qualidade do código.
+- **PHPUnit:** Framework de teste unitário para PHP, garantindo a integridade e qualidade do código.
 
-> **DomPDF:** Biblioteca PHP para geração de PDF a partir de HTML e CSS, utilizada na criação de documentos para detalhes das consultas médicas.
+- **DomPDF:** Biblioteca PHP para geração de PDF a partir de HTML e CSS, utilizada na criação de documentos para detalhes das consultas médicas.
 
+- **Composer:** Gerenciador de dependências para PHP, simplificando a gestão e instalação de bibliotecas.
 
-> **Composer:** Gerenciador de dependências para PHP, simplificando a gestão e instalação de bibliotecas.
 
 ## Instalação e Execução
 ⚠️ **Atenção: Antes de prosseguir, certifique-se de ter o Docker e Docker Compose instalados em sua máquina.**
