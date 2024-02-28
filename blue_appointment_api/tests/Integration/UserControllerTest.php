@@ -20,14 +20,13 @@ class UserControllerTest extends WebTestCase
             ['CONTENT-TYPE'=> 'application/json'],
             json_encode($data)
         );
-
         
         $content = $client->getResponse()->getContent();
         $responseData = json_decode($content, true);
         
         $this->assertResponseIsSuccessful();
-        $this->assertArrayHasKey('id', $responseData, 'Response should contain an "id" key');
-        $this->assertGreaterThan(0, $responseData['id'], 'The "id" should be a positive integer');
+        $this->assertArrayHasKey('patientId', $responseData, 'Response should contain an "patientId" key');
+        $this->assertGreaterThan(0, $responseData['patientId'], 'The "patientId" should be a positive integer');
     }
 
     public function testRegisterUserWithDuplicateEmailShouldFail(): void 
@@ -51,14 +50,13 @@ class UserControllerTest extends WebTestCase
             ['CONTENT-TYPE'=> 'application/json'],
             json_encode($data)
         );
-
         
-        $content = $client->getResponse()->getContent();
-        $responseData = json_decode($content, true);
+        $responseArray = json_decode($client->getResponse()->getContent(), true);
         
-        $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
-        $this->assertArrayHasKey('Error', $responseData, 'Response should contain an "Error" key');
-        $this->assertEquals('Email is associated to other account!', $responseData['Error']);
+        $this->assertSame(Response::HTTP_CONFLICT, $client->getResponse()->getStatusCode(), 'Expected a 409 Conflict status code');
+        $this->assertArrayHasKey('error', $responseArray, 'Response should contain an "error" key');
+        $this->assertArrayHasKey('message', $responseArray['error'], 'Error array should contain a "message" key');
+        $this->assertEquals('Email is associated to other account!', $responseArray['error']['message'], 'Error message should match');
     }
 
     public function getRealData(): array
