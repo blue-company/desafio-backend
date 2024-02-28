@@ -4,7 +4,7 @@
 composer install -n
 
 # Wait for 10 seconds
-sleep 60
+# sleep 60
 
 bin/console doctrine:database:create --if-not-exists --no-interaction
 

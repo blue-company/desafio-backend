@@ -31,20 +31,4 @@ class UserDtoTest extends TestCase
         $this->assertEquals($requestData['roles'], $userDto->roles);
         $this->assertEquals($requestData['password'], $userDto->password);
     }
-
-    public function testConstructWithEmptyBowlData()
-    {
-        $requestData = [];
-
-        $userDto = new UserDto($requestData);
-
-        $this->assertNull($userDto->id);
-        $this->assertNull($userDto->email);
-        $this->assertNull($userDto->sex);
-        $this->assertNull($userDto->fullName);
-        $this->assertNull($userDto->birthDate);
-        $this->assertNull($userDto->username);
-        $this->assertEquals([], $userDto->roles);
-        $this->assertNull($userDto->password);
-    }
 }

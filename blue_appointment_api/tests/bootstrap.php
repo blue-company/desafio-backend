@@ -9,6 +9,11 @@ if (method_exists(Dotenv::class, 'bootEnv')) {
 }
 
 passthru(sprintf(
+    'APP_ENV=test php "%s/../bin/console" doctrine:database:drop --force --no-interaction',
+    __DIR__
+));
+
+passthru(sprintf(
     'APP_ENV=test php "%s/../bin/console" doctrine:database:create --if-not-exists',
     __DIR__
 ));
