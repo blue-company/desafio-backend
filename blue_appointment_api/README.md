@@ -28,7 +28,7 @@ cd desafio-backend/blue_appointment_api/
 docker-compose up --build -d
 ```
 
-4. Quando terminar, a API estará pronta para receber requisições no endereço [http://localhost:8000/api](http://localhost:8000/api). Acesse-a usando Postman, ThunderClient ou a ferramenta de sua escolha.
+4. Quando terminar, a API estará pronta para receber requisições no endereço [http://localhost:8000/api](http://localhost:8080/api), basta seguir os exemplos na seção [Rotas Disponíveis - Fluxo de Utilização](#registro-de-usuario). Embora o [cURL](https://curl.se/) esteja sendo usado nos exemplos abaixo, o ideal para uma melhor experiência(visualizar o arquivo .pdf) é Postman ou a ferramenta gráfica de sua escolha.
 
 Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifique-se de ter as ferramentas mencionadas instaladas antes de prosseguir.
 
@@ -49,7 +49,7 @@ cd desafio-backend/blue_appointment_api/
 
 2. Construa e inicie os containers Docker (se ainda não estiverem em execução):
 ```bash
-docker-compose exec php php bin/phpunit
+docker-compose up --build -d
 ```
 
 3. Execute o seguinte comando para rodar os testes dentro do container Docker:
@@ -70,8 +70,9 @@ Essa abordagem permite executar os testes diretamente no container Docker sem a 
     curl -X POST -H "Content-Type: application/json" -d '{"email": "garfield@gmail.com", "sex": "M", "fullName": "Garfield", "birthDate": "1978-06-19", "password": "lasagna_lover"}' http://localhost:8000/api/user/register
     ```
   - **Resposta de Sucesso:**
-    ```json
-    {"id": "garfield_user_id"}
+    ```http
+    HTTP/1.1 200 OK
+    {"patientId": "garfield_user_id"}
     ```
 
 #### Autenticação - Login
@@ -82,7 +83,8 @@ Essa abordagem permite executar os testes diretamente no container Docker sem a 
     curl -X POST -H "Content-Type: application/json" -d '{"username": "garfield@gmail.com", "password": "lasagna_lover"}' http://localhost:8000/api/login
     ```
   - **Resposta de Sucesso:**
-    ```json
+    ```http
+    HTTP/1.1 200 OK
     {"token": "garfield_jwt_token"}
     ```
 
@@ -95,8 +97,9 @@ Essa abordagem permite executar os testes diretamente no container Docker sem a 
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna.", "titleReason": "Check-up", "descriptionReason": "Checagem anual de saúde do Garfield", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8000/api/medical-appointments/create
     ```
   - **Resposta de Sucesso:**
-    ```json
-    {"appointment_details_link": "http://localhost:8000/api/medical-appointments/view/{token}"}
+    ```http
+    HTTP/1.1 201 Created
+    {"appointment_details_link": "http://localhost:8000/api/medical-appointments/view/{token}", "appointment_id": "garfield_appointment_id"}
     ```
 
 #### Visualização de Consulta em PDF
@@ -105,6 +108,38 @@ Essa abordagem permite executar os testes diretamente no container Docker sem a 
   - **Exemplo de Requisição:**
     ```bash
     curl -X GET -H "Authorization: Bearer garfield_jwt_token" http://localhost:8000/api/medical-appointments/view/{token}
+    ```
+  - **Resposta de Sucesso:**
+    ```http
+    HTTP/1.1 200 OK
+    Content-Type: application/pdf
+    ```
+    (Binary PDF content)
+
+#### Modificação de Consulta
+- **PUT /api/medical-appointments/modify/{id}**
+  - Modifica detalhes de uma consulta médica.
+  - **Exemplo de Requisição:**
+    ```bash
+    curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna. E depois disso o médico recomendou que ele fizesse mais exercícios", "titleReason": "Comeu demais de novo", "descriptionReason": "Check-up anual", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8000/api/medical-appointments/modify/{id}
+    ```
+  - **Resposta de Sucesso:**
+    ```http
+    HTTP/1.1 200 OK
+    {"message": "Medical appointment modified successfully"}
+    ```
+
+#### Geração de Link de Acesso à Consulta
+- **POST /api/medical-appointments/access-link-generator/{id}**
+  - Gera um link de acesso para a consulta.
+  - **Exemplo de Requisição:**
+    ```bash
+    curl -X POST -H "Authorization: Bearer garfield_jwt_token" http://localhost:8000/api/medical-appointments/access-link-generator/{id}
+    ```
+  - **Resposta de Sucesso:**
+    ```http
+    HTTP/1.1 201 Created
+    {"appointment_details_link": "http://localhost:8000/api/medical-appointments/view/{token}"}
     ```
 
 #### Cancelamento de Consulta
@@ -115,20 +150,8 @@ Essa abordagem permite executar os testes diretamente no container Docker sem a 
     curl -X DELETE -H "Authorization: Bearer garfield_jwt_token" http://localhost:8000/api/medical-appointments/cancel/{id}
     ```
   - **Resposta de Sucesso:**
-    ```json
-    null
-    ```
-
-#### Modificação de Consulta
-- **PUT /api/medical-appointments/modify/{id}**
-  - Modifica detalhes de uma consulta médica.
-  - **Exemplo de Requisição:**
-    ```bash
-    curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna. E depois disso o médico recomendou que ele fizesse mais exercícios", "titleReason": "Comeu demais de novo", "descriptionReason": "Check-up anual", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8000/api/medical-appointments/modify/{id}
-    ```
-  - **Resposta de Sucesso:**
-    ```json
-    {"message": "Medical appointment modified successfully"}
+    ```http
+    HTTP/1.1 204 No Content
     ```
 
 ## Estrutura do Projeto
