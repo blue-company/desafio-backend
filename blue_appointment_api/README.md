@@ -39,8 +39,12 @@ cd desafio-backend/blue_appointment_api/
 ```bash
 docker-compose up --build -d
 ```
+⚠️ Talvez você receba `command not found` para o comando acima, nesse caso, tente rodar: 
+```bash
+docker compose up --build -d
+```
 
-4. Quando terminar, a API estará pronta para receber requisições no endereço [http://localhost:8000/api](http://localhost:8080/api), basta seguir os exemplos na seção [Rotas Disponíveis - Fluxo de Utilização](#registro-de-usuario). Embora o [cURL](https://curl.se/) esteja sendo usado nos exemplos abaixo, o ideal para uma melhor experiência(visualizar o arquivo .pdf) é Postman ou a ferramenta gráfica de sua escolha.
+4. Quando terminar, a API estará pronta para receber requisições no endereço [http://localhost:8080/api](http://localhost:8080/api), basta seguir os exemplos na seção [Rotas Disponíveis - Fluxo de Utilização](#registro-de-usuario). Embora o [cURL](https://curl.se/) esteja sendo usado nos exemplos abaixo, o ideal para uma melhor experiência(visualizar o arquivo .pdf) é Postman ou a ferramenta gráfica de sua escolha.
 
 Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifique-se de ter as ferramentas mencionadas instaladas antes de prosseguir.
 
@@ -52,7 +56,7 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Registra um novo usuário.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X POST -H "Content-Type: application/json" -d '{"email": "garfield@gmail.com", "sex": "M", "fullName": "Garfield", "birthDate": "1978-06-19", "password": "lasagna_lover"}' http://localhost:8000/api/user/register
+    curl -X POST -H "Content-Type: application/json" -d '{"email": "garfield@gmail.com", "sex": "M", "fullName": "Garfield", "birthDate": "1978-06-19", "password": "lasagna_lover"}' http://localhost:8080/api/user/register
     ```
   - **Resposta de Sucesso:**
     ```http
@@ -61,11 +65,11 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
     ```
 
 #### Autenticação - Login
-- **POST /api/login**
+- **POST /api/login_check**
   - Realiza o login e retorna um token JWT.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X POST -H "Content-Type: application/json" -d '{"username": "garfield@gmail.com", "password": "lasagna_lover"}' http://localhost:8000/api/login
+    curl -X POST -H "Content-Type: application/json" -d '{"username": "garfield@gmail.com", "password": "lasagna_lover"}' http://localhost:8080/api/login
     ```
   - **Resposta de Sucesso:**
     ```http
@@ -79,12 +83,12 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Cria uma nova consulta médica.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna.", "titleReason": "Check-up", "descriptionReason": "Checagem anual de saúde do Garfield", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8000/api/medical-appointments/create
+    curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna.", "titleReason": "Check-up", "descriptionReason": "Checagem anual de saúde do Garfield", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8080/api/medical-appointments/create
     ```
   - **Resposta de Sucesso:**
     ```http
     HTTP/1.1 201 Created
-    {"appointment_details_link": "http://localhost:8000/api/medical-appointments/view/{token}", "appointment_id": "garfield_appointment_id"}
+    {"appointment_details_link": "http://localhost:8080/api/medical-appointments/view/{token}", "appointment_id": "garfield_appointment_id"}
     ```
 
 #### Visualização de Consulta em PDF
@@ -92,7 +96,7 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Visualiza detalhes da consulta em PDF.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X GET -H "Authorization: Bearer garfield_jwt_token" http://localhost:8000/api/medical-appointments/view/{token}
+    curl -X GET -H "Authorization: Bearer garfield_jwt_token" http://localhost:8080/api/medical-appointments/view/{token}
     ```
   - **Resposta de Sucesso:**
     ```http
@@ -106,7 +110,7 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Modifica detalhes de uma consulta médica.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna. E depois disso o médico recomendou que ele fizesse mais exercícios", "titleReason": "Comeu demais de novo", "descriptionReason": "Check-up anual", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8000/api/medical-appointments/modify/{id}
+    curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer garfield_jwt_token" -d '{"notes": "Em abril foi parar no hospital depois de comer muita lasagna. E depois disso o médico recomendou que ele fizesse mais exercícios", "titleReason": "Comeu demais de novo", "descriptionReason": "Check-up anual", "appointmentDate": "2023-03-01", "patientId": "garfield_user_id"}' http://localhost:8080/api/medical-appointments/modify/{id}
     ```
   - **Resposta de Sucesso:**
     ```http
@@ -119,12 +123,12 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Gera um link de acesso para a consulta.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X POST -H "Authorization: Bearer garfield_jwt_token" http://localhost:8000/api/medical-appointments/access-link-generator/{id}
+    curl -X POST -H "Authorization: Bearer garfield_jwt_token" http://localhost:8080/api/medical-appointments/access-link-generator/{id}
     ```
   - **Resposta de Sucesso:**
     ```http
     HTTP/1.1 201 Created
-    {"appointment_details_link": "http://localhost:8000/api/medical-appointments/view/{token}"}
+    {"appointment_details_link": "http://localhost:8080/api/medical-appointments/view/{token}"}
     ```
 
 #### Cancelamento de Consulta
@@ -132,7 +136,7 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Cancela uma consulta médica.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X DELETE -H "Authorization: Bearer garfield_jwt_token" http://localhost:8000/api/medical-appointments/cancel/{id}
+    curl -X DELETE -H "Authorization: Bearer garfield_jwt_token" http://localhost:8080/api/medical-appointments/cancel/{id}
     ```
   - **Resposta de Sucesso:**
     ```http
