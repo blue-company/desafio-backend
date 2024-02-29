@@ -69,7 +69,7 @@ Este projeto utiliza Docker para facilitar a configuração do ambiente. Certifi
   - Realiza o login e retorna um token JWT.
   - **Exemplo de Requisição:**
     ```bash
-    curl -X POST -H "Content-Type: application/json" -d '{"username": "garfield@gmail.com", "password": "lasagna_lover"}' http://localhost:8080/api/login
+    curl -X POST -H "Content-Type: application/json" -d '{"username": "garfield@gmail.com", "password": "lasagna_lover"}' http://localhost:8080/api/login_check
     ```
   - **Resposta de Sucesso:**
     ```http
