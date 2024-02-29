@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Médica</title>
+    <style>
+        html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, img, ol, ul, li, table, tr, th, td {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        body {
+            line-height: 1;
+            font-family: 'Arial', sans-serif;
+        }
+
+        ol, ul {
+            list-style: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .blue-container {
+            background-color: #4299e1;
+            color: #ffffff;
+            padding: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .text-white {
+            color: #ffffff;
+        }
+
+        .blue-color {
+            color: #4299e1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .p-8 {
+            padding: 2rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .ml-4 {
+            margin-left: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="blue-container">
+        <h1 class="text-3xl font-bold">Blue Health Tech</h1>
+    </header>
+
+    <h2 class="text-3xl ml-4 blue-color">Detalhes da Consulta Médica</h2>
+
+    <section id="patient-info" class="container mx-auto my-8 p-8 bg-white shadow-md rounded-md">
+        <h3 class="text-2xl font-bold mb-4 blue-color">Informações do Paciente</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Nome do Paciente:</strong> {{ fullName }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Email:</strong> {{ email }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Sexo:</strong> {{ sex }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Data de Nascimento:</strong> {{ birthDate }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Histórico médico:</strong> {{ notes }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="appointment-details" class="container mx-auto my-8 p-8 bg-white shadow-md rounded-md">
+        <h3 class="text-2xl font-bold mb-4 blue-color">Detalhes da Consulta</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Dia e Horário da Consulta:</strong> {{ appointmentDate|date('Y-m-d\\TH:i:sP') }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Motivo da Consulta:</strong> {{ titleReason }}</p>
+                <p style="color: #718096; margin-bottom: 0.5rem;"><strong>Descrição dos Sintomas:</strong> {{ descriptionReason }}</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+
