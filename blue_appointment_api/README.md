@@ -177,6 +177,11 @@ docker-compose up --build -d
 php bin/phpunit
 ```
 
+## Segurança
+
+⚠️ A pasta `/config/jwt` foi retirada do `.gitignore` somente para facilitar a execução do projeto, estou ciente que em um cenário real essa abordagem não é adequada.
+
+
 ## Referências
 
 1. https://symfony.com/
