@@ -2,32 +2,94 @@
 
 namespace App\Controller;
 
+use App\Entity\Consulta;
+use App\Exception\InvalidRequestException;
+use App\Exception\ResourceNotFoundException;
+use App\Helper\ConsultaHelper;
+use App\Helper\SerializerHelper;
+use App\Service\ConsultaService;
+use App\Service\PDFService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ConsultaController {
+class ConsultaController extends AbstractController {
+    private ConsultaService $consultaService;
+    private PDFService $pdfService;
+    private ConsultaHelper $consultaHelper;
+    private SerializerHelper $serializer;
+
+    public function __construct(
+        ConsultaService $consultaService,
+        PDFService $pdfService,
+        ConsultaHelper $consultaHelper,
+        SerializerHelper $serializer
+    )
+    {
+        $this->consultaService = $consultaService; 
+        $this->pdfService = $pdfService; 
+        $this->consultaHelper = $consultaHelper; 
+        $this->serializer = $serializer; 
+    }
+
     #[Route('/consultas', name: 'consulta_list', methods: ['GET'])]
     public function listConsultas(): Response 
     {
-        return new Response('[{"id":1,"detalhes":"qqr coisa","data":"2024-06-02T12:00:00Z"}]',200, ['Content-Type' => 'application/json']);
+        $consultas = $this->consultaService->findConsultas();
+        return $this->json($consultas);
     }
 
-    #[Route('/consultas/{id}', name: 'consulta_details', methods: ['GET'])]
-    public function consultaDetails(int $id): Response
-    {
-        return new Response('[{"id":'. $id .',"detalhes":"qqr coisa","data":"2024-06-02T12:00:00Z"}]',200, ['Content-Type' => 'application/json']);
+    #[Route('/consultas/{path}', name: 'consulta_details', methods: ['GET'])]
+    public function consultaDetails(string $path): void
+    {   
+        $consulta = $this->consultaService->findConsulta(rawurldecode($path));
+        if(!$consulta) {
+            throw new ResourceNotFoundException();
+        }
+        $html = $this->renderView(
+            'consulta.html.twig',
+            ['consulta' => $consulta]
+        );
+        $this->pdfService->renderPdf($html);
     }
 
     #[Route('/consultas', name: 'consulta_create', methods:['POST'])]
-    public function create(): Response 
+    public function create(Request $request): Response
     {
-        return new Response('', 201);
+        $consulta = $this->serializer->deserialize($request->getContent(), Consulta::class);
+        $this->consultaHelper->validateCreationFields($consulta);
+        $this->consultaService->createConsulta($consulta);
+        $location = $this->consultaHelper->encryptRoute($consulta);
+        return new Response(
+            null,
+            Response::HTTP_CREATED,
+            [
+                'Location' => $location
+            ]
+        );
     }
 
     #[Route('/consultas/{id}', name: 'consulta_update', methods: ['PUT'])]
-    public function updateConsultas(int $id, Request $request): Response
+    public function updateConsultas(
+                                    int $id,
+                                    Request $request,
+                                ): Response
     {
-        return new Response($request->getContent(), headers: ['Content-Type' => 'application/json']);
+        $updatedConsulta = $this->serializer
+            ->deserialize($request->getContent(), Consulta::class);
+        if($updatedConsulta->getId() !== $id) {
+            throw new InvalidRequestException("Id don't match");
+        }
+        $consulta = $this->consultaService->updateConsulta($updatedConsulta);
+
+        return $this->json($consulta);
+    }
+
+    #[Route('/consultas/{id}', name: 'consulta_delete', methods: ['DELETE'])]
+    public function deleteConsulta(Consulta $consulta): Response
+    {
+        $this->consultaService->deleteConsulta($consulta);
+        return new Response('', Response::HTTP_NO_CONTENT);
     }
 }
