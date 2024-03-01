@@ -4,8 +4,8 @@ namespace App\Helper;
 
 class Cryptografer
 {
-    private string $key = 'SODIUM_CRYPTO_AEAD_AES256GCM_KEY';
-    private string $nounce = 'blablablabla';
+    private string $key = 'HQAXDKADXAADFWKDADXAKAAASHFHHCDN';
+    private string $nounce = 'jsyedhfjruda';
 
     public function encript($data): string {
         return base64_encode(

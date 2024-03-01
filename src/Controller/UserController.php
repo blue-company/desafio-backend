@@ -35,8 +35,8 @@ class UserController extends AbstractController
         $user = $this->serializer->deserialize($request->getContent(), User::class);
         $this->userHelper->validateCreationFields($user);
         $this->userService->createUser($user);
-        return $this->json(
-            $user,
+        return new Response(
+            null,
             Response::HTTP_CREATED,
             ['Location' => '/login']
         );

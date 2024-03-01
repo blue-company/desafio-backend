@@ -40,7 +40,7 @@ class ConsultaController extends AbstractController {
         return $this->json($consultas);
     }
 
-    #[Route('/consultas/{path}', name: 'consulta_details', methods: ['GET'])]
+    #[Route('/consultas/{path}', name: 'consulta_details', methods: ['GET'], requirements: ['path' => '.+'])]
     public function consultaDetails(string $path): void
     {   
         $consulta = $this->consultaService->findConsulta(rawurldecode($path));
