@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    env_file:
+      - .env
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PORT=${DB_PORT}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+volumes:
+  postgres_data:
