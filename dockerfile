@@ -1,24 +1,41 @@
+# This Dockerfile sets up a Node.js environment for a backend application.
+# It installs the necessary dependencies, copies the application code,
+# generates keys, and exposes the application on port 3000.
+
 FROM node:18-alpine3.18
 
 WORKDIR /usr/src/app
 
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
+# Install build dependencies
 RUN apk --no-cache add --virtual build-deps \
-    bash g++ gcc libgcc libstdc++ linux-headers make python3 \
-    && npm install --quiet node-gyp forever -g \
+    bash g++ gcc libgcc libstdc++ linux-headers make python3
+
+# Copy the entire application code to the working directory
+COPY . .
+
+# If .env file does not exist, copy .env-example to .env
+RUN if [ ! -f .env ]; then cp .env-example .env; fi
+
+# Install required npm packages
+RUN npm install --quiet node-gyp forever -g \
     && npm install \
     && npm install argon2 --quiet \
     && apk del build-deps
 
+# Copy the generate-keys.sh script to the working directory
 COPY scripts/generate-keys.sh ./generate-keys.sh
 
+# Make the generate-keys.sh script executable
 RUN chmod +x ./generate-keys.sh
 
-RUN /bin/sh ./generate-keys.sh  
+# Run the generate-keys.sh script
+RUN /bin/sh ./generate-keys.sh
 
-COPY . .
-
+# Expose port 3000 for the application
 EXPOSE 3000
 
+# Start the application in production mode
 CMD [ "npm", "run", "prod" ]

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon src/server.js",
     "prod": "export DB_HOST=db && export DB_PORT=5432 && nodemon src/server.js",
-    "test": "jest"
+    "test": "set LOGGING_ERROR_CONSOLE=false && jest --verbose --bail"
   },
   "keywords": [],
   "author": "",
@@ -16,17 +16,18 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "html-pdf": "^3.0.1",
-    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.0",
-    "pdfkit": "^0.15.0",
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
+    "puppeteer": "^22.6.5",
     "sequelize": "^6.37.3",
-    "supertest": "^6.3.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "nodemon": "^3.1.0",
+    "supertest": "^6.3.4"
   }
 }
