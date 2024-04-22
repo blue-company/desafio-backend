@@ -75,7 +75,7 @@ class UserService {
       const userExists = await this.findUserByUsername(username);
       if (userExists) {
         const error = new CustomError(`Esse username pertence a outro usuário. Tente novamente.`);
-        error.statusCode = 401;
+        error.statusCode = 409;
         throw error;
       }
     }

@@ -10,6 +10,27 @@ const NAME_LENGTH = { min: 5, max: 60 };
 const PASSWORD_LENGTH = { min: 6, max: 30 };
 const VALID_ROLES = ["USER", "ADMIN"];
 
+function validateAllowedPropertiesForUpdate(details) {
+  const allowedProperties = ["name", "username", "role", "active", "birthDate", "sex"];
+  const detailKeys = Object.keys(details);
+  for (let key of detailKeys) {
+    if (!allowedProperties.includes(key)) {
+      throw new Error(`Propriedade inválida: ${key}`, 400);
+    }
+  }
+}
+
+function validateAllowedPropertiesForRegister(details) {
+  const allowedProperties = ["name", "username", "password", "role", "active", "birthDate", "sex"];
+  const detailKeys = Object.keys(details);
+  for (let key of detailKeys) {
+    if (!allowedProperties.includes(key)) {
+      throw new Error(`Propriedade inválida: ${key}`, 400);
+    }
+  }
+  const { name, username, active, birthDate, sex, role } = details;
+  return { name, username, active, birthDate, sex, role };
+}
 function validateBirthDate(birthDate) {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
@@ -24,14 +45,20 @@ function validateBirthDate(birthDate) {
 }
 
 function validateUsername(username) {
-  if ((username && username.length < USERNAME_LENGTH.min) || username.length > USERNAME_LENGTH.max) {
-    throwError("O nome de usuário deve ter entre 5 e 16 caracteres.", 400);
+  if (!username) {
+    throwError("O nome de usuário não pode ser vazio.", 400);
+    if (username.length < USERNAME_LENGTH.min || username.length > USERNAME_LENGTH.max) {
+      throwError("O nome de usuário deve ter entre 5 e 16 caracteres.", 400);
+    }
   }
 }
 
 function validateName(name) {
-  if (name.length < NAME_LENGTH.min || name.length > NAME_LENGTH.max) {
-    throwError("O nome deve ter entre 5 e 60 caracteres.", 400);
+  if (!name) {
+    throwError("O nome não pode ser vazio.", 400);
+    if (name.length < NAME_LENGTH.min || name.length > NAME_LENGTH.max) {
+      throwError("O nome deve ter entre 5 e 60 caracteres.", 400);
+    }
   }
 }
 
@@ -56,7 +83,7 @@ function validateRole(role) {
 }
 
 function validateRequiredFields(details, requiredFields) {
-  if (requiredFields.length === 0) {
+  if (details && requiredFields.length.length > 0) {
     let missingFields = [];
     requiredFields.forEach((field) => {
       if (!details[field]) {
@@ -84,6 +111,7 @@ function validate(details) {
 }
 function validateUpdate(details) {
   const { name, username, password, birthDate, sex, role } = details;
+  validateAllowedPropertiesForUpdate(details);
   if (birthDate !== undefined) validateBirthDate(birthDate);
   if (username !== undefined) validateUsername(username);
   if (name !== undefined) validateName(name);
@@ -100,9 +128,17 @@ function validateLogin(details) {
   validatePassword(password);
 }
 function validateRegister(details, requiredFields) {
+  const { name, username, password, birthDate, sex, role } = details;
   if (requiredFields && requiredFields.length > 0) {
     validateRequiredFields(details, requiredFields);
   }
+  validateAllowedPropertiesForRegister(details);
+  validateName(name);
+  validateUsername(username);
+  validatePassword(password);
+  if (role !== undefined) validateRole(role);
+  if (sex !== undefined) validateSex(sex);
+  if (birthDate !== undefined) validateBirthDate(birthDate);
 }
 
 function throwError(message, statusCode) {

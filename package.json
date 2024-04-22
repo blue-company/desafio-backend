@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon src/server.js",
     "prod": "export DB_HOST=db && export DB_PORT=5432 && nodemon src/server.js",
-    "test": "set LOGGING_ERROR_CONSOLE=false && jest --verbose --bail"
+    "test": "jest --verbose --bail"
   },
   "keywords": [],
   "author": "",
