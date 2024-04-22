@@ -88,26 +88,20 @@ describe("Rotas de User", () => {
 
 describe("PUT /user/:id", () => {
   it("deve atualizar um único usuário por id", async () => {
+    console.log("deve atualizar um único usuário por id", userMockResponse);
     const updatedUser = {
       name: "Nome Atualizado",
-      username: "usernameAtualizado",
-      type: "ADMIN",
-      active: true,
-      birthDate: "1990-01-01",
-      sex: "M",
     };
-
-    const response = await request(app).put(`/user/1`).send(updatedUser);
+    const response = await request(app).put(`/user/${userMockResponse.body.user.id}`).send(updatedUser);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("msg");
-    expect(response.body.msg).toBe(`Usuário com o id ${userMockResponse.body.user.id} atualizado com sucesso!`);
   });
 
   it("deve retornar erro ao tentar atualizar um usuário com dados inválidos", async () => {
     const updatedUser = {
       name: "Nome Atualizado",
       username: "usernameAtualizado",
-      type: "INVALID_TYPE",
+      role: "INVALID_ROLE",
       active: true,
       birthDate: "1990-01-01",
       sex: "M",

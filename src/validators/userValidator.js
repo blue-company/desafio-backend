@@ -11,7 +11,7 @@ const PASSWORD_LENGTH = { min: 6, max: 30 };
 const VALID_ROLES = ["USER", "ADMIN"];
 
 function validateAllowedPropertiesForUpdate(details) {
-  const allowedProperties = ["name", "username", "role", "active", "birthDate", "sex"];
+  const allowedProperties = ["name", "username", "password", "role", "active", "birthDate", "sex"];
   const detailKeys = Object.keys(details);
   for (let key of detailKeys) {
     if (!allowedProperties.includes(key)) {

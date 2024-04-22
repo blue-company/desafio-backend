@@ -48,9 +48,10 @@ module.exports = {
 
   async update(req, res, next) {
     const { id } = req.params;
-    const { name, username, type, active, birthDate, sex } = req.body;
+    const { name, username, role, active, birthDate, sex } = req.body;
     try {
-      await userService.updateUser(id, { name, username, type, active, birthDate, sex });
+      userValidate.validateUpdate(req.body);
+      await userService.updateUser(id, req.body);
       return res.status(200).json({ msg: `Usuário com o id ${id} atualizado com sucesso!` });
     } catch (error) {
       next(error);
