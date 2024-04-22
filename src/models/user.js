@@ -6,18 +6,16 @@ class User extends Sequelize.Model {}
 User.init(
   {
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(60),
       allowNull: false,
       set(value) {
         this.setDataValue("name", value.toUpperCase());
       },
     },
     username: {
-      type: DataTypes.STRING(16),
+      type: DataTypes.STRING(30),
       allowNull: false,
-      set(value) {
-        this.setDataValue("username", value.toUpperCase());
-      },
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -27,6 +25,9 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "USER",
+      validate: {
+        isIn: [["USER", "ADMIN"]],
+      },
       set(value) {
         this.setDataValue("role", value.toUpperCase());
       },
@@ -44,10 +45,10 @@ User.init(
       type: DataTypes.STRING(1),
       allowNull: true,
       validate: {
-        isIn: [["M", "F"]],
+        isIn: [["M", "F", "O"]],
       },
       set(value) {
-        this.setDataValue("sex", value.toUpperCase());
+        this.setDataValue("sex", value ? value.toUpperCase() : null);
       },
     },
   },
