@@ -1,52 +1,34 @@
-# Desafio de Backend - API de Marcação de Consultas
+# Desafio backend para Blue Company
 
-Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
+## Índice
 
-## Objetivo
+1. [Tecnologias usadas](#Tecnologias-usadas)
+2. [Instalação](#instalação)
+   - [Configuração arquivo .env](#configuração-do-arquivo-env)
 
-Desenvolver uma API RESTful para a marcação de consultas médicas. A API permitirá que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas.
+## Tecnologias usadas
 
-## Requisitos do Desafio
+- JWT - Para autenticação de usuários na api.
+- Sequelize - ORM
+- Postgres - Banco de Dados relacional.
+- Argon2 - Biblioteca de hashing de senhas baseada em funções.
+  - Não cheguei a conclusões estabelecidas sobre a confiabilidade e performance do Argon2 nesse contexto, optei por ele devido a um erro de dependências entre a biblioteca BCrypt e o Docker. Não tenho certeza se é ideal ambientes de produção.
+- Puppeter - Para geração do pdf das consultas.
 
-- **Autenticação:** Implemente o login de usuários utilizando JWT.
-- **Agendamento de Consultas:** Permita que os usuários agendem novas consultas.
-- **Geração de PDF:** Após agendar uma consulta, gere um PDF com os detalhes da consulta.
-- **Visualização de Consultas:** Permita que os usuários vejam informações detalhadas sobre suas consultas, a rota deve ser criptografada com um link de acesso único.
-- **Modificação e Cancelamento de Consultas:** Os usuários devem poder modificar detalhes de suas consultas ou cancelá-las.
+## Instalação
 
-## Critérios Técnicos
+### Requisitos
 
-- **Banco de Dados:** Use alguma ferramenta para gerenciamento do banco de dados.
-- **Arquitetura:** Siga o padrão MVC para estruturação do projeto. 
-- **Linguagens permitidas:** PHP + Symphony |  Node Js + Express.
-- **Tratamento de Erros:** Implemente um sistema de tratamento de erros eficaz.
+- Docker: Necessário para criar e gerenciar o ambiente de desenvolvimento do projeto.
+- Docker Compose: Usado para definir e executar múltiplos contêineres Docker, incluindo a API do projeto e o banco de dados Postgres.
 
-## Entregáveis
+Para instalar o Docker e Docker Compose, siga as instruções na [documentação oficial do Docker](https://docs.docker.com/get-docker/) e na [documentação oficial do Docker Compose](https://docs.docker.com/compose/install/).
 
-- Código-fonte no GitHub com acesso ao repositório fornecido pela equipe da Blue.
-- Documentação no README, detalhando:
-  - Instruções de instalação e execução do projeto.
-  - Descrição das tecnologias utilizadas.
-  - Lista de rotas disponíveis e como utilizá-las.
+### Rodar API
 
-## Avaliação
+Para iniciar a API Blue Med Appointments, execute o seguinte comando: `docker-compose up --build`
 
-O desafio será avaliado com base em:
+### Configuração arquivo .env
 
-- **Qualidade do Código:** Clareza, uso de boas práticas, padrões de projeto e segurança.
-- **Funcionalidade:** Todos os requisitos devem ser atendidos.
-- **Design da API:** Clareza, consistência, e aderência aos princípios RESTful.
-- **Documentação:** Completa e clara, facilitando a compreensão e uso da API.
-
-## Como Iniciar
-
-1. Faça um fork deste repositório.
-2. Clone seu fork para sua máquina local.
-3. Siga as instruções de instalação específicas para configurar o ambiente de desenvolvimento.
-4. Comece a desenvolver, seguindo os requisitos e critérios técnicos descritos acima.
-
-## Entrega
-
-Quando estiver pronto para submeter seu desafio, crie um Pull Request do seu repositório forkado para o repositório principal da Blue Company. A equipe de desenvolvimento revisará sua entrega.
-
-Boa sorte e estamos ansiosos para ver suas soluções inovadoras!
+- Crie um arquivo `.env` na pasta config do que está na raiz do projeto.
+- Copie as variáveis de ambiente presentes no arquivo `.env-example` e cole no arquivo `.env` que você criou.
