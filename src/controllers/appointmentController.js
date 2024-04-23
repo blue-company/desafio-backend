@@ -17,7 +17,7 @@ module.exports = {
 
       res.json({
         msg: "Consulta marcada com sucesso.",
-        pdf: `http://localhost:3000/appointment/pdf${result.secureId}`,
+        pdf: `http://localhost:3000/appointment/pdf/${result.secureId}`,
       });
     } catch (error) {
       error.statusCode = error.statusCode || 500;

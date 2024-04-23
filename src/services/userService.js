@@ -123,7 +123,7 @@ class UserService {
   async authenticateUser(username, password) {
     const user = await this.findUserByUsername(username);
     if (!user) {
-      const error = new CustomError("Usuário com id ${user.id} não existe.");
+      const error = new CustomError(`Usuário @${username} não existe.`);
       error.statusCode = 404;
       throw error;
     }
@@ -154,7 +154,7 @@ class UserService {
     }
     const user = User.findAll({
       where: whereClause,
-      attributes: ["id", "name", "username", "password", "role", "active", "birthDate", "sex"],
+      attributes: ["id", "name", "username", "role", "active", "birthDate", "sex"],
     });
     return user;
   }

@@ -5,9 +5,12 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Blue Med Appointments API",
+      title: "API de Agendamentos Blue Med",
       version: "1.0.0",
-      description: "API de Marcação de Consultas",
+
+      description: `Esta API usa autenticação via token. Você pode obter o token usando as rotas 'register' ou 'login'.
+      Uma vez que você tenha o token, você pode autenticar suas solicitações adicionando-o ao cabeçalho 'Authorization' no formato 'Bearer {seu_token_aqui}'.
+      Se for necessário, você pode usar o Swagger para testar as rotas protegidas clicando no botão Authorize e colando seu token em 'value'.`,
     },
     components: {
       schemas: {

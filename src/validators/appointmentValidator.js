@@ -16,13 +16,14 @@ function getStatusString(statusCode) {
 
 function getStatusNumber(statusString) {
   const statusNumber = Object.keys(statusMap).find((key) => statusMap[key] === statusString);
+  console.log(statusNumber);
   return statusNumber !== undefined ? parseInt(statusNumber) : null;
 }
 function formatStatus(status) {
   if (typeof status === "string") {
     return getStatusNumber(status);
   } else if (typeof status === "number") {
-    return getStatusString(status);
+    return statusMap.hasOwnProperty(status.toString());
   }
   return false;
 }
@@ -82,7 +83,7 @@ function validateAppointmentDetails(details) {
     throwError("O motivo da consulta não pode ser vazio.", 400);
   }
 
-  if (!status) {
+  if (!status.lenght < 0) {
     throwError("O status da consulta não pode ser vazio.", 400);
   }
   const currentDate = new Date();

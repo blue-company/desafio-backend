@@ -22,16 +22,15 @@ class AppointmentService {
       error.statusCode = 400;
       throw error;
     }
-    console.log({
-      secureId: generateEncryptedId(),
+    appointmentValidator.validateAppointmentDetails({
       userId,
       doctorName,
       specialtyName,
       appointmentDate,
       appointmentInitialTime,
       appointmentFinalTime,
-      status: appointmentValidator.formatStatus(status),
       reason,
+      status,
     });
     const appointment = await Appointment.create({
       secureId: generateEncryptedId(),
@@ -99,7 +98,7 @@ class AppointmentService {
     const user = await User.findByPk(appointment.userId, {
       attributes: ["id", "name", "username", "role", "birthDate", "sex"],
     });
-    const doctor = { fullName: appointment.doctorName, specialty: appointment.specialtyName };
+    const doctor = { name: appointment.doctorName, specialty: appointment.specialtyName };
     return {
       ...appointment.get(),
       status: appointmentValidator.getStatusString(appointment.status),

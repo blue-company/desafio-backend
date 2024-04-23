@@ -81,9 +81,9 @@ module.exports = {
     },
     doctor: {
       type: "object",
-      required: ["fullName", "specialty"],
+      required: ["name", "specialty"],
       properties: {
-        fullName: {
+        name: {
           type: "string",
           description: "Nome completo do médico",
         },
