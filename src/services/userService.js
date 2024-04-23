@@ -88,7 +88,11 @@ class UserService {
       role: role !== undefined ? role : user.role,
     };
     userValidator.validateUpdate(updatedDetails);
-    return await User.update(details, { where: { id } });
+    if (details.password) {
+      const hashedPassword = await argon2.hash(details.password);
+      updatedDetails.password = hashedPassword;
+    }
+    return await User.update(updatedDetails, { where: { id } });
   }
 
   async findUserAppointments(userId) {
