@@ -11,7 +11,7 @@ COPY package*.json ./
 
 # Install build dependencies
 RUN apk --no-cache add --virtual build-deps \
-    bash g++ gcc libgcc libstdc++ linux-headers make python3
+    bash g++ gcc libgcc libstdc++ linux-headers make python3 openssl
 
 # Copy the entire application code to the working directory
 COPY . .

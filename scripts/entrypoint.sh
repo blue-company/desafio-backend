@@ -1,11 +1,12 @@
 #!/bin/sh
 
 # Gere as chaves e defina as variáveis de ambiente
-/bin/sh ./generate-keys.sh
+/bin/sh ./scripts/generate-keys.sh
+
 
 # Carregue as variáveis de ambiente do arquivo .env
 if [ -f .env ]; then
-  export $(cat .env | xargs)
+    export $(grep -v '^#' .env | xargs)
 fi
 
 # Inicie o aplicativo

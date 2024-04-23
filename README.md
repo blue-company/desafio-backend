@@ -24,11 +24,13 @@
 
 Para instalar o Docker e Docker Compose, siga as instruções na [documentação oficial do Docker](https://docs.docker.com/get-docker/) e na [documentação oficial do Docker Compose](https://docs.docker.com/compose/install/).
 
-### Rodar API
-
-Para iniciar a API Blue Med Appointments, execute o seguinte comando: `docker-compose up --build`
-
 ### Configuração arquivo .env
+
+#### Essa configuração é opcional pois ao usar o comando `docker-compose up --build`, ele aciona os scripts que copia as variáveis de `.env-example` e cria o arquivo `.env` automaticamente.
 
 - Crie um arquivo `.env` na pasta config do que está na raiz do projeto.
 - Copie as variáveis de ambiente presentes no arquivo `.env-example` e cole no arquivo `.env` que você criou.
+
+### Rodar API
+
+- Para iniciar a API Blue Med Appointments, execute o seguinte comando: `docker-compose up --build`
