@@ -32,10 +32,11 @@ Appointment.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("MARCADA", "CANCELADA", "CONCLUIDA"),
-      defaultValue: "MARCADA",
-      set(value) {
-        this.setDataValue("status", value.toUpperCase());
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        isIn: [[-1, 0, 1]],
       },
     },
     reason: {
