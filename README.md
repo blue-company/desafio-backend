@@ -5,6 +5,12 @@
 1. [Tecnologias usadas](#Tecnologias-usadas)
 2. [Instalação](#instalação)
    - [Configuração arquivo .env](#configuração-do-arquivo-env)
+3. [Requisitos](#requisitos)
+4. [Executando a API](#executando-a-api)
+   - [docker-compose](#docker-compose)
+   - [NodeJS - NPM](#nodejs---npm)
+5. [Documentação da API](#documentação-da-api)
+   - [Swagger](#swagger)
 
 ## Tecnologias usadas
 
