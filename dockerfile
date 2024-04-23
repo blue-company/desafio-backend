@@ -25,17 +25,16 @@ RUN npm install --quiet node-gyp forever -g \
     && npm install argon2 --quiet \
     && apk del build-deps
 
-# Copy the generate-keys.sh script to the working directory
-COPY scripts/generate-keys.sh ./generate-keys.sh
+# Copy the generate-keys.sh and entrypoint.sh script to the working directory
+COPY scripts/generate-keys.sh ./scripts/generate-keys.sh
+COPY scripts/entrypoint.sh ./scripts/entrypoint.sh
 
-# Make the generate-keys.sh script executable
-RUN chmod +x ./generate-keys.sh
-
-# Run the generate-keys.sh script
-RUN /bin/sh ./generate-keys.sh
+# Make the scripts executable
+RUN chmod +x ./scripts/generate-keys.sh
+RUN chmod +x ./scripts/entrypoint.sh
 
 # Expose port 3000 for the application
 EXPOSE 3000
 
-# Start the application in production mode
-CMD [ "npm", "run", "prod" ]
+# Use the entrypoint script to start the application
+ENTRYPOINT ["sh", "./scripts/entrypoint.sh"]
