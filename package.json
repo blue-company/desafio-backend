@@ -1,0 +1,33 @@
+{
+  "name": "desafio-rascunho",
+  "version": "1.0.0",
+  "description": "Breve descrição do projeto e seu objetivo.",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "set NODE_ENV=development && nodemon src/server.js",
+    "prod": "export DB_HOST=db && export DB_PORT=5432 && nodemon src/server.js",
+    "test": "jest --verbose --bail"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.40.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.5",
+    "pg-hstore": "^2.3.4",
+    "puppeteer": "^22.6.5",
+    "sequelize": "^6.37.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "nodemon": "^3.1.0",
+    "supertest": "^6.3.4"
+  }
+}
