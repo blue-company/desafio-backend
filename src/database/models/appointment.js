@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         defaultValue: 'SCHEDULED',
       },
-      encryptedToken: DataTypes.STRING,
+      token: DataTypes.STRING,
       isConsulted: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     { underscored: true, tableName: 'Appointments' }

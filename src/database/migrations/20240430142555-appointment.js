@@ -36,7 +36,7 @@ module.exports = {
           type: Sequelize.STRING,
           defaultValue: 'SCHEDULED',
         },
-        encryptedToken: {
+        token: {
           allowNull: false,
           type: Sequelize.STRING,
         },
