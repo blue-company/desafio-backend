@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "md5": "^2.3.0",
     "pg": "^8.11.5",
+    "puppeteer": "^22.7.1",
     "sequelize": "^6.37.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
