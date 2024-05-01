@@ -13,12 +13,12 @@ function encryptToken(token) {
   let encryptedToken = cipher.update(token, 'utf8', 'hex');
   encryptedToken += cipher.final('hex');
 
-  return iv.toString('hex') + encryptedToken;
+  return encryptedToken;
 }
 
 function decryptToken(encryptedToken) {
   const decipher = crypto.createDecipheriv('aes256', key, iv);
-  let decryptedToken = decipher.update(encryptedToken.slice(32), 'hex', 'utf8');
+  let decryptedToken = decipher.update(encryptedToken, 'hex', 'utf8');
   decryptedToken += decipher.final('utf8');
 
   return decryptedToken;
