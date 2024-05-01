@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+Symbols:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Consulta Médica</title>
+    <style>
+      html {
+        box-sizing: border-box;
+        font-size: 16px;
+        background-color: #f1f1f1;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+      body,
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+        line-height: 1;
+        font-family: 'Noto Sans Symbols', sans-serif;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      .blue-container {
+        color: #0035da;
+        padding: 2rem;
+        margin-bottom: 3rem;
+      }
+      .info-title {
+        color: #0035da;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+      .info-container {
+        display: flex;
+        flex-direction: column;
+        color: #07a7ff;
+        gap: 0.7rem;
+        margin-left: 1rem;
+      }
+      .section-container {
+        margin: 2rem 0 2rem 2rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="blue-container">
+      <div style="display: flex; gap: 1rem">
+        <img src="src" />
+        <h1>Saúde Blue</h1>
+      </div>
+    </header>
+
+    <h2 style="text-align: center; font-size: 1.6em; color: #0035da">
+      Detalhes da Consulta Médica
+    </h2>
+
+    <section class="section-container">
+      <h3 class="info-title">Informações do Paciente</h3>
+      <div class="info-container">
+        <p><strong>Nome do Paciente:</strong> {{ fullName }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ birthDate }}</p>
+      </div>
+    </section>
+
+    <section class="section-container">
+      <h3 class="info-title">Informações da Consulta</h3>
+      <div class="info-container">
+        <p><strong>Dia da Consulta:</strong> {{ appointmentDate }}</p>
+        <p><strong>Horário da Consulta:</strong> {{ appointmentTime }}</p>
+        <p><strong>Motivo da Consulta:</strong> {{ reason }}</p>
+      </div>
+    </section>
+  </body>
+</html>
