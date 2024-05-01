@@ -29,7 +29,16 @@ const create = async (userData) => {
   return userCreated.id;
 };
 
+const getById = async (userId) => {
+  const user = await User.findByPk(userId);
+
+  if (!user) throw errorFunction(BAD_REQUEST, 'User not found');
+
+  return user;
+};
+
 module.exports = {
   login,
   create,
+  getById,
 };
