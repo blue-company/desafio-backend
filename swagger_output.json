@@ -1,0 +1,340 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Medical Appointments API",
+    "description": "To use this documentation, you must first create a user or login with pre-seeded users and authenticate. Once authenticated, you can create, update, delete, and retrieve appointments. Each appointment is unique and can only be accessed by the user who created it. Appointments are encrypted and can be accessed through a unique link. Additionally, appointments can be downloaded in PDF format.",
+    "contact": {
+      "email": "rafaelcs_94@hotmail.com",
+      "name": "Rafael Santos"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development"
+    }
+  ],
+  "paths": {
+    "/users/": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Creates the user and returns a token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Authenticate user",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Returns a token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userLoginBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointments/": {
+      "post": {
+        "tags": ["Appointment"],
+        "summary": "Create a new appointment",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Creates an appointment and returns a unique link to it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appointmentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/appointmentBody"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/appointments/{token}": {
+      "get": {
+        "tags": ["Appointment"],
+        "summary": "Get appointment details",
+        "description": "Get an appointment by its encrypted token",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a downloadable pdf file with the appointment details",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Appointment link already consulted"
+          },
+          "404": {
+            "description": "Appointment not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/appointments/{id}": {
+      "put": {
+        "tags": ["Appointment"],
+        "summary": "Update an appointment",
+        "description": "The example id is an appointment from the user John Doe. You can only update appointments that you own. You can login with the user John Doe to test this endpoint.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "16fa7484-d7ab-42b3-b9c0-2896cc1ba523"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates appointment and returns a new unique link to it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appointmentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "UserId does not match the appointment owner"
+          },
+          "404": {
+            "description": "Appointment not found"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/appointmentBody"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Appointment"],
+        "summary": "Cancel an appointment",
+        "description": "The example id is an appointment from the user John Doe. You can only update appointments that you own. You can login with the user John Doe to test this endpoint.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "16fa7484-d7ab-42b3-b9c0-2896cc1ba523"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cancel appointment and returns no content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "UserId does not match the appointment owner"
+          },
+          "404": {
+            "description": "Appointment not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "userBody": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "New User"
+          },
+          "email": {
+            "type": "string",
+            "example": "newuser@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "654321"
+          },
+          "phonenumber": {
+            "type": "string",
+            "example": "071999998888"
+          },
+          "birthDate": {
+            "type": "string",
+            "example": "1994-01-01"
+          }
+        },
+        "required": ["fullName", "email", "password", "phonenumber", "birthDate"]
+      },
+      "userLoginBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "johndoe@test.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "tokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTAxNzc0MzIsImlhdCI6MTcxMDA5MTAzMiwiZW1haWwiOiJqb2huZG9lQGdtYWlsLmNvbSJ9.GSxLXWQFh7xZcktpGAUlzQK9btgARIguSpO-1VD5Cc0"
+          }
+        }
+      },
+      "appointmentBody": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "Check-up de rotina"
+          },
+          "appointmentDate": {
+            "type": "string",
+            "example": "2024-05-20"
+          },
+          "appointmentTime": {
+            "type": "string",
+            "example": "16:00"
+          }
+        },
+        "required": ["reason", "appointmentDate", "appointmentTime"]
+      },
+      "appointmentResponse": {
+        "type": "object",
+        "properties": {
+          "urlLink": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
