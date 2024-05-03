@@ -2,7 +2,7 @@
   "name": "desafio-backend",
   "version": "1.0.0",
   "description": "Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "prestart": "npm run db:reset",
@@ -10,9 +10,9 @@
     "predev": "npm run db:reset",
     "dev": "nodemon src/server.js",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "jest tests/unit --verbose",
+    "test:unit": "jest tests/unit",
     "pretest:integration": "NODE_ENV=test npm run db:reset",
-    "test:integration": "jest tests/integration --verbose --forceExit",
+    "test:integration": "jest tests/integration --forceExit",
     "posttest:integration": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all",
     "pretest:coverage": "NODE_ENV=test npm run db:reset",
     "test:coverage": "jest --coverage"
