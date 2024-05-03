@@ -24,9 +24,9 @@ const create = async (userData) => {
     password: encryptedPassword,
   };
 
-  const userCreated = User.create(userToCreate);
+  const userCreated = await User.create(userToCreate);
 
-  return userCreated.id;
+  return userCreated.dataValues.id;
 };
 
 const getById = async (userId) => {
