@@ -124,6 +124,7 @@
             "name": "token",
             "in": "path",
             "required": true,
+            "description": "The unique token to the appointment, the last part of the urlLink. You can get this token by creating an appointment or updating it.",
             "schema": {
               "type": "string"
             }
