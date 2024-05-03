@@ -6,5 +6,6 @@ module.exports = (err, _req, res, _next) => {
     return res.status(err.status).json({ message: err.message });
   }
 
+  /* istanbul ignore next */
   return res.status(INTERNAL_SERVER_ERROR).json({ message: err.message });
 };

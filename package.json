@@ -4,12 +4,21 @@
   "description": "Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.",
   "main": "index.js",
   "scripts": {
+    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "prestart": "npm run db:reset",
     "start": "node src/server.js",
+    "predev": "npm run db:reset",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest tests/unit --verbose",
+    "pretest:integration": "NODE_ENV=test npm run db:reset",
+    "test:integration": "jest tests/integration --verbose --forceExit",
+    "posttest:integration": "NODE_ENV=test npx sequelize-cli db:migrate:undo:all",
+    "pretest:coverage": "NODE_ENV=test npm run db:reset",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
-  "author": "",
+  "author": "Rafael Santos",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -21,7 +30,6 @@
     "pg": "^8.11.5",
     "puppeteer": "^22.7.1",
     "sequelize": "^6.37.3",
-    "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
   },

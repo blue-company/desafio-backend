@@ -2,13 +2,12 @@ version: '3'
 services:
   db:
     image: postgres:15-alpine
-    container_name: db-test
+    container_name: db-dev
     platform: linux/x86_64
     ports:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=appointments_db
     restart: 'always'
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
