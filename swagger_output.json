@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Medical Appointments API",
-    "description": "To use this documentation, you must first create a user or login with pre-seeded users and authenticate. Once authenticated, you can create, update, delete, and retrieve appointments. Each appointment is unique and can only be accessed by the user who created it. Appointments are encrypted and can be accessed through a unique link. Additionally, appointments can be downloaded in PDF format.",
+    "description": "Para utilizar esta documentação, você deve primeiro criar um usuário ou fazer login com usuários pré-cadastrados e autenticar-se. Uma vez autenticado, você pode criar, atualizar, excluir e recuperar agendamentos. Cada agendamento é único e só pode ser acessado pelo usuário que o criou. Os agendamentos são criptografados e podem ser acessados através de um link único. Além disso, os agendamentos podem ser baixados em formato PDF.",
     "contact": {
       "email": "rafaelcs_94@hotmail.com",
       "name": "Rafael Santos"
@@ -19,11 +19,11 @@
     "/users/": {
       "post": {
         "tags": ["User"],
-        "summary": "Create a new user",
+        "summary": "Cria um novo usuário",
         "description": "",
         "responses": {
           "201": {
-            "description": "Creates the user and returns a token",
+            "description": "Cria um usuário e retorna um token",
             "content": {
               "application/json": {
                 "schema": {
@@ -48,11 +48,11 @@
     "/users/login": {
       "post": {
         "tags": ["User"],
-        "summary": "Authenticate user",
+        "summary": "Autentica o usuário",
         "description": "",
         "responses": {
           "200": {
-            "description": "Returns a token",
+            "description": "Retorna um token",
             "content": {
               "application/json": {
                 "schema": {
@@ -77,24 +77,24 @@
     "/appointments/": {
       "post": {
         "tags": ["Appointment"],
-        "summary": "Create a new appointment",
+        "summary": "Cria um novo agendamento",
         "description": "",
         "responses": {
           "201": {
-            "description": "Creates an appointment and returns a unique link to it",
+            "description": "Cria um agendamento e retorna seu id e um link único para ele. O link é criptografado e só pode ser acessado pelo usuário que o criou.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/appointmentResponse"
+                  "$ref": "#/components/schemas/appointmentResponse1"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid request body"
+            "description": "Corpo da requisição inválido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inexistente ou inválido/expirado"
           }
         },
         "requestBody": {
@@ -117,14 +117,14 @@
     "/appointments/{token}": {
       "get": {
         "tags": ["Appointment"],
-        "summary": "Get appointment details",
-        "description": "Get an appointment by its encrypted token",
+        "summary": "Obter detalhes de um agendamento",
+        "description": "Obter um agendamento pelo seu token criptografado",
         "parameters": [
           {
             "name": "token",
             "in": "path",
             "required": true,
-            "description": "The unique token to the appointment, the last part of the urlLink. You can get this token by creating an appointment or updating it.",
+            "description": "O token único para o agendamento, a última parte do urlLink. Você pode obter esse token criando ou atualizando um agendamento.",
             "schema": {
               "type": "string"
             }
@@ -132,7 +132,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a downloadable pdf file with the appointment details",
+            "description": "Retorna um arquivo PDF para download com os detalhes do agendamento",
             "content": {
               "application/pdf": {
                 "schema": {
@@ -143,13 +143,13 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inexistente ou inválido/expirado"
           },
           "403": {
-            "description": "Appointment link already consulted"
+            "description": "Agendamento já consultado"
           },
           "404": {
-            "description": "Appointment not found"
+            "description": "Agendamento não encontrado"
           }
         },
         "security": [
@@ -162,13 +162,14 @@
     "/appointments/{id}": {
       "put": {
         "tags": ["Appointment"],
-        "summary": "Update an appointment",
-        "description": "The example id is an appointment from the user John Doe. You can only update appointments that you own. You can login with the user John Doe to test this endpoint.",
+        "summary": "Atualiza um agendamento",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "O id em exemplo é um agendamento do usuário John Doe. Você só pode atualizar agendamentos que você possui. Você pode fazer login com o usuário John Doe para testar este endpoint, ou criar um novo agendamento e pegar seu appointmentId.",
             "schema": {
               "type": "string",
               "example": "16fa7484-d7ab-42b3-b9c0-2896cc1ba523"
@@ -177,26 +178,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Updates appointment and returns a new unique link to it",
+            "description": "Atualiza o agendamento e retorna um novo link único para ele",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/appointmentResponse"
+                  "$ref": "#/components/schemas/appointmentResponse2"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid request body"
+            "description": "Corpo da requisição inválido"
           },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
-            "description": "UserId does not match the appointment owner"
+            "description": "Id do usuário não é o mesmo do criador do agendamento"
           },
           "404": {
-            "description": "Appointment not found"
+            "description": "Agendamento não encontrado"
           }
         },
         "requestBody": {
@@ -204,7 +205,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/appointmentBody"
+                "$ref": "#/components/schemas/appointmentUpdateBody"
               }
             }
           }
@@ -217,13 +218,14 @@
       },
       "delete": {
         "tags": ["Appointment"],
-        "summary": "Cancel an appointment",
-        "description": "The example id is an appointment from the user John Doe. You can only update appointments that you own. You can login with the user John Doe to test this endpoint.",
+        "summary": "Cancela um agendamento",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "O id em exemplo é um agendamento do usuário John Doe. Você só pode atualizar agendamentos que você possui. Você pode fazer login com o usuário John Doe para testar este endpoint, ou criar um novo agendamento e pegar seu appointmentId.",
             "schema": {
               "type": "string",
               "example": "16fa7484-d7ab-42b3-b9c0-2896cc1ba523"
@@ -232,16 +234,16 @@
         ],
         "responses": {
           "204": {
-            "description": "Cancel appointment and returns no content"
+            "description": "Cancela um agendamento e não retorna nenhum conteúdo"
           },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
-            "description": "UserId does not match the appointment owner"
+            "description": "Id do usuário não é o mesmo do criador do agendamento"
           },
           "404": {
-            "description": "Appointment not found"
+            "description": "Agendamento não encontrado"
           }
         },
         "security": [
@@ -321,7 +323,36 @@
         },
         "required": ["reason", "appointmentDate", "appointmentTime"]
       },
-      "appointmentResponse": {
+      "appointmentUpdateBody": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "Saúde mental"
+          },
+          "appointmentDate": {
+            "type": "string",
+            "example": "2024-06-10"
+          },
+          "appointmentTime": {
+            "type": "string",
+            "example": "10:00"
+          }
+        },
+        "required": ["reason", "appointmentDate", "appointmentTime"]
+      },
+      "appointmentResponse1": {
+        "type": "object",
+        "properties": {
+          "urlLink": {
+            "type": "string"
+          },
+          "appointmentId": {
+            "type": "string"
+          }
+        }
+      },
+      "appointmentResponse2": {
         "type": "object",
         "properties": {
           "urlLink": {
