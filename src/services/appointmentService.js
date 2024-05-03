@@ -58,7 +58,9 @@ const cancel = async (appointmentId, userId) => {
 };
 
 const validateAppointment = async (appointmentId, userId) => {
-  const appointment = await Appointment.findByPk(appointmentId);
+  const appointment = await Appointment.findOne({
+    where: { id: appointmentId, status: 'SCHEDULED' },
+  });
 
   if (!appointment) {
     throw errorFunction(NOT_FOUND, 'Appointment not found');
