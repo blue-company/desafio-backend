@@ -5,7 +5,6 @@
 - Rafael da Cunha Santos
 - [LinkedIn](https://www.linkedin.com/in/rafaelcunhas/)
 - [Github](https://github.com/RafaelCunhaS)
-- Telefone: (71) 99249-0607
 - Email: rafaelcs_94@hotmail.com
 
 ### Ferramentas utilizadas:
@@ -19,7 +18,7 @@
 - [puppeteer](https://pptr.dev/): Biblioteca que permite a criação de arquivos PDF utilizando HTML.
 - [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express): Módulo para gerar documentação Swagger através de um arquivo JSON.
 
-### Rodar o projeto localmente:
+## Rodar o projeto localmente:
 
 **É necessário ter o Docker Compose instalado para rodar o banco de dados**
 
@@ -40,14 +39,14 @@
     $ npm start
 ```
 
-**A documentação da API se encontrará em localhost:3000/api-docs(http://localhost:3000/api-docs)**
+**A documentação da API se encontrará em [localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
 ### Ferramentas de teste utilizadas(unitários e integração):
 
 - [Jest](https://jestjs.io/pt-BR/): Poderoso framework de testes em JavaScript com um foco na simplicidade.
 - [Supertest](https://www.npmjs.com/package/supertest): Biblioteca para testes de servidores HTTP.
 
-### Testando a API:
+## Testando a API:
 
 **Pare a aplicação caso ela ainda esteja rodando**
 
@@ -55,7 +54,7 @@
     # Rodar testes unitários
     $ npm run test:unit
 
-    # Rodar testes de integração (O container do banco de dados precisa estar rodando $ docker compose up -d)
+    # Rodar testes de integração (O container do banco de dados precisa estar rodando)
     $ npm run test:integration
 
     # Rodar todos os testes
@@ -65,9 +64,9 @@
     $ npm run test:coverage
 ```
 
-<img src="./coverage.png" alt="test coverage" width="500"/>
+<img src="./coverage.png" alt="test coverage" width="1000"/>
 
-### Parando o container do banco de dados:
+## Parando o container do banco de dados:
 
 ```bash
     $ docker compose down --remove-orphans -v
