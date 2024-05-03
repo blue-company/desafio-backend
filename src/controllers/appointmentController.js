@@ -1,14 +1,14 @@
 const appointmentService = require('../services/appointmentService');
-const { CREATED, OK_STATUS } = require('../utils/statusCode');
+const { CREATED, OK_STATUS, NO_CONTENT } = require('../utils/statusCode');
 const stream = require('stream');
 
 const create = async (req, res) => {
   const { userId } = req.user;
-  const token = await appointmentService.create(req.body, userId);
+  const { token, appointmentId } = await appointmentService.create(req.body, userId);
 
   const urlLink = `http://localhost:3000/appointments/${token}`;
 
-  res.status(CREATED).json({ urlLink });
+  res.status(CREATED).json({ urlLink, appointmentId });
 };
 
 const getAppointment = async (req, res) => {
@@ -41,7 +41,7 @@ const cancel = async (req, res) => {
   const { userId } = req.user;
   await appointmentService.cancel(appointmentId, userId);
 
-  res.status(OK_STATUS).json({ message: 'Appointment canceled' });
+  res.status(NO_CONTENT).end();
 };
 
 module.exports = {

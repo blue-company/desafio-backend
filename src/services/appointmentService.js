@@ -11,10 +11,10 @@ const userService = require('./userService');
 
 const create = async (appointmentData, userId) => {
   const token = generateAppointmentToken();
-  await Appointment.create({ ...appointmentData, token, userId });
+  const appointment = await Appointment.create({ ...appointmentData, token, userId });
   const ecryptedToken = encryptToken(token);
 
-  return ecryptedToken;
+  return { token: ecryptedToken, appointmentId: appointment.dataValues.id };
 };
 
 const getAppointment = async (token) => {
