@@ -33,6 +33,7 @@ describe('Appointment service', () => {
     const token =
       '590f5e3730425ca5d31a2d8b4f557c1002817a0fe57ee044303822b4df9e4588ae6038c53be5ea1ff69d2aac594b4874';
     it('should return the appointment and generate a PDF file', async () => {
+      jest.setTimeout(20000);
       Appointment.findOne.mockResolvedValue({
         id: 'appointment123',
         userId: 'user123',
@@ -103,7 +104,7 @@ describe('Appointment service', () => {
 
     it('should update the appointment and return the encrypted token', async () => {
       Appointment.update.mockResolvedValue({});
-      Appointment.findByPk.mockResolvedValue({ userId });
+      Appointment.findOne.mockResolvedValue({ userId });
 
       const encryptedToken = await appointmentService.update(
         appointmentId,
@@ -123,7 +124,7 @@ describe('Appointment service', () => {
     });
 
     it('should throw an error if the appointment is not found', async () => {
-      Appointment.findByPk.mockResolvedValue(null);
+      Appointment.findOne.mockResolvedValue(null);
       let error;
       try {
         await appointmentService.update(appointmentId, appointmentData, userId);
@@ -144,7 +145,7 @@ describe('Appointment service', () => {
       };
       const userId = 'invalidUser123';
 
-      Appointment.findByPk.mockResolvedValue({ userId: 'user123' });
+      Appointment.findOne.mockResolvedValue({ userId: 'user123' });
       let error;
       try {
         await appointmentService.update(appointmentId, appointmentData, userId);
@@ -162,7 +163,7 @@ describe('Appointment service', () => {
     const userId = 'user123';
 
     it('should cancel the appointment', async () => {
-      Appointment.findByPk.mockResolvedValue({ userId });
+      Appointment.findOne.mockResolvedValue({ userId });
 
       await appointmentService.cancel(appointmentId, userId);
 

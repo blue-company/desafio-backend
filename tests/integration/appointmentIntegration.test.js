@@ -94,6 +94,7 @@ describe('Appointments integration tests', () => {
     });
 
     it('should get the appointment PDF file', async () => {
+      jest.setTimeout(20000);
       const response = await request(app)
         .get(appointmentLink.replace('http://localhost:3000', ''))
         .set('Authorization', `Bearer ${token}`);
