@@ -9,6 +9,7 @@
 
 ### Ferramentas utilizadas:
 
+- [Node](https://nodejs.org/en/): Ambiente de execução JavaScript de código aberto e multiplataforma
 - [Express](https://pactumjs.github.io/): Framework para Node.js para construção de servidores web.
 - [Postgres](https://www.postgresql.org/): Banco de dados relacional.
 - [Sequelize](https://sequelize.org/): ORM moderna para Node.js.
@@ -20,7 +21,7 @@
 
 ## Rodar o projeto localmente:
 
-**É necessário ter o Docker Compose instalado para rodar o banco de dados**
+**É necessário ter o Docker Compose e o Node.js instalados em sua máquina para rodar o projeto**
 
 ```bash
     # Clone o repositório
@@ -35,7 +36,7 @@
     # Suba o container do banco de dados
     $ docker compose up -d
 
-    # Rode o project
+    # Rode o projeto
     $ npm start
 ```
 
