@@ -33,7 +33,6 @@ describe('Appointment service', () => {
     const token =
       '590f5e3730425ca5d31a2d8b4f557c1002817a0fe57ee044303822b4df9e4588ae6038c53be5ea1ff69d2aac594b4874';
     it('should return the appointment and generate a PDF file', async () => {
-      jest.setTimeout(20000);
       Appointment.findOne.mockResolvedValue({
         id: 'appointment123',
         userId: 'user123',

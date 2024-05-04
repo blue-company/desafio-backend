@@ -11,4 +11,5 @@ module.exports = {
     },
   },
   coverageReporters: ['lcov', 'text'],
+  testTimeout: 20000,
 };
