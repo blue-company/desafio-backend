@@ -40,7 +40,7 @@
     $ npm start
 ```
 
-**Com o projeto rodando a documentação da API se encontrará em [localhost:3000/api-docs](http://localhost:3000/api-docs)**
+**Com o projeto rodando, a documentação da API se encontrará em [localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
 ### Ferramentas de teste utilizadas(unitários e integração):
 
