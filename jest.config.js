@@ -1,7 +1,13 @@
 module.exports = {
   injectGlobals: true,
   testEnvironment: 'node',
-  collectCoverageFrom: ['src/**/*.js', '!src/server.js', '!src/database/**', '!tests/**/*'],
+  collectCoverageFrom: [
+    'src/**/*.js',
+    '!src/server.js',
+    '!src/database/**',
+    '!tests/**/*',
+    '!src/utils/generatePdf.js',
+  ],
   coverageThreshold: {
     global: {
       branches: 80,

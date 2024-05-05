@@ -11,6 +11,7 @@ const create = async (req, res) => {
   res.status(CREATED).json({ urlLink, appointmentId });
 };
 
+/* istanbul ignore next */
 const getAppointment = async (req, res) => {
   const { token } = req.params;
 

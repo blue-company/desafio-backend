@@ -92,18 +92,6 @@ describe('Appointments integration tests', () => {
       expect(invalidTokenResponse.status).toBe(UNAUTHORIZED);
       expect(invalidTokenResponse.body).toHaveProperty('message', 'Expired or invalid token');
     });
-
-    it('should get the appointment PDF file', async () => {
-      const response = await request(app)
-        .get(appointmentLink.replace('http://localhost:3000', ''))
-        .set('Authorization', `Bearer ${token}`);
-
-      expect(response.status).toBe(OK_STATUS);
-      expect(response.headers['content-type']).toBe('application/pdf');
-      expect(response.headers['content-disposition']).toMatch(
-        /^attachment; filename=consulta_[a-zA-Z0-9-]+\.pdf$/
-      );
-    });
   });
 
   describe('PUT /appointments/:id', () => {

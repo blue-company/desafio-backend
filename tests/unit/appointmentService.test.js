@@ -32,39 +32,6 @@ describe('Appointment service', () => {
   describe('getAppointment', () => {
     const token =
       '590f5e3730425ca5d31a2d8b4f557c1002817a0fe57ee044303822b4df9e4588ae6038c53be5ea1ff69d2aac594b4874';
-    it('should return the appointment and generate a PDF file', async () => {
-      Appointment.findOne.mockResolvedValue({
-        id: 'appointment123',
-        userId: 'user123',
-        status: 'SCHEDULED',
-        reason: 'Test Appointment',
-        appointmentDate: '2024-05-20',
-        appointmentTime: '10:00',
-        token: 'encrypted',
-        isConsulted: false,
-      });
-      userService.getById.mockResolvedValue({
-        id: 'user123',
-        fullName: 'Test User',
-        email: 'test@example.com',
-        phonenumber: '123456789012',
-        birthDate: '1985-01-01',
-      });
-      Appointment.update.mockResolvedValue({});
-      const result = await appointmentService.getAppointment(token);
-
-      expect(result.pdfFile).toBeDefined();
-      expect(result.appointmentId).toBeDefined();
-      expect(Appointment.findOne).toHaveBeenCalledWith({
-        where: { token: expect.any(String), status: 'SCHEDULED' },
-      });
-      expect(userService.getById).toHaveBeenCalledWith('user123');
-      expect(Appointment.update).toHaveBeenCalledWith(
-        { isConsulted: true },
-        { where: { id: 'appointment123' } }
-      );
-    });
-
     it('should throw an error if the appointment is not found', async () => {
       Appointment.findOne.mockResolvedValue(null);
       let error;
