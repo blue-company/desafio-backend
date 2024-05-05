@@ -21,7 +21,7 @@
 
 ## Rodar o projeto localmente:
 
-**É necessário ter o Docker Compose e o Node.js instalados em sua máquina para rodar o projeto**
+**É necessário ter o [Docker Compose](https://docs.docker.com/compose/install/) e o [Node.js](https://nodejs.org/en/download) instalados em sua máquina para rodar o projeto**
 
 ```bash
     # Clone o repositório
@@ -40,7 +40,7 @@
     $ npm start
 ```
 
-**A documentação da API se encontrará em [localhost:3000/api-docs](http://localhost:3000/api-docs)**
+**Com o projeto rodando a documentação da API se encontrará em [localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
 ### Ferramentas de teste utilizadas(unitários e integração):
 
