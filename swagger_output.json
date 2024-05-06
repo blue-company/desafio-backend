@@ -1,0 +1,372 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Medical Appointments API",
+    "description": "Para utilizar esta documentação, você deve primeiro criar um usuário ou fazer login com usuários pré-cadastrados e autenticar-se. Uma vez autenticado, você pode criar, atualizar, excluir e recuperar agendamentos. Cada agendamento é único e só pode ser acessado pelo usuário que o criou. Os agendamentos são criptografados e podem ser acessados através de um link único. Além disso, os agendamentos podem ser baixados em formato PDF.",
+    "contact": {
+      "email": "rafaelcs_94@hotmail.com",
+      "name": "Rafael Santos"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development"
+    }
+  ],
+  "paths": {
+    "/users/": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Cria um novo usuário",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Cria um usuário e retorna um token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Autentica o usuário",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Retorna um token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userLoginBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointments/": {
+      "post": {
+        "tags": ["Appointment"],
+        "summary": "Cria um novo agendamento",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Cria um agendamento e retorna seu id e um link único para ele. O link é criptografado e só pode ser acessado pelo usuário que o criou.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appointmentResponse1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido"
+          },
+          "401": {
+            "description": "Token inexistente ou inválido/expirado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/appointmentBody"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/appointments/{token}": {
+      "get": {
+        "tags": ["Appointment"],
+        "summary": "Obter detalhes de um agendamento",
+        "description": "Obter um agendamento pelo seu token criptografado",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "O token único para o agendamento, a última parte do urlLink. Você pode obter esse token criando ou atualizando um agendamento.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna um arquivo PDF para download com os detalhes do agendamento",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inexistente ou inválido/expirado"
+          },
+          "403": {
+            "description": "Agendamento já consultado"
+          },
+          "404": {
+            "description": "Agendamento não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/appointments/{id}": {
+      "put": {
+        "tags": ["Appointment"],
+        "summary": "Atualiza um agendamento",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "O id em exemplo é um agendamento do usuário John Doe. Você só pode atualizar agendamentos que você possui. Você pode fazer login com o usuário John Doe para testar este endpoint, ou criar um novo agendamento e pegar seu appointmentId.",
+            "schema": {
+              "type": "string",
+              "example": "16fa7484-d7ab-42b3-b9c0-2896cc1ba523"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Atualiza o agendamento e retorna um novo link único para ele",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/appointmentResponse2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Id do usuário não é o mesmo do criador do agendamento"
+          },
+          "404": {
+            "description": "Agendamento não encontrado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/appointmentUpdateBody"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Appointment"],
+        "summary": "Cancela um agendamento",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "O id em exemplo é um agendamento do usuário John Doe. Você só pode atualizar agendamentos que você possui. Você pode fazer login com o usuário John Doe para testar este endpoint, ou criar um novo agendamento e pegar seu appointmentId.",
+            "schema": {
+              "type": "string",
+              "example": "16fa7484-d7ab-42b3-b9c0-2896cc1ba523"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cancela um agendamento e não retorna nenhum conteúdo"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Id do usuário não é o mesmo do criador do agendamento"
+          },
+          "404": {
+            "description": "Agendamento não encontrado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "userBody": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "New User"
+          },
+          "email": {
+            "type": "string",
+            "example": "newuser@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "654321"
+          },
+          "phonenumber": {
+            "type": "string",
+            "example": "071999998888"
+          },
+          "birthDate": {
+            "type": "string",
+            "example": "1994-01-01"
+          }
+        },
+        "required": ["fullName", "email", "password", "phonenumber", "birthDate"]
+      },
+      "userLoginBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "johndoe@test.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "tokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTAxNzc0MzIsImlhdCI6MTcxMDA5MTAzMiwiZW1haWwiOiJqb2huZG9lQGdtYWlsLmNvbSJ9.GSxLXWQFh7xZcktpGAUlzQK9btgARIguSpO-1VD5Cc0"
+          }
+        }
+      },
+      "appointmentBody": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "Check-up de rotina"
+          },
+          "appointmentDate": {
+            "type": "string",
+            "example": "2024-05-20"
+          },
+          "appointmentTime": {
+            "type": "string",
+            "example": "16:00"
+          }
+        },
+        "required": ["reason", "appointmentDate", "appointmentTime"]
+      },
+      "appointmentUpdateBody": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "Saúde mental"
+          },
+          "appointmentDate": {
+            "type": "string",
+            "example": "2024-06-10"
+          },
+          "appointmentTime": {
+            "type": "string",
+            "example": "10:00"
+          }
+        },
+        "required": ["reason", "appointmentDate", "appointmentTime"]
+      },
+      "appointmentResponse1": {
+        "type": "object",
+        "properties": {
+          "urlLink": {
+            "type": "string"
+          },
+          "appointmentId": {
+            "type": "string"
+          }
+        }
+      },
+      "appointmentResponse2": {
+        "type": "object",
+        "properties": {
+          "urlLink": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

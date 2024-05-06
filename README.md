@@ -1,52 +1,74 @@
 # Desafio de Backend - API de Marcação de Consultas
 
-Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
+## Candidato
 
-## Objetivo
+- Rafael da Cunha Santos
+- [LinkedIn](https://www.linkedin.com/in/rafaelcunhas/)
+- [Github](https://github.com/RafaelCunhaS)
+- Email: rafaelcs_94@hotmail.com
 
-Desenvolver uma API RESTful para a marcação de consultas médicas. A API permitirá que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas.
+### Ferramentas utilizadas:
 
-## Requisitos do Desafio
+- [Node](https://nodejs.org/en/): Ambiente de execução JavaScript de código aberto e multiplataforma
+- [Express](https://pactumjs.github.io/): Framework para Node.js para construção de servidores web.
+- [Postgres](https://www.postgresql.org/): Banco de dados relacional.
+- [Sequelize](https://sequelize.org/): ORM moderna para Node.js.
+- [Joi](https://joi.dev/): Biblioteca para descrição de esquemas e validação de dados em JavaScript.
+- [JWT](https://jwt.io/): Geração de tokens com assinatura opcional e/ou criptografia, utilizado para autenticação dos usuários.
+- [express-async-errors](https://www.npmjs.com/package/express-async-errors): Pacote suporte para o express, captura os erros lançados pela api. Ajuda a manter o código mais limpo, sem diversos blocos try/catch.
+- [puppeteer](https://pptr.dev/): Biblioteca que permite a criação de arquivos PDF utilizando HTML.
+- [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express): Módulo para gerar documentação Swagger através de um arquivo JSON.
 
-- **Autenticação:** Implemente o login de usuários utilizando JWT.
-- **Agendamento de Consultas:** Permita que os usuários agendem novas consultas.
-- **Geração de PDF:** Após agendar uma consulta, gere um PDF com os detalhes da consulta.
-- **Visualização de Consultas:** Permita que os usuários vejam informações detalhadas sobre suas consultas, a rota deve ser criptografada com um link de acesso único.
-- **Modificação e Cancelamento de Consultas:** Os usuários devem poder modificar detalhes de suas consultas ou cancelá-las.
+## Rodar o projeto localmente:
 
-## Critérios Técnicos
+**É necessário ter o [Docker Compose](https://docs.docker.com/compose/install/) e o [Node.js](https://nodejs.org/en/download) instalados em sua máquina para rodar o projeto**
 
-- **Banco de Dados:** Use alguma ferramenta para gerenciamento do banco de dados.
-- **Arquitetura:** Siga o padrão MVC para estruturação do projeto. 
-- **Linguagens permitidas:** PHP + Symphony |  Node Js + Express.
-- **Tratamento de Erros:** Implemente um sistema de tratamento de erros eficaz.
+```bash
+    # Clone o repositório
+    $ git clone git@github.com:RafaelCunhaS/desafio-backend.git
 
-## Entregáveis
+    # Entre no diretório do projeto
+    $ cd desafio-backend
 
-- Código-fonte no GitHub com acesso ao repositório fornecido pela equipe da Blue.
-- Documentação no README, detalhando:
-  - Instruções de instalação e execução do projeto.
-  - Descrição das tecnologias utilizadas.
-  - Lista de rotas disponíveis e como utilizá-las.
+    # Instale as dependências
+    $ npm install
 
-## Avaliação
+    # Suba o container do banco de dados
+    $ docker compose up -d
 
-O desafio será avaliado com base em:
+    # Rode o projeto
+    $ npm start
+```
 
-- **Qualidade do Código:** Clareza, uso de boas práticas, padrões de projeto e segurança.
-- **Funcionalidade:** Todos os requisitos devem ser atendidos.
-- **Design da API:** Clareza, consistência, e aderência aos princípios RESTful.
-- **Documentação:** Completa e clara, facilitando a compreensão e uso da API.
+**Com o projeto rodando, a documentação da API se encontrará em [localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
-## Como Iniciar
+### Ferramentas de teste utilizadas(unitários e integração):
 
-1. Faça um fork deste repositório.
-2. Clone seu fork para sua máquina local.
-3. Siga as instruções de instalação específicas para configurar o ambiente de desenvolvimento.
-4. Comece a desenvolver, seguindo os requisitos e critérios técnicos descritos acima.
+- [Jest](https://jestjs.io/pt-BR/): Poderoso framework de testes em JavaScript com um foco na simplicidade.
+- [Supertest](https://www.npmjs.com/package/supertest): Biblioteca para testes de servidores HTTP.
 
-## Entrega
+## Testando a API:
 
-Quando estiver pronto para submeter seu desafio, crie um Pull Request do seu repositório forkado para o repositório principal da Blue Company. A equipe de desenvolvimento revisará sua entrega.
+**Pare a aplicação caso ela ainda esteja rodando**
 
-Boa sorte e estamos ansiosos para ver suas soluções inovadoras!
+```bash
+    # Rodar testes unitários
+    $ npm run test:unit
+
+    # Rodar testes de integração (O container do banco de dados precisa estar rodando)
+    $ npm run test:integration
+
+    # Rodar todos os testes
+    $ npm run test
+
+    # Rodar a cobertura dos testes
+    $ npm run test:coverage
+```
+
+<img src="./coverage.png" alt="test coverage" width="1000"/>
+
+## Parando o container do banco de dados:
+
+```bash
+    $ docker compose down --remove-orphans -v
+```
