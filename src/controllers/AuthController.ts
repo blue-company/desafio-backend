@@ -38,11 +38,11 @@ export const register = async (req: Request, res: Response) => {
         let newUser = await User.create({
             email,
             passwordHash,
-            name
+            name: name.trim()
         })
 
         let token = JWT.sign(
-            { id: newUser.idUser, name: newUser.name, email: newUser.email },
+            { id: newUser.id, name: newUser.name, email: newUser.email },
             process.env.JWT_SECRET_KEY as string,
             { expiresIn: '2h' }
         )
@@ -75,7 +75,7 @@ export const login = async (req: Request, res: Response) => {
         }
         
         let token = JWT.sign(
-            {id: user.idUser, name: user.name, email: user.email},
+            {id: user.id, name: user.name, email: user.email},
             process.env.JWT_SECRET_KEY as string, 
             {expiresIn: '2h'}
         )

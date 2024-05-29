@@ -3,7 +3,7 @@ import { sequelize, syncronizeSequelize } from "../instances/mysql";
 import { Consultation } from "./Consultation";
 
 interface UserInstance extends Model {
-    idUser: number,
+    id: number,
     email: string,
     passwordHash: string,
     name: string
@@ -29,7 +29,7 @@ export const User = sequelize.define<UserInstance>('User', {
         allowNull: false
     }
 }, {
-    tableName: 'users',
+    tableName: 'user',
     timestamps: false
 })
 

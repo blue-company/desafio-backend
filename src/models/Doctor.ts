@@ -3,15 +3,15 @@ import { sequelize, syncronizeSequelize  } from "../instances/mysql";
 import { Consultation } from "./Consultation";
 
 interface DoctorInstance extends Model {
-    idDoctor: number,
+    id: number,
     name: string,
     speciality: string,
 }
 
 export const Doctor = sequelize.define<DoctorInstance>('Doctor', {
-    idDoctor: {
+    id: {
         primaryKey: true,
-        autoIncrement: false,
+        autoIncrement: true,
         type: DataTypes.INTEGER
     },
     name: {
@@ -23,7 +23,7 @@ export const Doctor = sequelize.define<DoctorInstance>('Doctor', {
         allowNull: false
     }
 }, {
-    tableName: 'doctors',
+    tableName: 'doctor',
     timestamps: false
 })
 

@@ -2,21 +2,20 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize, syncronizeSequelize } from "../instances/mysql";
 
 interface ConsultationInstance extends Model {
-    idConsultation: number,
+    id: number,
     dateConsultation: string,
     consultationTime: string,
     schedulingDate: string,
 }
 
 export const Consultation = sequelize.define<ConsultationInstance>('Consultation', {
-    idConsultation: {
+    id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
     dateConsultation: {
         type: DataTypes.DATE,
-
         allowNull: false
     },
     consultationTime: {
@@ -28,7 +27,7 @@ export const Consultation = sequelize.define<ConsultationInstance>('Consultation
         defaultValue: DataTypes.NOW
     }
 }, {
-    tableName: 'consultations',
+    tableName: 'consultation',
     timestamps: false
 })
 
