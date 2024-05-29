@@ -3,6 +3,7 @@ import isEmail from "validator/lib/isEmail";
 import { User } from "../models/User";
 import bcrypt from 'bcrypt'
 import JWT from 'jsonwebtoken'
+import dotenv from 'dotenv';
 
 
 interface CredentialsLogin {
@@ -53,7 +54,35 @@ export const register = async (req: Request, res: Response) => {
     }
 }
 
-
 export const login = async (req: Request, res: Response) => {
+    try {
+        let { email, password }: CredentialsLogin = req.body
 
+        if (!email || !password) {
+            return res.status(400).json({ err: 'Preencha todos os campos!' })
+        }
+
+        let user = await User.findOne({ where: { email } })
+
+        if (!user) {
+            return res.status(400).json({ err: 'Email e/ou senha inválidos' })
+        }
+
+        let passwordMatch = await bcrypt.compare(password, user.passwordHash)
+
+        if (!passwordMatch) {
+            return res.status(400).json({ err: 'Email e/ou senha inválidos' })
+        }
+        
+        let token = JWT.sign(
+            {id: user.idUser, name: user.name, email: user.email},
+            process.env.JWT_SECRET_KEY as string, 
+            {expiresIn: '2h'}
+        )
+        return res.status(201).json({name: user.name, token})
+
+    } catch (err) {
+        return res.status(400).json({ err })
+    }
 }
+
