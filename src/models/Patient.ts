@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../instances/mysql";
+import { sequelize, syncronizeSequelize } from "../instances/mysql";
+import { Consultation } from "./Consultation";
 
 interface PatientInstance extends Model {
     idPatient: number,
@@ -32,4 +33,7 @@ export const Patient = sequelize.define<PatientInstance>('Patient', {
     timestamps: false
 })
 
+Patient.hasMany(Consultation, {foreignKey: 'patient_id'})
+Consultation.belongsTo(Patient, {foreignKey: 'patient_id'})
 
+syncronizeSequelize()
