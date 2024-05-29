@@ -2,14 +2,14 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize, syncronizeSequelize } from "../instances/mysql";
 import { Consultation } from "./Consultation";
 
-interface PatientInstance extends Model {
-    idPatient: number,
+interface UserInstance extends Model {
+    idUser: number,
     email: string,
     passwordHash: string,
     name: string
 }
 
-export const Patient = sequelize.define<PatientInstance>('Patient', {
+export const User = sequelize.define<UserInstance>('User', {
     id: {
         primaryKey: true,
         type: DataTypes.INTEGER,
@@ -29,11 +29,11 @@ export const Patient = sequelize.define<PatientInstance>('Patient', {
         allowNull: false
     }
 }, {
-    tableName: 'patients',
+    tableName: 'users',
     timestamps: false
 })
 
-Patient.hasMany(Consultation, {foreignKey: 'patient_id'})
-Consultation.belongsTo(Patient, {foreignKey: 'patient_id'})
+User.hasMany(Consultation, {foreignKey: 'user_id'})
+Consultation.belongsTo(User, {foreignKey: 'user_id'})
 
 syncronizeSequelize()
