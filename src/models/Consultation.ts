@@ -1,11 +1,20 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize, syncronizeSequelize } from "../instances/mysql";
 
+interface Details {
+    doctorName: string,
+    username: string,
+    pdf: string | undefined
+}
+
 interface ConsultationInstance extends Model {
     id: number,
-    dateConsultation: string,
+    consultationDate: string,
     consultationTime: string,
     schedulingDate: string,
+    doctor_id: number,
+    user_id: number,
+    details: Details
 }
 
 export const Consultation = sequelize.define<ConsultationInstance>('Consultation', {
@@ -14,8 +23,8 @@ export const Consultation = sequelize.define<ConsultationInstance>('Consultation
         primaryKey: true,
         autoIncrement: true
     },
-    dateConsultation: {
-        type: DataTypes.DATE,
+    consultationDate: {
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     consultationTime: {
@@ -23,8 +32,20 @@ export const Consultation = sequelize.define<ConsultationInstance>('Consultation
         allowNull: false
     },
     schedulingDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW
+    },
+    doctor_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    details: {
+        type: DataTypes.JSON,
+        allowNull: false
     }
 }, {
     tableName: 'consultation',
