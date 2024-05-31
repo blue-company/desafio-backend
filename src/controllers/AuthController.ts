@@ -47,7 +47,7 @@ export const register = async (req: Request, res: Response) => {
             { expiresIn: '2h' }
         )
 
-        return res.status(201).json({ newUser, token })
+        return res.status(201).json({ id: newUser.id, name: newUser.name, email: newUser.email, token })
 
     } catch (err) {
         return res.status(400).json({ err })
@@ -79,7 +79,7 @@ export const login = async (req: Request, res: Response) => {
             process.env.JWT_SECRET_KEY as string, 
             {expiresIn: '2h'}
         )
-        return res.status(201).json({name: user.name, token})
+        return res.status(201).json({id: user.id, name: user.name, token})
 
     } catch (err) {
         return res.status(400).json({ err })
