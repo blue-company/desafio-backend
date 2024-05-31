@@ -5,12 +5,12 @@ interface Details {
     doctorName: string,
     doctorSpeciality: string,
     username: string,
-    pdf: string | undefined
+    pdf: string
 }
 
 interface ConsultationInstance extends Model {
     id: number,
-    token: string,
+    consultationToken: string,
     consultationDate: string,
     consultationTime: string,
     schedulingDate: string,
@@ -26,7 +26,7 @@ export const Consultation = sequelize.define<ConsultationInstance>('Consultation
         primaryKey: true,
         autoIncrement: true
     },
-    token: {
+    consultationToken: {
         type: DataTypes.STRING,
         allowNull: false
     },
