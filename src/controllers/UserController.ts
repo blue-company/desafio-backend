@@ -64,9 +64,23 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
                 return res.status(201).json({ newConsultation })
             }
         }
-
     } catch (err) {
         res.status(404).json({ err })
     }
 }
+
+export const getConsultations = async (req: AuthRequest, res: Response) => {
+    try {
+
+        let consultations = await Consultation.findAll({ where: { user_id: req.id } })
+        if (!consultations || consultations.length === 0) {
+            return res.status(400).json({ err: `Não foi encontrado um histórico de consultas para o usuário ${req.username}` })
+        }
+
+        return res.status(200).json({ consultations })
+    } catch (err) {
+        return res.status(404).json({ err })
+    }
+}
+
 
