@@ -1,6 +1,7 @@
 import path from "path";
 import ejs from 'ejs';
 import pdf from 'html-pdf'
+import crypto from 'crypto'
 
 
 export const generatePDF= async (user_id: number | undefined, username: string, doctorName: string, consultationTime: string, consultationDate: string, speciality: string): Promise <string | Error>  => {
@@ -20,12 +21,16 @@ export const generatePDF= async (user_id: number | undefined, username: string, 
                 })
             }})
 
-            let file = `/static/consultations/${username.replace(/\s+/g, '')}-${user_id}/${username.replace(/\s+/g, '')}_${doctorName.replace(/\s+/g, '')}_consulta_${randomNumber}.pdf`
+            let file = `/consultations/${username.replace(/\s+/g, '')}-${user_id}/${username.replace(/\s+/g, '')}_${doctorName.replace(/\s+/g, '')}_consulta_${randomNumber}.pdf`
             return file
 
     } catch(err: any) {
         return new Error(err.message)
     }
+}
+
+export const generateToken = (length: number) => {
+    return crypto.randomBytes(length).toString('hex')
 }
 
 
