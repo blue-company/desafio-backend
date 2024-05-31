@@ -4,10 +4,16 @@ import { User } from "../models/User";
 import { Consultation } from "../models/Consultation";
 import { generateToken } from "../utils/generateRandomToken";
 import { generatePDF } from "../utils/generatePdf";
-import { isValidDate, isValidTime } from "../utils/validators";
+import { isValidConsultation, isValidDate, isValidTime } from "../utils/validators";
 import { formatDate } from "../utils/formatDate";
 import { Op } from "sequelize";
 
+
+interface ScheduleConsultation {
+    consultationDate: string,
+    consultationTime: string,
+    doctor_id: number,
+}
 
 interface UpdateConsultationData {
     consultationDate?: string,
@@ -61,12 +67,12 @@ export const findConsultations = async (user_id: number | undefined) => {
         if (!consultations || consultations.length === 0) {
             throw new Error(`Não foi encontrado um histórico de consultas`)
         }
-    
+
         return consultations
-     } catch(err) {
+    } catch (err) {
         throw err
-     }
-    
+    }
+
 }
 
 export const findConsultationByToken = async (token: string, user_id: number) => {
@@ -80,6 +86,32 @@ export const findConsultationByToken = async (token: string, user_id: number) =>
     }
 
     return consultation
+}
+
+export const scheduleConsultation = async (data: ScheduleConsultation, user_id: number, username: string) => {
+    const { consultationDate, consultationTime, doctor_id } = data
+
+    isValidConsultation(consultationDate, consultationTime, doctor_id)
+
+    let doctor = await getDoctorById(doctor_id)
+
+    await checkExistingConsultation(consultationDate, consultationTime, doctor_id, doctor.name)
+
+    let formattedDate = formatDate(consultationDate)
+    let pdf = await createConsultationPDF(user_id, username, doctor.name, consultationTime, formattedDate, doctor.speciality)
+
+    let consultationToken = generateConsultationToken()
+    let newConsultationData = {
+        consultationToken, consultationDate, consultationTime, doctor_id, user_id,
+        details: {
+            doctorName: doctor.name.trim(),
+            doctorSpeciality: doctor.speciality,
+            username: username,
+            pdf: pdf
+        }
+    }
+
+    return await createConsultation(newConsultationData)
 }
 
 export const updateConsultation = async (id: number, user_id: number, username: string, data: UpdateConsultationData) => {
@@ -103,11 +135,11 @@ export const updateConsultation = async (id: number, user_id: number, username: 
 
     let hasConsultation = await Consultation.findOne({
         where: {
-            id: {[Op.not]: id},
+            id: { [Op.not]: id },
             consultationDate: newDate,
             consultationTime: newTime,
             doctor_id: consultation.doctor_id,
-            user_id: { [Op.not]: user_id } 
+            user_id: { [Op.not]: user_id }
         }
     });
 
@@ -134,3 +166,5 @@ export const updateConsultation = async (id: number, user_id: number, username: 
         return updatedConsultation
     }
 }
+
+

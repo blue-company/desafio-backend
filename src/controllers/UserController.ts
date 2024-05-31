@@ -1,44 +1,16 @@
 import { Response } from "express";
-import { updateConsultation, checkExistingConsultation, createConsultation, createConsultationPDF, findConsultationByToken, findConsultations, generateConsultationToken, getDoctorById, getUserById } from "../services/ConsultationService";
+import { updateConsultation, findConsultationByToken, findConsultations, getUserById, scheduleConsultation } from "../services/ConsultationService";
 import { AuthRequest } from "../middlewares/auth";
 import path from "path";
-import { formatDate } from "../utils/formatDate";
-import { isValidConsultation } from "../utils/validators";
-
-
-interface ScheduleConsultation {
-    consultationDate: string,
-    consultationTime: string,
-    doctor_id: number,
-}
 
 export const scheduleConsultationController = async (req: AuthRequest, res: Response) => {
     try {
-        let { consultationDate, consultationTime, doctor_id }: ScheduleConsultation = req.body
-        isValidConsultation(consultationDate, consultationTime, doctor_id)
-
-        let doctor = await getDoctorById(doctor_id)
-
-        await checkExistingConsultation(consultationDate, consultationTime, doctor_id, doctor.name)
-
-        if (req.username && req.id) {
-            let formattedDate = formatDate(consultationDate)
-            let pdf = await createConsultationPDF(req.id, req.username, doctor.name, consultationTime, formattedDate, doctor.speciality)
-
-            let consultationToken = generateConsultationToken()
-            let data = {
-                consultationToken, consultationDate, consultationTime, doctor_id, user_id: req.id,
-                details: {
-                    doctorName: doctor.name.trim(),
-                    doctorSpeciality: doctor.speciality,
-                    username: req.username,
-                    pdf: pdf
-                }
-            }
-            let newConsultation = await createConsultation(data)
+        let { consultationDate, consultationTime, doctor_id } = req.body
+        if (req.id && req.username) {
+            let newConsultation = await scheduleConsultation({ consultationDate, consultationTime, doctor_id }, req.id, req.username)
             return res.status(201).json({ newConsultation })
-
         }
+
     } catch (err: any) {
         res.status(400).json({ err: err.message })
     }
