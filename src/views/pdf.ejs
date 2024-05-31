@@ -8,13 +8,19 @@
 </head>
 
 <body>
-    <div>
-        <h1 style="color: blue;">Consulta agendada!</h1>
+    <section">
+        <div>
+            <h1 style="color: green;">Agendamento confirmado!</h1>
+            <h2 style="font-weight: 700;">Prezado(a) <%- username %>,</h2>
+            <h2>Sua consulta foi confirmada com sucesso.</h2>
+        </div>
         <hr>
-        <h2><span style="color: blue ;">Paciente:</span> <%- username %> </h2>
-        <h2><span style="color: blue">Médico:</span> <%- doctorName %> - <%- speciality %></h2>
-        <h2><span style="color: blue;">Data da consulta:</span> <%- consultationDate %> às <%- consultationTime %> </h2>
-    </div>
+        <div>
+            <h2><span style="color: blue">Médico:</span> <%- doctorName %> - <%- speciality %></h2>
+            <h2><span style="color: blue;">Data da consulta:</span> <%- consultationDate %> às <%- consultationTime %>
+            </h2>
+        </div>
+    </section>
 </body>
 
 </html>
