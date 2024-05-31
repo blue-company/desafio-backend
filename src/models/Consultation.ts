@@ -3,6 +3,7 @@ import { sequelize, syncronizeSequelize } from "../instances/mysql";
 
 interface Details {
     doctorName: string,
+    doctorSpeciality: string,
     username: string,
     pdf: string | undefined
 }

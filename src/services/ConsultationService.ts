@@ -3,21 +3,8 @@ import { Doctor } from "../models/Doctor";
 import { Consultation } from "../models/Consultation";
 import { generateToken } from "../utils/generateRandomToken";
 import { generatePDF } from "../utils/generatePdf";
+import { isValidDate, isValidTime } from "../utils/validators";
 
-export const validateConsultation = (consultationDate: string, consultationTime: string, doctor_id: number) => {
-    if (!consultationDate || !consultationTime || !doctor_id) {
-        throw new Error('Preencha todos os campos para agendar a consulta!');
-    }
-
-    if (!isDate(consultationDate, { delimiters: ['/'] })) {
-        throw new Error('Data inválida');
-
-    }
-
-    if (!isTime(consultationTime, { hourFormat: 'hour24', mode: 'default' })) {
-        throw new Error('Horário inválido');
-    }
-};
 
 export const getDoctorById = async (doctor_id: number) => {
     let doctor = await Doctor.findByPk(doctor_id)
@@ -41,7 +28,7 @@ export const createConsultation = async (data: any) => {
 }
 
 export const generateConsultationToken = () => {
-    return generateToken(16)
+    return generateToken(20)
 }
 
 export const createConsultationPDF = async (userId: number, username: string, doctorName: string, consultationTime: string, formattedDate: string, doctorSpeciality: string) => {
@@ -69,3 +56,4 @@ export const findConsultation = async (token: string, user_id: number) => {
 
     return consultation
 }
+
