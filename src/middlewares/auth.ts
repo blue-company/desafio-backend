@@ -25,7 +25,7 @@ export const Auth = {
                         sucess = true
                     }
                 } catch (err: any) {
-                    return res.status(400).json({ error: err.message })
+                    return res.status(404).json({ error: err.message })
                 }
             }
         }

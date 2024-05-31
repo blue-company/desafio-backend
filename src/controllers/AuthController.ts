@@ -50,7 +50,7 @@ export const register = async (req: Request, res: Response) => {
         return res.status(201).json({ id: newUser.id, name: newUser.name, email: newUser.email, token })
 
     } catch (err) {
-        return res.status(400).json({ err })
+        return res.status(404).json({ err })
     }
 }
 
@@ -82,7 +82,7 @@ export const login = async (req: Request, res: Response) => {
         return res.status(201).json({id: user.id, name: user.name, token})
 
     } catch (err) {
-        return res.status(400).json({ err })
+        return res.status(404).json({ err })
     }
 }
 
