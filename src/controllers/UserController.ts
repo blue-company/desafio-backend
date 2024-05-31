@@ -39,36 +39,29 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
             return res.status(400).json({ err: `Já existe uma consulta marcada com o Dr. ${doctor.name} para esse horário` })
         }
 
-        let user = await User.findByPk(req.id);
-        if (!user) {
-            return res.status(400).json({ err: 'Usuário não encontrado' });
-        }
-
-        let newConsultationObj = {
-            consultationDate,
-            consultationTime,
-            doctor_id,
-            user_id: req.id,
-            details: {
-                doctorName: doctor.name.trim(),
-                username: req.username,
-                pdf: ''
-            }
-        }
-
         if (req.username) {
             const pdf = await generatePDF(
-                    req.id, req.username,
-                    doctor.name,
-                    consultationTime,
-                    consultationDate,
-                    doctor.speciality
-                )
+                req.id, req.username,
+                doctor.name,
+                consultationTime,
+                consultationDate,
+                doctor.speciality
+            )
 
             if (typeof (pdf) === 'string') {
-                newConsultationObj.details.pdf = pdf
-                let newConsultation = await Consultation.create(newConsultationObj)
-                res.status(201).json(newConsultation)
+                let data = {
+                    consultationDate,
+                    consultationTime,
+                    doctor_id,
+                    user_id: req.id,
+                    details: {
+                        doctorName: doctor.name.trim(),
+                        username: req.username,
+                        pdf: pdf
+                    }
+                }
+                let newConsultation = await Consultation.create(data)
+                return res.status(201).json({ newConsultation })
             }
         }
 
@@ -76,5 +69,4 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
         res.status(404).json({ err })
     }
 }
-
 
