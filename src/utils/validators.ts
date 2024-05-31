@@ -1,4 +1,5 @@
 import { isDate, isTime } from "validator";
+import isEmail from "validator/lib/isEmail";
 
 export const isValidDate = (date: string | undefined) => {
     if (date && !isDate(date, { delimiters: ['/'] })) {
@@ -20,3 +21,10 @@ export const isValidConsultation = (consultationDate: string, consultationTime: 
     isValidDate(consultationDate)
     isValidTime(consultationTime)
 };
+
+
+export const isValidEmail = (email: string) => {
+    if(!isEmail(email)) {
+        throw new Error(`Email inválido"`)
+    }
+}

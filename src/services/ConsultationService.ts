@@ -22,14 +22,6 @@ interface UpdateConsultationData {
 
 }
 
-export const getUserById = async (user_id: number | undefined) => {
-    let user = await User.findByPk(user_id)
-    if (!user) {
-        throw new Error('Usuário não encontrado');
-    }
-
-    return user
-}
 
 export const getDoctorById = async (doctor_id: number) => {
     let doctor = await Doctor.findByPk(doctor_id)
@@ -60,9 +52,8 @@ export const createConsultationPDF = async (userId: number, username: string, do
     return await generatePDF(userId, username, doctorName, consultationTime, formattedDate, doctorSpeciality)
 }
 
-export const findConsultations = async (user_id: number | undefined) => {
+export const findConsultations = async (user_id: number) => {
     try {
-
         let consultations = await Consultation.findAll({ where: { user_id } })
         if (!consultations || consultations.length === 0) {
             throw new Error(`Não foi encontrado um histórico de consultas`)

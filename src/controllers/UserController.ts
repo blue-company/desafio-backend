@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { updateConsultation, findConsultationByToken, findConsultations, getUserById, scheduleConsultation } from "../services/ConsultationService";
+import { updateConsultation, findConsultationByToken, findConsultations, scheduleConsultation } from "../services/ConsultationService";
 import { AuthRequest } from "../middlewares/auth";
 import path from "path";
 
@@ -18,11 +18,11 @@ export const scheduleConsultationController = async (req: AuthRequest, res: Resp
 
 export const getConsultations = async (req: AuthRequest, res: Response) => {
     try {
-        let user = await getUserById(req.id)
-        if (user) {
+        if (req.id) {
             let consultations = await findConsultations(req.id)
             return res.status(200).json({ consultations })
         }
+
     } catch (err: any) {
         return res.status(400).json({ err: err.message })
     }
@@ -48,7 +48,7 @@ export const updateConsultationController = async (req: AuthRequest, res: Respon
     try {
         let { id } = req.params;
         let { consultationDate, consultationTime, isCompleted } = req.body;
-        
+
         if (req.id && req.username) {
             let updatedConsultation = await updateConsultation(parseInt(id), req.id, req.username, { consultationDate, consultationTime, isCompleted });
             res.status(201).json({ updatedConsultation })
@@ -60,7 +60,7 @@ export const updateConsultationController = async (req: AuthRequest, res: Respon
 }
 
 
-export const cancelConsultationController = async(req: AuthRequest, res: Response) => {
-    
+export const cancelConsultationController = async (req: AuthRequest, res: Response) => {
+
 }
 
