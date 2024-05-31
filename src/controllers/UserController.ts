@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
-import { generatePDF, generateToken } from "../services/ConsultationService";
+import { checkExistingConsultation, createConsultation, createConsultationPDF, findConsultation, findConsultations, generateConsultationToken, getDoctorById, validateConsultation } from "../services/ConsultationService";
 import { Consultation } from "../models/Consultation";
-import { Doctor } from "../models/Doctor";
-import { User } from "../models/User";
 import { AuthRequest } from "../middlewares/auth";
-import { isDate, isTime } from "validator";
 import path from "path";
 
 interface BodyConsultation {
@@ -16,34 +13,16 @@ interface BodyConsultation {
 export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
     try {
         let { consultationDate, consultationTime, doctor_id }: BodyConsultation = req.body
+        validateConsultation(consultationDate, consultationTime, doctor_id)
 
-        if (!consultationDate || !consultationTime || !doctor_id) {
-            return res.status(400).json({ err: 'Preencha todos os campos para agendar a consulta!' })
-        }
+        let doctor = await getDoctorById(doctor_id)
 
-        if (!isDate(consultationDate, { delimiters: ['/'] })) {
-            return res.status(400).json({ err: 'Data inválida' })
-        }
+        await checkExistingConsultation(consultationDate, consultationTime, doctor_id, doctor.name)
 
-        if (!isTime(consultationTime, { hourFormat: 'hour24', mode: 'default' })) {
-            return res.status(400).json({ err: 'Horário inválido' })
-        }
-
-        let doctor = await Doctor.findByPk(doctor_id)
-        if (!doctor) {
-            return res.status(400).json({ err: 'Médico não encontrado' })
-        }
-
-        let hasConsultation = await Consultation.findOne({ where: { consultationDate, consultationTime, doctor_id } })
-
-        if (hasConsultation) {
-            return res.status(400).json({ err: `Já existe uma consulta marcada com o Dr. ${doctor.name} para esse horário` })
-        }
-
-        if (req.username) {
+        if (req.username && req.id) {
             let formattedDate = consultationDate.split('/').reverse().join('/')
-            const pdf = await generatePDF(
-                req.id, 
+            const pdf = await createConsultationPDF(
+                req.id,
                 req.username,
                 doctor.name,
                 consultationTime,
@@ -52,7 +31,7 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
             )
 
             if (typeof (pdf) === 'string') {
-                const consultationToken = generateToken(10)
+                let consultationToken = generateConsultationToken()
                 let data = {
                     token: consultationToken,
                     consultationDate,
@@ -65,47 +44,44 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
                         pdf: pdf
                     }
                 }
-                let newConsultation = await Consultation.create(data)
+                let newConsultation = await createConsultation(data)
                 return res.status(201).json({ newConsultation })
             }
         }
-    } catch (err) {
-        res.status(404).json({ err })
+    } catch (err: any) {
+        res.status(400).json({ err: err.message })
     }
 }
 
 export const getConsultations = async (req: AuthRequest, res: Response) => {
     try {
-        let consultations = await Consultation.findAll({ where: { user_id: req.id } })
-        if (!consultations || consultations.length === 0) {
-            return res.status(400).json({ err: `Não foi encontrado um histórico de consultas para o usuário ${req.username}` })
+        if (req.id && req.username) {
+            let consultations = await findConsultations(req.id, req.username)
+            return res.status(200).json({ consultations })
         }
-
-        return res.status(200).json({ consultations })
-    } catch (err) {
-        return res.status(404).json({ err })
+    } catch (err: any) {
+        return res.status(400).json({ err: err.message })
     }
 }
 
 export const getConsultation = async (req: AuthRequest, res: Response) => {
     try {
         let { token } = req.params
-        if(!token) {
-            return res.status(400).json({err: 'O token deve ser passado como parâmetro na URL'})
+
+        if (req.id) {
+            let consultation = await findConsultation(token, req.id)
+            if (typeof (consultation.details.pdf) === 'string') {
+                const pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
+                return res.sendFile(pdfPath)
+            }
         }
 
-        let consultation = await Consultation.findOne({where: {token, user_id: req.id}})
-        if(!consultation) {
-            return res.status(400).json({err: 'Token inválido!'})
-        }
-
-        if(typeof(consultation.details.pdf) === 'string') {
-            const pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
-            return res.sendFile(pdfPath)
-        }
-        
-
-    } catch (err) {
-        return res.status(404).json({ err })
+    } catch (err: any) {
+        return res.status(400).json({ err: err.message })
     }
+}
+
+
+export const updateConsultation = async (req: AuthRequest, res: Response) => {
+    let { consultationDate, consultationTime, isCompleted } = req.body
 }

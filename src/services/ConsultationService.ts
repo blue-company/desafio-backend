@@ -1,37 +1,71 @@
-import path from "path";
-import ejs from 'ejs';
-import pdf from 'html-pdf'
-import crypto from 'crypto'
+import { isDate, isTime } from "validator";
+import { Doctor } from "../models/Doctor";
+import { Consultation } from "../models/Consultation";
+import { generateToken } from "../utils/generateRandomToken";
+import { generatePDF } from "../utils/generatePdf";
 
+export const validateConsultation = (consultationDate: string, consultationTime: string, doctor_id: number) => {
+    if (!consultationDate || !consultationTime || !doctor_id) {
+        throw new Error('Preencha todos os campos para agendar a consulta!');
+    }
 
-export const generatePDF= async (user_id: number | undefined, username: string, doctorName: string, consultationTime: string, consultationDate: string, speciality: string): Promise <string | Error>  => {
-    try {
-        let randomNumber = Math.floor(Math.random() * 1000000)
-         ejs.renderFile(path.join(__dirname,'../views/pdf.ejs'), {username, doctorName, consultationTime, consultationDate, speciality},  (err, html) => {
-            if(err) {
-                 return new Error('Error rendering EJS');
-            } else {
-                console.log(html)
-                pdf.create(html, {}).toFile(path.join(__dirname, `../views/consultations/${username.replace(/\s+/g, '')}-${user_id}/${username.replace(/\s+/g, '')}_${doctorName.replace(/\s+/g, '')}_consulta_${randomNumber}.pdf`), (err, res) => {
-                    if(err) {
-                        return new Error(err.message)
-                    } else {
-                        console.log(res)
-                    }
-                })
-            }})
+    if (!isDate(consultationDate, { delimiters: ['/'] })) {
+        throw new Error('Data inválida');
 
-            let file = `/consultations/${username.replace(/\s+/g, '')}-${user_id}/${username.replace(/\s+/g, '')}_${doctorName.replace(/\s+/g, '')}_consulta_${randomNumber}.pdf`
-            return file
+    }
 
-    } catch(err: any) {
-        return new Error(err.message)
+    if (!isTime(consultationTime, { hourFormat: 'hour24', mode: 'default' })) {
+        throw new Error('Horário inválido');
+    }
+};
+
+export const getDoctorById = async (doctor_id: number) => {
+    let doctor = await Doctor.findByPk(doctor_id)
+    if (!doctor) {
+        throw new Error('Médico não encontrado');
+    }
+
+    return doctor
+}
+
+export const checkExistingConsultation = async (consultationDate: string, consultationTime: string, doctor_id: number, doctor_name: string) => {
+    let hasConsultation = await Consultation.findOne({ where: { consultationDate, consultationTime, doctor_id } })
+
+    if (hasConsultation) {
+        throw new Error(`Já existe uma consulta marcada com o Dr. ${doctor_name} para esse horário`)
     }
 }
 
-export const generateToken = (length: number) => {
-    return crypto.randomBytes(length).toString('hex')
+export const createConsultation = async (data: any) => {
+    return await Consultation.create(data)
 }
 
+export const generateConsultationToken = () => {
+    return generateToken(16)
+}
 
+export const createConsultationPDF = async (userId: number, username: string, doctorName: string, consultationTime: string, formattedDate: string, doctorSpeciality: string) => {
+    return await generatePDF(userId, username, doctorName, consultationTime, formattedDate, doctorSpeciality)
+}
 
+export const findConsultations = async (user_id: number, username: string) => {
+    let consultations = await Consultation.findAll({ where: { user_id } })
+    if (!consultations || consultations.length === 0) {
+        throw new Error(`Não foi encontrado um histórico de consultas para o usuário ${username}`)
+    }
+
+    return consultations
+}
+
+export const findConsultation = async (token: string, user_id: number) => {
+    if (!token) {
+        throw new Error(`O token deve ser passado como parâmetro na URL`)
+    }
+
+    let consultation = await Consultation.findOne({ where: { token, user_id } })
+    if (!consultation) {
+        throw new Error(`Token inválido!`)
+    }
+
+    return consultation
+}
