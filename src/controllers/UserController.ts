@@ -41,12 +41,13 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
         }
 
         if (req.username) {
+            let formattedDate = consultationDate.split('/').reverse().join('/')
             const pdf = await generatePDF(
                 req.id, 
                 req.username,
                 doctor.name,
                 consultationTime,
-                consultationDate,
+                formattedDate,
                 doctor.speciality
             )
 
