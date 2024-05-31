@@ -1,10 +1,29 @@
 import { isDate, isTime } from "validator";
 import { Doctor } from "../models/Doctor";
+import { User } from "../models/User";
 import { Consultation } from "../models/Consultation";
 import { generateToken } from "../utils/generateRandomToken";
 import { generatePDF } from "../utils/generatePdf";
 import { isValidDate, isValidTime } from "../utils/validators";
+import { formatDate } from "../utils/formatDate";
+import { Op } from "sequelize";
 
+
+interface UpdateConsultationData {
+    consultationDate?: string,
+    consultationTime?: string
+    isCompleted?: boolean
+
+}
+
+export const getUserById = async (user_id: number | undefined) => {
+    let user = await User.findByPk(user_id)
+    if (!user) {
+        throw new Error('Usuário não encontrado');
+    }
+
+    return user
+}
 
 export const getDoctorById = async (doctor_id: number) => {
     let doctor = await Doctor.findByPk(doctor_id)
@@ -35,21 +54,27 @@ export const createConsultationPDF = async (userId: number, username: string, do
     return await generatePDF(userId, username, doctorName, consultationTime, formattedDate, doctorSpeciality)
 }
 
-export const findConsultations = async (user_id: number, username: string) => {
-    let consultations = await Consultation.findAll({ where: { user_id } })
-    if (!consultations || consultations.length === 0) {
-        throw new Error(`Não foi encontrado um histórico de consultas para o usuário ${username}`)
-    }
+export const findConsultations = async (user_id: number | undefined) => {
+    try {
 
-    return consultations
+        let consultations = await Consultation.findAll({ where: { user_id } })
+        if (!consultations || consultations.length === 0) {
+            throw new Error(`Não foi encontrado um histórico de consultas`)
+        }
+    
+        return consultations
+     } catch(err) {
+        throw err
+     }
+    
 }
 
-export const findConsultation = async (token: string, user_id: number) => {
+export const findConsultationByToken = async (token: string, user_id: number) => {
     if (!token) {
         throw new Error(`O token deve ser passado como parâmetro na URL`)
     }
 
-    let consultation = await Consultation.findOne({ where: { token, user_id } })
+    let consultation = await Consultation.findOne({ where: { consultationToken: token, user_id } })
     if (!consultation) {
         throw new Error(`Token inválido!`)
     }
@@ -57,3 +82,55 @@ export const findConsultation = async (token: string, user_id: number) => {
     return consultation
 }
 
+export const updateConsultation = async (id: number, user_id: number, username: string, data: UpdateConsultationData) => {
+    const { consultationDate, consultationTime, isCompleted } = data
+
+    if (consultationDate || consultationTime) {
+        isValidDate(data.consultationDate)
+        isValidTime(data.consultationTime)
+    }
+
+    let consultation = await Consultation.findOne({ where: { id, user_id } })
+
+    if (!consultation) {
+        throw new Error(`Consulta não encontrada`)
+    }
+
+    const newDate = consultationDate || consultation.consultationDate
+    const newTime = consultationTime || consultation.consultationTime
+    const newIsCompleted = isCompleted || consultation.isCompleted
+    const formattedDate = formatDate(newDate)
+
+    let hasConsultation = await Consultation.findOne({
+        where: {
+            id: {[Op.not]: id},
+            consultationDate: newDate,
+            consultationTime: newTime,
+            doctor_id: consultation.doctor_id,
+            user_id: { [Op.not]: user_id } 
+        }
+    });
+
+    if (hasConsultation) {
+        throw new Error(`O médico já possui uma consulta marcada para esse horário`);
+    }
+
+    if (newTime !== consultation.consultationTime || newDate !== consultation.consultationDate) {
+        const newPDF = await createConsultationPDF(user_id, username, consultation.details.doctorName, newTime, formattedDate, consultation.details.doctorSpeciality)
+        let updatedConsultation = await consultation.update({
+            consultationDate, consultationTime, isCompleted: newIsCompleted, details: {
+                ...consultation.details,
+                pdf: newPDF
+            }
+        })
+
+        return updatedConsultation
+
+    } else {
+        let updatedConsultation = await consultation.update({
+            consultationDate, consultationTime, isCompleted: newIsCompleted
+        })
+
+        return updatedConsultation
+    }
+}

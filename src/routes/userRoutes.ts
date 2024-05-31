@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { scheduleConsultation, getConsultations, getConsultation} from "../controllers/UserController";
+import { scheduleConsultationController, getConsultations, getConsultation, updateConsultationController} from "../controllers/UserController";
 import { Auth } from "../middlewares/auth";
 
 const router = Router()
 
-router.post('/consultation', Auth.private, scheduleConsultation)
+router.post('/consultation', Auth.private, scheduleConsultationController)
 router.get('/consultation/:token', Auth.private, getConsultation)
+router.put('/consultation/:id', Auth.private, updateConsultationController)
 router.get('/consultations', Auth.private, getConsultations)
 
 export default router

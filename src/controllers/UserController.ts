@@ -1,52 +1,43 @@
-import { Request, Response } from "express";
-import { checkExistingConsultation, createConsultation, createConsultationPDF, findConsultation, findConsultations, generateConsultationToken, getDoctorById, validateConsultation } from "../services/ConsultationService";
-import { Consultation } from "../models/Consultation";
+import { Response } from "express";
+import { updateConsultation, checkExistingConsultation, createConsultation, createConsultationPDF, findConsultationByToken, findConsultations, generateConsultationToken, getDoctorById, getUserById } from "../services/ConsultationService";
 import { AuthRequest } from "../middlewares/auth";
 import path from "path";
+import { formatDate } from "../utils/formatDate";
+import { isValidConsultation } from "../utils/validators";
 
-interface BodyConsultation {
+
+interface ScheduleConsultation {
     consultationDate: string,
     consultationTime: string,
     doctor_id: number,
 }
 
-export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
+export const scheduleConsultationController = async (req: AuthRequest, res: Response) => {
     try {
-        let { consultationDate, consultationTime, doctor_id }: BodyConsultation = req.body
-        validateConsultation(consultationDate, consultationTime, doctor_id)
+        let { consultationDate, consultationTime, doctor_id }: ScheduleConsultation = req.body
+        isValidConsultation(consultationDate, consultationTime, doctor_id)
 
         let doctor = await getDoctorById(doctor_id)
 
         await checkExistingConsultation(consultationDate, consultationTime, doctor_id, doctor.name)
 
         if (req.username && req.id) {
-            let formattedDate = consultationDate.split('/').reverse().join('/')
-            const pdf = await createConsultationPDF(
-                req.id,
-                req.username,
-                doctor.name,
-                consultationTime,
-                formattedDate,
-                doctor.speciality
-            )
+            let formattedDate = formatDate(consultationDate)
+            let pdf = await createConsultationPDF(req.id, req.username, doctor.name, consultationTime, formattedDate, doctor.speciality)
 
-            if (typeof (pdf) === 'string') {
-                let consultationToken = generateConsultationToken()
-                let data = {
-                    token: consultationToken,
-                    consultationDate,
-                    consultationTime,
-                    doctor_id,
-                    user_id: req.id,
-                    details: {
-                        doctorName: doctor.name.trim(),
-                        username: req.username,
-                        pdf: pdf
-                    }
+            let consultationToken = generateConsultationToken()
+            let data = {
+                consultationToken, consultationDate, consultationTime, doctor_id, user_id: req.id,
+                details: {
+                    doctorName: doctor.name.trim(),
+                    doctorSpeciality: doctor.speciality,
+                    username: req.username,
+                    pdf: pdf
                 }
-                let newConsultation = await createConsultation(data)
-                return res.status(201).json({ newConsultation })
             }
+            let newConsultation = await createConsultation(data)
+            return res.status(201).json({ newConsultation })
+
         }
     } catch (err: any) {
         res.status(400).json({ err: err.message })
@@ -55,8 +46,9 @@ export const scheduleConsultation = async (req: AuthRequest, res: Response) => {
 
 export const getConsultations = async (req: AuthRequest, res: Response) => {
     try {
-        if (req.id && req.username) {
-            let consultations = await findConsultations(req.id, req.username)
+        let user = await getUserById(req.id)
+        if (user) {
+            let consultations = await findConsultations(req.id)
             return res.status(200).json({ consultations })
         }
     } catch (err: any) {
@@ -69,11 +61,10 @@ export const getConsultation = async (req: AuthRequest, res: Response) => {
         let { token } = req.params
 
         if (req.id) {
-            let consultation = await findConsultation(token, req.id)
-            if (typeof (consultation.details.pdf) === 'string') {
-                const pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
-                return res.sendFile(pdfPath)
-            }
+            let consultation = await findConsultationByToken(token, req.id)
+
+            let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
+            return res.sendFile(pdfPath)
         }
 
     } catch (err: any) {
@@ -81,7 +72,18 @@ export const getConsultation = async (req: AuthRequest, res: Response) => {
     }
 }
 
+export const updateConsultationController = async (req: AuthRequest, res: Response) => {
+    try {
+        if (req.id && req.username) {
+            let { id } = req.params;
+            let { consultationDate, consultationTime, isCompleted } = req.body;
+            let updatedConsultation = await updateConsultation(parseInt(id), req.id, req.username, { consultationDate, consultationTime, isCompleted });
+            res.status(201).json({ updatedConsultation })
+        }
 
-export const updateConsultation = async (req: AuthRequest, res: Response) => {
-    let { consultationDate, consultationTime, isCompleted } = req.body
+    } catch (err: any) {
+        res.status(400).json({ err: err.message })
+    }
 }
+
+
