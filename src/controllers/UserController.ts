@@ -46,9 +46,10 @@ export const getConsultation = async (req: AuthRequest, res: Response) => {
 
 export const updateConsultationController = async (req: AuthRequest, res: Response) => {
     try {
+        let { id } = req.params;
+        let { consultationDate, consultationTime, isCompleted } = req.body;
+        
         if (req.id && req.username) {
-            let { id } = req.params;
-            let { consultationDate, consultationTime, isCompleted } = req.body;
             let updatedConsultation = await updateConsultation(parseInt(id), req.id, req.username, { consultationDate, consultationTime, isCompleted });
             res.status(201).json({ updatedConsultation })
         }
@@ -58,4 +59,8 @@ export const updateConsultationController = async (req: AuthRequest, res: Respon
     }
 }
 
+
+export const cancelConsultationController = async(req: AuthRequest, res: Response) => {
+    
+}
 
