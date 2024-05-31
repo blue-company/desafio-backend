@@ -9,11 +9,13 @@ interface Details {
 
 interface ConsultationInstance extends Model {
     id: number,
+    token: string,
     consultationDate: string,
     consultationTime: string,
     schedulingDate: string,
     doctor_id: number,
     user_id: number,
+    isCompleted: boolean,
     details: Details
 }
 
@@ -22,6 +24,10 @@ export const Consultation = sequelize.define<ConsultationInstance>('Consultation
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
+    },
+    token: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     consultationDate: {
         type: DataTypes.DATEONLY,
@@ -42,6 +48,10 @@ export const Consultation = sequelize.define<ConsultationInstance>('Consultation
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    isCompleted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     },
     details: {
         type: DataTypes.JSON,
