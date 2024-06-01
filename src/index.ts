@@ -1,6 +1,6 @@
-import express, { Response } from "express";
+import express from "express";
 import cors from "cors";
-import { Connection } from "./database/configuration";
+import { userRoutes } from "./routes/userRoutes";
 
 const app = express();
 
@@ -11,23 +11,6 @@ app.listen(Number(process.env.PORT) || 3003, () => {
   console.log(`Servidor rodando na porta ${Number(process.env.PORT) || 3003}`);
 });
 
-const connection:Connection = new Connection();
-
-connection.connected.connect();
-
-app.get('/users', function(req, res){
-  connection.connected.query('SELECT * FROM users', function(error, results){
-    if(error){
-      throw error
-    }
-
-    res.send(results.map((item: { name: any; email: any; }) => ({
-      name: item.name,
-      email: item.email
-    })))
-  });
-
-   
-})
+app.use("/user", userRoutes)
 
 
