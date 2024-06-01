@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users(
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100),
-    created_at VARCHAR(20),
+    created_at VARCHAR(24),
 
     PRIMARY KEY(id) 
 );
@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS consulta(
     name VARCHAR(100),
     description VARCHAR(200),
     status VARCHAR(100),
-    data VARCHAR(20),
-    created_at VARCHAR(20),
-    updated_at VARCHAR(20),
+    data VARCHAR(24),
+    created_at VARCHAR(24),
+    updated_at VARCHAR(24),
     user_id VARCHAR(36) NOT NULL,
 
     PRIMARY KEY(id),

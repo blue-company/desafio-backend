@@ -1,12 +1,12 @@
-import { BadRequestError } from "@src/customErrors/BadRequestError";
-import { NotFoundError } from "@src/customErrors/NotFoudError";
-import { loginInputDTO, loginOutputDTO } from "@src/dtos/userDTO/login.dto";
-import { signupInputDTO, signupOutputDTO } from "@src/dtos/userDTO/signup.dto";
-import { Users } from "@src/models/User";
-import { UserRepository } from "@src/repository/UserRepository";
-import { HashManager } from "@src/utils/HashManager";
-import { IdGerator } from "@src/utils/IdGerator";
-import { TokenManager } from "@src/utils/TokenManager";
+import { BadRequestError } from "../customErrors/BadRequestError";
+import { NotFoundError } from "../customErrors/NotFoudError";
+import { loginInputDTO, loginOutputDTO } from "../dtos/userDTO/login.dto";
+import { signupInputDTO, signupOutputDTO } from "../dtos/userDTO/signup.dto";
+import { Users } from "../models/User";
+import { UserRepository } from "../repository/UserRepository";
+import { HashManager } from "../utils/HashManager";
+import { IdGerator } from "../utils/IdGerator";
+import { TokenManager } from "../utils/TokenManager";
 
 export class UserService{
     constructor(

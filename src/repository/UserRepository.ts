@@ -1,5 +1,5 @@
-import { Connection } from "@src/repository/configuration";
-import { UserDB } from "@src/models/User";
+import { Connection } from "../repository/configuration";
+import { UserDB } from "../models/User";
 
 export class UserRepository extends Connection{
     private static USERS_TABLE = "users";

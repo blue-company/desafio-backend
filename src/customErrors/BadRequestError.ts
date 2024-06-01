@@ -1,4 +1,4 @@
-import { BaseError } from "@src/customErrors/BaseError"; 
+import { BaseError } from "../customErrors/BaseError"; 
 
 export class BadRequestError extends BaseError{
     constructor(message = "Bad Request"){
