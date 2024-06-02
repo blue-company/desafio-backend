@@ -10,7 +10,7 @@
 ### Tecnologias e Ferramentas utilizadas:
 
 - [Node](https://nodejs.org/en/): Ambiente de execução JavaScript de código aberto e multiplataforma.
-- [Typescript](https://nodejs.org/en/): TypeScript é uma linguagem que adiciona tipagem estática e recursos avançados ao JavaScript.
+- [Typescript](https://www.typescriptlang.org/docs/): TypeScript é uma linguagem que adiciona tipagem estática e recursos avançados ao JavaScript.
 - [Express](https://expressjs.com): Framework para Node.js para construção de servidores web.
 - [Postgres](https://www.postgresql.org/): Banco de dados relacional.
 - [Prisma](https://www.prisma.io): ORM utilizado para utilização de consultas no banco de dados.
