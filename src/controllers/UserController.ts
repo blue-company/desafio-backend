@@ -1,7 +1,8 @@
 import { Response } from "express";
-import { updateConsultation, findConsultationByToken, findConsultations, scheduleConsultation } from "../services/ConsultationService";
+import { updateConsultation, getConsultation, getConsultations, scheduleConsultation, cancelConsultation } from "../services/ConsultationService";
 import { AuthRequest } from "../middlewares/auth";
 import path from "path";
+import ejs from 'ejs'
 
 export const scheduleConsultationController = async (req: AuthRequest, res: Response) => {
     try {
@@ -16,10 +17,10 @@ export const scheduleConsultationController = async (req: AuthRequest, res: Resp
     }
 }
 
-export const getConsultations = async (req: AuthRequest, res: Response) => {
+export const getConsultationsController = async (req: AuthRequest, res: Response) => {
     try {
         if (req.id) {
-            let consultations = await findConsultations(req.id)
+            let consultations = await getConsultations(req.id)
             return res.status(200).json({ consultations })
         }
 
@@ -28,12 +29,12 @@ export const getConsultations = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const getConsultation = async (req: AuthRequest, res: Response) => {
+export const getConsultationController = async (req: AuthRequest, res: Response) => {
     try {
         let { token } = req.params
 
         if (req.id) {
-            let consultation = await findConsultationByToken(token, req.id)
+            let consultation = await getConsultation(token, req.id)
 
             let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
             return res.sendFile(pdfPath)
@@ -59,8 +60,16 @@ export const updateConsultationController = async (req: AuthRequest, res: Respon
     }
 }
 
-
 export const cancelConsultationController = async (req: AuthRequest, res: Response) => {
-
+    try {
+        let { id } = req.params
+        if(req.id) {
+            await cancelConsultation(parseInt(id), req.id)
+            res.status(200).json({message: 'Consulta cancelada com sucesso'})
+        }
+    } catch (err: any) {
+        res.status(400).json({err: err.message})
+    }
 }
+
 

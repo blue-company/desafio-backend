@@ -1,12 +1,12 @@
-import { isDate, isTime } from "validator";
 import { Doctor } from "../models/Doctor";
-import { User } from "../models/User";
 import { Consultation } from "../models/Consultation";
 import { generateToken } from "../utils/generateRandomToken";
 import { generatePDF } from "../utils/generatePdf";
 import { isValidConsultation, isValidDate, isValidTime } from "../utils/validators";
 import { formatDate } from "../utils/formatDate";
 import { Op } from "sequelize";
+import path from 'path'
+import fs  from "fs";
 
 
 interface ScheduleConsultation {
@@ -21,7 +21,6 @@ interface UpdateConsultationData {
     isCompleted?: boolean
 
 }
-
 
 export const getDoctorById = async (doctor_id: number) => {
     let doctor = await Doctor.findByPk(doctor_id)
@@ -48,25 +47,20 @@ export const generateConsultationToken = () => {
     return generateToken(20)
 }
 
-export const createConsultationPDF = async (userId: number, username: string, doctorName: string, consultationTime: string, formattedDate: string, doctorSpeciality: string) => {
-    return await generatePDF(userId, username, doctorName, consultationTime, formattedDate, doctorSpeciality)
+export const createConsultationPDF = async (userId: number, username: string, doctorName: string, consultationTime: string, consultationDate: string, speciality: string) => {
+    return await generatePDF({ user_id: userId, username, doctorName, consultationTime, consultationDate, speciality })
 }
 
-export const findConsultations = async (user_id: number) => {
-    try {
-        let consultations = await Consultation.findAll({ where: { user_id } })
-        if (!consultations || consultations.length === 0) {
-            throw new Error(`Não foi encontrado um histórico de consultas`)
-        }
-
-        return consultations
-    } catch (err) {
-        throw err
+export const getConsultations = async (user_id: number) => {
+    let consultations = await Consultation.findAll({ where: { user_id } })
+    if (!consultations || consultations.length === 0) {
+        throw new Error(`Não foi encontrado um histórico de consultas`)
     }
 
+    return consultations
 }
 
-export const findConsultationByToken = async (token: string, user_id: number) => {
+export const getConsultation = async (token: string, user_id: number) => {
     if (!token) {
         throw new Error(`O token deve ser passado como parâmetro na URL`)
     }
@@ -158,4 +152,25 @@ export const updateConsultation = async (id: number, user_id: number, username: 
     }
 }
 
+export const cancelConsultation = async (id: number, user_id: number) => {
+    let consultation = await Consultation.findOne({ where: { id, user_id } })
+    if (!consultation) {
+        throw new Error('Consulta não encontrada')
+    }
 
+    if (consultation && consultation.isCompleted === true) {
+        throw new Error('Não foi possível cancelar essa consulta pois ela já foi realizada.')
+    }
+
+    let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
+
+    if (fs.existsSync(pdfPath)) {
+        // Apague o arquivo PDF
+        fs.unlinkSync(pdfPath);
+        console.log('Arquivo PDF apagado com sucesso!');
+    } else {
+        console.log('O arquivo PDF não existe.');
+    }
+
+    await Consultation.destroy({where: {id, user_id}})
+}
