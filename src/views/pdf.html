@@ -19,7 +19,7 @@
         <div class="text-center flex flex-col justify-center items-center">
             <img src="/src/utils/assets/Icon.png" class="my-5"/>
             <h1 class="text-4xl text-green-600 font-bold">Agendamento confirmado!</h1>
-            <h2 class="text-xl mt-5 font-medium">Prezado(a) <span class="text-blue-500"><%- username %></span>, sua consulta foi agendada com sucesso!</h2>
+            <h2 class="text-xl mt-5 font-medium">Prezado(a) <span class="text-blue-500">{username}</span>, sua consulta foi agendada com sucesso!</h2>
         </div>
 
 
@@ -36,8 +36,8 @@
 
 
                 </div>
-                <p class="text-2xl font-medium mb-2"><%- doctorName %></p>
-                <p class="font-bold text-xl"><%- speciality %></p>
+                <p class="text-2xl font-medium mb-2">{doctorName}</p>
+                <p class="font-bold text-xl">{speciality}</p>
 
             </div>
 
@@ -47,8 +47,8 @@
                     <p class="font-bold">Data da consulta:</p>
                 </div>
 
-                <p class="text-2xl mb-2"><%- consultationDate %></p>
-                <p class="text-xl font-semibold"><%- consultationTime %></p>
+                <p class="text-2xl mb-2">DD/MM/YYYY</p>
+                <p class="text-xl font-semibold">08:00</p>
             </div>
             </h2>
         </div>
