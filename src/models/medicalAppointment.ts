@@ -3,6 +3,7 @@ export enum STATUS_APPOINTMENT{
     IN_PROCESS = "IN PROCESS",
     PENDING = "PENDING",
     FINISHED = "FINISHED",
+    CANCELED = "CANCELED"
 }
 
 export interface medicaAppointmentDB{
