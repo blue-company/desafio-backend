@@ -5,9 +5,10 @@ export class UserRepository extends Connection{
     private static USERS_TABLE = "users";
 
     findUserById = async (id: string): Promise<UserDB[]> => {
-        const user: UserDB[] = await Connection.conection(UserRepository.USERS_TABLE).where(id);
+      console.log(id)
+      const user: UserDB[] = await Connection.conection(UserRepository.USERS_TABLE).where({id});
 
-        return user;
+      return user;
       };
     
       findUserByEmail = async (email: string): Promise<UserDB[]> => {

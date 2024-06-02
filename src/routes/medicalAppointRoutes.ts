@@ -3,8 +3,9 @@ import { TokenManager } from "../utils/TokenManager";
 import { MedicalAppointService } from "../service/MedicalAppointService";
 import { MedicalAppointController } from "../controller/MedicalAppointController";
 import { MedicalAppointRepository } from "../repository/MedicalAppointRepository";
-import { UserRepository } from "@src/repository/UserRepository";
-import { IdGerator } from "@src/utils/IdGerator";
+import { UserRepository } from "../repository/UserRepository";
+import { IdGerator } from "../utils/IdGerator";
+import { PDFGenarator } from "../utils/PDFGenarator";
 
 export const MedicalAppointRoutes = express.Router();
 
@@ -13,9 +14,13 @@ const medicalAppointController = new MedicalAppointController(
     new MedicalAppointRepository(),
     new UserRepository(),
     new TokenManager(),
-    new IdGerator()
+    new IdGerator(),
+    new PDFGenarator
   )
 );
 
-MedicalAppointRoutes.post("/get", medicalAppointController.getAppoint);
+MedicalAppointRoutes.get("/get", medicalAppointController.getAppoint);
+MedicalAppointRoutes.get("/appoint/:idUser&:idAppoint", medicalAppointController.getAppointByIdUser);
 MedicalAppointRoutes.post("/create", medicalAppointController.create);
+MedicalAppointRoutes.put("/edit/:id", medicalAppointController.edit);
+MedicalAppointRoutes.delete("/delete/:id", medicalAppointController.delete)

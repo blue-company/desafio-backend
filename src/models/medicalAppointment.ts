@@ -17,6 +17,14 @@ export interface medicaAppointmentDB{
 }
 
 export interface medicaAppointmentTP{
+    id: string;
+    name: string;
+    description?: string;
+    status: STATUS_APPOINTMENT;
+    data: string;
+    createdAt: string;
+    updatedAt?: string;
+    userId:string
 }
 
 export class MedicaAppointment{
@@ -102,7 +110,16 @@ export class MedicaAppointment{
         }
     }
 
-    // public toMedicalAppointPayloadModel(): medicaAppointmentTP{
-
-    // }
+    public toMedicalAppointPayloadModel(): medicaAppointmentTP{
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            status: this.status,
+            data: this.data,
+            createdAt: this.createdAt,
+            userId: this.userId,
+            updatedAt: this.updatedAt
+        }
+    }
 }
