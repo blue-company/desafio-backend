@@ -1,8 +1,7 @@
 import { Response } from "express";
-import { updateConsultation, getConsultation, getConsultations, scheduleConsultation, cancelConsultation } from "../services/ConsultationService";
+import { updateConsultation, getConsultation, getConsultations, scheduleConsultation, cancelConsultation, getDoctors } from "../services/ConsultationService";
 import { AuthRequest } from "../middlewares/auth";
 import path from "path";
-import ejs from 'ejs'
 
 export const scheduleConsultationController = async (req: AuthRequest, res: Response) => {
     try {
@@ -33,12 +32,12 @@ export const getConsultationController = async (req: AuthRequest, res: Response)
     try {
         let { token } = req.params
 
-        if (req.id) {
-            let consultation = await getConsultation(token, req.id)
-
+        
+            let consultation = await getConsultation(token)
             let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
+            
             return res.sendFile(pdfPath)
-        }
+        
 
     } catch (err: any) {
         return res.status(400).json({ err: err.message })
@@ -72,4 +71,13 @@ export const cancelConsultationController = async (req: AuthRequest, res: Respon
     }
 }
 
+
+export const getDoctorsController = async(req: AuthRequest, res: Response) => {
+    try {
+        let doctors = await getDoctors()
+        return res.status(200).json(doctors)
+    } catch(err: any) {
+        return res.status(400).json({err: err.message})
+    }
+}
 

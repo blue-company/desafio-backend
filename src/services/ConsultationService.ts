@@ -60,12 +60,12 @@ export const getConsultations = async (user_id: number) => {
     return consultations
 }
 
-export const getConsultation = async (token: string, user_id: number) => {
+export const getConsultation = async (token: string) => {
     if (!token) {
         throw new Error(`O token deve ser passado como parâmetro na URL`)
     }
 
-    let consultation = await Consultation.findOne({ where: { consultationToken: token, user_id } })
+    let consultation = await Consultation.findOne({ where: { consultationToken: token} })
     if (!consultation) {
         throw new Error(`Token inválido!`)
     }
@@ -135,7 +135,7 @@ export const updateConsultation = async (id: number, user_id: number, username: 
     if (newTime !== consultation.consultationTime || newDate !== consultation.consultationDate) {
         let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
         fs.unlinkSync(pdfPath);
-        
+
         const newPDF = await createConsultationPDF(user_id, username, consultation.details.doctorName, newTime, formattedDate, consultation.details.doctorSpeciality)
         let updatedConsultation = await consultation.update({
             consultationDate, consultationTime, isCompleted: newIsCompleted, details: {
@@ -176,4 +176,14 @@ export const cancelConsultation = async (id: number, user_id: number) => {
     }
 
     await Consultation.destroy({where: {id, user_id}})
+}
+
+
+export const getDoctors = async () => {
+    let doctors = await Doctor.findAll()
+    if(!doctors) {
+        throw new Error('Não foi encontrado nenhum médico')
+    }
+
+    return doctors
 }
