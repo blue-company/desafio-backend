@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { userRoutes } from "./routes/userRoutes";
+import { MedicalAppointRoutes } from "./routes/medicalAppointRoutes";
 
 const app = express();
 
@@ -12,5 +13,6 @@ app.listen(Number(process.env.PORT) || 3003, () => {
 });
 
 app.use("/user", userRoutes)
+app.use("/medicalAppoint", MedicalAppointRoutes)
 
 
