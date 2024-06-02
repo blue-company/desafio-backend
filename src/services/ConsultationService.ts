@@ -133,6 +133,9 @@ export const updateConsultation = async (id: number, user_id: number, username: 
     }
 
     if (newTime !== consultation.consultationTime || newDate !== consultation.consultationDate) {
+        let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
+        fs.unlinkSync(pdfPath);
+        
         const newPDF = await createConsultationPDF(user_id, username, consultation.details.doctorName, newTime, formattedDate, consultation.details.doctorSpeciality)
         let updatedConsultation = await consultation.update({
             consultationDate, consultationTime, isCompleted: newIsCompleted, details: {
