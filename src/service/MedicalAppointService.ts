@@ -5,12 +5,12 @@ import { MedicalAppointRepository } from "../repository/MedicalAppointRepository
 import { UserRepository } from "../repository/UserRepository";
 import { BadRequestError } from "../customErrors/BadRequestError";
 import { MedicaAppointment, STATUS_APPOINTMENT } from "../models/medicalAppointment";
-import { IdGerator } from "@src/utils/IdGerator";
-import { getMedicalAppointmentInputDTO, getMedicalAppointmentOutputDTO } from "@src/dtos/medicalAppointmentDTO/getMedicalAppointment.dto";
-import { PDFGenarator } from "@src/utils/PDFGenarator";
+import { IdGerator } from "../utils/IdGerator";
+import { getMedicalAppointmentInputDTO, getMedicalAppointmentOutputDTO } from "../dtos/medicalAppointmentDTO/getMedicalAppointment.dto";
+import { PDFGenarator } from "../utils/PDFGenarator";
 import { Buffer } from 'buffer'
-import { editMedicalAppointmentInputDTO, editMedicalAppointmentOutputDTO } from "@src/dtos/medicalAppointmentDTO/editMedicalAppointment.dto";
-import { deleteMedicalAppointmentInputDTO } from "@src/dtos/medicalAppointmentDTO/deletMedicalAppointment.dto";
+import { editMedicalAppointmentInputDTO, editMedicalAppointmentOutputDTO } from "../dtos/medicalAppointmentDTO/editMedicalAppointment.dto";
+import { cancelMedicalAppointmentInputDTO } from "@src/dtos/medicalAppointmentDTO/cancelMedicalAppointment.dto";
 
 export class MedicalAppointService{
     constructor(
@@ -160,8 +160,8 @@ export class MedicalAppointService{
         return response;
     };
 
-    delete = async (appointForDelete: deleteMedicalAppointmentInputDTO):Promise<string> => {
-        const {token, id} = appointForDelete;
+    cancel = async (appointForEdit: cancelMedicalAppointmentInputDTO):Promise<string> => {
+        const {token, id} = appointForEdit;
         
         const payloadUser = this.tokenManager.getPayload(token);
 
@@ -174,8 +174,16 @@ export class MedicalAppointService{
         if(!userExist)
             throw new NotFoundError('This user is not found.');
 
-        await this.medicalAppointRepository.deleteAppoint(id);
+        const oldAppoint = await this.medicalAppointRepository.findAppointById(id);
 
-        return "Item deleted sucessfully.";
+        if(!oldAppoint)
+            throw new NotFoundError("This appoint not exist or id informed is incorrect.")
+
+        oldAppoint.status = STATUS_APPOINTMENT.CANCELED;
+        oldAppoint.updated_at = new Date().toISOString();
+
+        await this.medicalAppointRepository.cancelAppoint(oldAppoint, id);
+
+        return "Appointment canceled sucesfully. ";
     }
 }

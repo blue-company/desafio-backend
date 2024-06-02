@@ -24,8 +24,8 @@ export class MedicalAppointRepository extends Connection{
       await Connection.conection(MedicalAppointRepository.APPOINT_TABLE).update(oldAppoint).where({id})
     }
 
-    deleteAppoint = async(id:string): Promise<void> => {
-      await Connection.conection(MedicalAppointRepository.APPOINT_TABLE).delete().where({id});
+    cancelAppoint = async(appointCanceled: medicaAppointmentDB, id:string): Promise<void> => {
+      await Connection.conection(MedicalAppointRepository.APPOINT_TABLE).update(appointCanceled).where({id});
     }
     
 }

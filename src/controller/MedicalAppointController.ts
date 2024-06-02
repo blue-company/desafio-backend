@@ -5,7 +5,7 @@ import { Response, Request } from 'express';
 import { ZodError } from "zod";
 import { getMedicalAppointSchema } from "../dtos/medicalAppointmentDTO/getMedicalAppointment.dto";
 import { editMedicalAppointSchema } from "../dtos/medicalAppointmentDTO/editMedicalAppointment.dto";
-import { deleteMedicalAppointSchema } from "../dtos/medicalAppointmentDTO/deletMedicalAppointment.dto";
+import { cancelMedicalAppointSchema } from "../dtos/medicalAppointmentDTO/cancelMedicalAppointment.dto";
 
 export class MedicalAppointController{
     constructor(private medicalAppointService: MedicalAppointService){}
@@ -107,14 +107,14 @@ export class MedicalAppointController{
         }
     }
 
-    delete = async(req: Request, res: Response) => {
+    cancel = async(req: Request, res: Response) => {
         try{
-            const appointForDelete = deleteMedicalAppointSchema.parse({
+            const appointForCancel = cancelMedicalAppointSchema.parse({
                 token: req.headers.authorization,
                 id: req.params.id
             });
     
-            const response = await this.medicalAppointService.delete(appointForDelete);
+            const response = await this.medicalAppointService.cancel(appointForCancel);
     
             res.status(200).send(response);
         } catch(error){

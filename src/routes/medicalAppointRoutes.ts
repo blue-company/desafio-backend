@@ -23,4 +23,4 @@ MedicalAppointRoutes.get("/get", medicalAppointController.getAppoint);
 MedicalAppointRoutes.get("/appoint/:idUser&:idAppoint", medicalAppointController.getAppointByIdUser);
 MedicalAppointRoutes.post("/create", medicalAppointController.create);
 MedicalAppointRoutes.put("/edit/:id", medicalAppointController.edit);
-MedicalAppointRoutes.delete("/delete/:id", medicalAppointController.delete)
+MedicalAppointRoutes.put("/cancel/:id", medicalAppointController.cancel)
