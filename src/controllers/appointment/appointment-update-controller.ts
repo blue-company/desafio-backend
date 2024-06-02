@@ -1,33 +1,56 @@
 import { AppointmentUpdateModel } from "@/models/appointment-update-model";
 import { Request, Response } from "express";
 import { z } from "zod";
+import { formatDateForString } from "../../utils/format-date";
+import { pdfGenerator } from "../../utils/pdf-generator";
 
 export class AppointmentUpdateController {
   async handle(req: Request, res: Response) {
+    const user = z.object({
+      user_id: z.string().uuid(),
+      name: z.string(),
+    });
+
     const updateAppointmentParamsSchema = z.object({
       appointment_id: z.string().uuid(),
     });
 
     const updateAppointmentBodySchema = z.object({
       appointment_type: z.string().nullable(),
-      appointment_datetime: z.string().nullable(),
+      appointment_date: z.string().nullable(),
       notes: z.string().nullable(),
     });
 
+    const { user_id, name } = user.parse(req);
+
     const { appointment_id } = updateAppointmentParamsSchema.parse(req.params);
 
-    const { appointment_type, appointment_datetime, notes } =
+    const { appointment_type, appointment_date, notes } =
       updateAppointmentBodySchema.parse(req.body);
 
     const appointmentUpdate = new AppointmentUpdateModel();
 
-    await appointmentUpdate.execute({
+    const { appointment } = await appointmentUpdate.execute({
       appointment_id,
       appointment_type,
-      appointment_datetime,
+      appointment_date,
       notes,
     });
 
-    res.status(204).send();
+    const pdfBuffer = await pdfGenerator({
+      user_name: name,
+      appointment_date: formatDateForString(appointment.appointment_datetime),
+      appointment_type: appointment.appointment_type,
+      status: appointment.status,
+      notes: appointment.notes,
+    });
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${appointment.id}.pdf`
+    );
+    res.setHeader("Content-Type", "application/pdf");
+
+    res.status(200).send(pdfBuffer);
   }
 }

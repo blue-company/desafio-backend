@@ -12,23 +12,15 @@ const appointmentOverview = new AppointmentOverviewController();
 const appointmentCancellation = new AppointmentCancellationController();
 const appointmentUpdate = new AppointmentUpdateController();
 
-appointmentRoutes.post(
-  "/appointment",
-  ensureAuthenticateUser,
-  appointmentSchedule.handle
-);
-appointmentRoutes.get(
-  "/appointment",
-  ensureAuthenticateUser,
-  appointmentOverview.handle
-);
+appointmentRoutes.post("/", ensureAuthenticateUser, appointmentSchedule.handle);
+appointmentRoutes.get("/", ensureAuthenticateUser, appointmentOverview.handle);
 appointmentRoutes.patch(
-  "/appointment/:appointment_id",
+  "/:appointment_id",
   ensureAuthenticateUser,
   appointmentUpdate.handle
 );
 appointmentRoutes.delete(
-  "/appointment/:appointment_id",
+  "/:appointment_id",
   ensureAuthenticateUser,
   appointmentCancellation.handle
 );

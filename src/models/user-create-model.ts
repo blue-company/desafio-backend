@@ -4,6 +4,7 @@ import { prisma } from "../db/prisma";
 import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
 interface UserCreateRequest {
+  name: string;
   email: string;
   password: string;
 }
@@ -14,6 +15,7 @@ interface UserCreateResponse {
 
 export class UserCreateModel {
   async execute({
+    name,
     email,
     password,
   }: UserCreateRequest): Promise<UserCreateResponse> {
@@ -31,6 +33,7 @@ export class UserCreateModel {
 
     const user = await prisma.user.create({
       data: {
+        name,
         email,
         password,
       },

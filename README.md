@@ -1,52 +1,34 @@
 # Desafio de Backend - API de Marcação de Consultas
 
-Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
+## Desenvolvedor
 
-## Objetivo
+- Emerson Dantas Pereira
+- Email: rafaelcs_94@hotmail.com
+- [LinkedIn](https://www.linkedin.com/in/emersondantaspereira/)
+- [Github](https://github.com/emersondp07)
 
-Desenvolver uma API RESTful para a marcação de consultas médicas. A API permitirá que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas.
+### Tecnologias e Ferramentas utilizadas:
 
-## Requisitos do Desafio
+- [Node](https://nodejs.org/en/): Ambiente de execução JavaScript de código aberto e multiplataforma.
+- [Express](https://expressjs.com): Framework para Node.js para construção de servidores web.
+- [Postgres](https://www.postgresql.org/): Banco de dados relacional.
+- [Prisma](https://www.prisma.io): ORM utilizado para utilização de consultas no banco de dados.
+- [Zod](https://zod.dev): Biblioteca de declaração e validação de esquema TypeScript.
+- [JWT](https://jwt.io/): É uma ferramenta utilizada para a geração e verificação de tokens de autenticação e autorização em aplicações web..
+- [express-async-errors](https://www.npmjs.com/package/express-async-errors): Utilizada em aplicações Node.js com o framework Express para simplificar o tratamento de erros em rotas assíncronas.
+- [pdfkit](pdfkit.org/): Biblioteca de geração de documentos PDF para Node e navegador que facilita a criação de documentos complexos.
+- [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express): Este módulo permite que forneça documentos de API gerados automaticamente através da leitura de um arquivo mapeado em JSON.
 
-- **Autenticação:** Implemente o login de usuários utilizando JWT.
-- **Agendamento de Consultas:** Permita que os usuários agendem novas consultas.
-- **Geração de PDF:** Após agendar uma consulta, gere um PDF com os detalhes da consulta.
-- **Visualização de Consultas:** Permita que os usuários vejam informações detalhadas sobre suas consultas, a rota deve ser criptografada com um link de acesso único.
-- **Modificação e Cancelamento de Consultas:** Os usuários devem poder modificar detalhes de suas consultas ou cancelá-las.
+## Rodar o projeto:
 
-## Critérios Técnicos
+**É necessário ter o [Docker Compose](https://docs.docker.com/compose/install/)**
 
-- **Banco de Dados:** Use alguma ferramenta para gerenciamento do banco de dados.
-- **Arquitetura:** Siga o padrão MVC para estruturação do projeto. 
-- **Linguagens permitidas:** PHP + Symphony |  Node Js + Express.
-- **Tratamento de Erros:** Implemente um sistema de tratamento de erros eficaz.
+```bash
+    # Clone o repositório
+    $ git clone https://github.com/emersondp07/desafio-backend.git
 
-## Entregáveis
+    # Entre no diretório do projeto
+    $ cd desafio-backend
+```
 
-- Código-fonte no GitHub com acesso ao repositório fornecido pela equipe da Blue.
-- Documentação no README, detalhando:
-  - Instruções de instalação e execução do projeto.
-  - Descrição das tecnologias utilizadas.
-  - Lista de rotas disponíveis e como utilizá-las.
-
-## Avaliação
-
-O desafio será avaliado com base em:
-
-- **Qualidade do Código:** Clareza, uso de boas práticas, padrões de projeto e segurança.
-- **Funcionalidade:** Todos os requisitos devem ser atendidos.
-- **Design da API:** Clareza, consistência, e aderência aos princípios RESTful.
-- **Documentação:** Completa e clara, facilitando a compreensão e uso da API.
-
-## Como Iniciar
-
-1. Faça um fork deste repositório.
-2. Clone seu fork para sua máquina local.
-3. Siga as instruções de instalação específicas para configurar o ambiente de desenvolvimento.
-4. Comece a desenvolver, seguindo os requisitos e critérios técnicos descritos acima.
-
-## Entrega
-
-Quando estiver pronto para submeter seu desafio, crie um Pull Request do seu repositório forkado para o repositório principal da Blue Company. A equipe de desenvolvimento revisará sua entrega.
-
-Boa sorte e estamos ansiosos para ver suas soluções inovadoras!
+**Com o projeto rodando, a documentação da API se encontrará em [localhost:3000/docs](http://localhost:3000/docs)**

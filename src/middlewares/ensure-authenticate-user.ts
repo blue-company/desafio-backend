@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
 interface PayloadRequest {
+  name: string;
   sub: string;
 }
 
@@ -21,12 +22,13 @@ export async function ensureAuthenticateUser(
   const [_, token] = authorization.split(" ");
 
   try {
-    const { sub } = verify(
+    const { sub, name } = verify(
       token,
       process.env.JWT_SECRET ?? "unit-test"
     ) as PayloadRequest;
 
     req.user_id = sub;
+    req.name = name;
 
     return next();
   } catch (error) {

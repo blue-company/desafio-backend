@@ -21,6 +21,7 @@ enum Status {
 
 model User {
   id        String    @id @default(uuid())
+  name      String
   email     String    @unique
   password  String
   create_at DateTime? @default(now())
@@ -33,7 +34,7 @@ model User {
 model Appointment {
   id                   String    @id @default(uuid())
   appointment_type     String
-  appointment_datetime DateTime?
+  appointment_datetime DateTime
   status               Status
   notes                String
   created_at           DateTime? @default(now())

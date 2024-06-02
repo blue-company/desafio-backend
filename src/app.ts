@@ -2,9 +2,9 @@ import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import swaggerUi from "swagger-ui-express";
 import { ZodError } from "zod";
+import swaggerDocs from "../swagger.json";
 import { appointmentRoutes } from "./controllers/appointment/routes";
 import { userRoutes } from "./controllers/user/routes";
-import swaggerDocs from "./swagger.json";
 
 const app = express();
 

@@ -5,7 +5,7 @@ import { formatDate } from "../utils/format-date";
 interface AppointmentUpdateRequest {
   appointment_id: string;
   appointment_type: string | null;
-  appointment_datetime: string | null;
+  appointment_date: string | null;
   notes: string | null;
 }
 
@@ -16,14 +16,14 @@ interface AppointmentUpdateResponse {
 export class AppointmentUpdateModel {
   async execute({
     appointment_id,
-    appointment_datetime,
+    appointment_date,
     appointment_type,
     notes,
   }: AppointmentUpdateRequest): Promise<AppointmentUpdateResponse> {
     const data: any = {};
 
-    if (appointment_datetime) {
-      data.appointment_datetime = formatDate(appointment_datetime);
+    if (appointment_date) {
+      data.appointment_datetime = formatDate(appointment_date);
     }
 
     if (appointment_type) {
