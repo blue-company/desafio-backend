@@ -8,7 +8,8 @@ export interface createMedicalAppointmentInputDTO{
 }
 
 export interface createMedicalAppointmentOutputDTO{
-
+    message: string,
+    link: string
 }
 
 export const createMedicalAppointSchema = z.object({

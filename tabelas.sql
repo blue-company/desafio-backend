@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS consulta(
 
 /*Insert the first values in tables*/
 INSERT INTO users (id, name, email, password, created_at)
-    VALUE ("92056f79-327d-4792-9543-ccf68f8597a8", "User Admin", "user.admin@gmail.com", "adminPass123", "2024-05-31");
+    VALUE ("92056f79-327d-4792-9543-ccf68f8597a8", "User Admin", "user.admin@gmail.com", "$2y$14$pqFZ2TX26g.MpuuwlHnvVuXcPs/pqMLyYEglbFZBQvWxvUOIf0I5O", "2024-05-31");
 
 INSERT INTO consulta (id, name, description, status, data, created_at, user_id)
     VALUE ("43cbe748-32f5-48fe-86d1-a8a591f28b35", "routine examination", "Routine exames for know how be the health", "analysis", "2024-05-31", "2024-05-31", "92056f79-327d-4792-9543-ccf68f8597a8");
