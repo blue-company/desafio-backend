@@ -1,8 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import JWT from 'jsonwebtoken'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 export interface AuthRequest extends Request {
     id?: number,
@@ -18,8 +15,9 @@ export const Auth = {
             if (authType === 'Bearer') {
                 try {
                     const decoded: any = JWT.verify(token, process.env.JWT_SECRET_KEY as string)
+
                     if (decoded) {
-                            req.id = decoded.id,
+                        req.id = decoded.id,
                             req.username = decoded.name,
                             req.email = decoded.name
                         sucess = true
@@ -30,10 +28,11 @@ export const Auth = {
             }
         }
 
-         if(sucess) {
+        if (sucess) {
             next()
-         } else {
-            return res.status(400).json({err: 'Não autorizado'})
-         }
+        } else {
+            return res.status(400).json({ err: 'Não autorizado' })
+        }
     }
 }
+

@@ -7,7 +7,6 @@ interface CredentialsLogin {
     password: string,
 }
 
-
 export const register = async (req: Request, res: Response) => {
     try {
         let { name, email, password } = req.body
@@ -19,7 +18,7 @@ export const register = async (req: Request, res: Response) => {
         return res.status(201).json({ id: newUser.id, email: newUser.email, name: newUser.name, token })
 
     } catch (err: any) {
-        return res.status(404).json({ err: err.message })
+        return res.status(400).json({ err: err.message })
     }
 }
 
@@ -33,8 +32,8 @@ export const login = async (req: Request, res: Response) => {
 
         return res.status(201).json({ id: user.id, name: user.name, token })
 
-    } catch (err) {
-        return res.status(404).json({ err })
+    } catch (err: any) {
+        return res.status(400).json({ err: err.message })
     }
 }
 
