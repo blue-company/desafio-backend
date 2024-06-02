@@ -8,7 +8,8 @@
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "gen": "npx prisma migrate dev && npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",

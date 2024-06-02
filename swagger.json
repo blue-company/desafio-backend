@@ -19,7 +19,7 @@
     "/user": {
       "post": {
         "summary": "Register user.",
-        "description": "",
+        "description": "New user creation route",
         "tags": ["Users"],
         "requestBody": {
           "content": {
@@ -52,7 +52,7 @@
     "/user/login": {
       "post": {
         "summary": "Login user",
-        "description": "",
+        "description": "User login route already created",
         "tags": ["Users"],
         "requestBody": {
           "content": {
@@ -72,8 +72,8 @@
           }
         },
         "responses": {
-          "409": {
-            "description": "User already exists!"
+          "401": {
+            "description": "Invalid crendentials."
           },
           "200": {
             "description": "OK",
@@ -118,6 +118,9 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
           "200": {
             "description": "OK"
           }
@@ -129,6 +132,9 @@
         "tags": ["Appointments"],
         "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
           "200": {
             "description": "OK",
             "content": {
@@ -178,6 +184,9 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
           "200": {
             "description": "OK"
           }
@@ -197,6 +206,9 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
           "200": {
             "description": "OK"
           }
