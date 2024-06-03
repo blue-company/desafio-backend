@@ -2,6 +2,8 @@
 
 O projeto "desafio-backend" é um desafio proposto pela Blue Health Tech, que envolve o desenvolvimento de uma API para cadastro de consultas com autenticação de usuários. Nesse projeto, é possível criar e acessar uma conta através de login, além de registrar novas consultas, cujo retorno inclui um PDF com os detalhes da consulta marcada. Também é possível editar, visualizar e cancelar consultas médicas.
 
+Também ao longo do tempo irei fazer os testes unitários e de integração da aplicação para torna-la mais completa.
+
 
 ### Informações Pessoais
 
