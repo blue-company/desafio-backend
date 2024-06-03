@@ -9,7 +9,7 @@ Bem-vindo ao desafio de backend da Blue Health Tech! O desafio é uma oportunida
 
 
 ## Video demonstrando as funcionalidades do projeto
-  - Link: 
+  - Link: https://youtu.be/Pee2zeaiiIk
   
 ## Como iniciar o projeto localmente
 1. Certifique-se de ter o Node.js e o MySQL instalados em seu ambiente.
@@ -99,7 +99,7 @@ Desenvolver uma API RESTful para a marcação de consultas médicas. A API permi
  - **Rotas protegidas por autenticação só podem ser acessadas se o accessToken for inserido no header Authorization da seguinte forma: Bearer {accessToken}**
 
 -  Rota POST /api/consultation **(ROTA PROTEGIDA)**
-    -  Descrição: Cria uma nova consulta
+    -  Descrição: Realiza o agendamento de uma consulta
     -  Requisição:
     - Campos obrigatórios:
         - consultationDate: Data da consulta.
