@@ -25,6 +25,6 @@ export const isValidConsultation = (consultationDate: string, consultationTime: 
 
 export const isValidEmail = (email: string) => {
     if(!isEmail(email)) {
-        throw new Error(`Email inválido"`)
+        throw new Error(`Email inválido!`)
     }
 }
