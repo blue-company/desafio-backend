@@ -1,4 +1,4 @@
-# Desafio de Backend - API de Marcação de Consultas
+# Desafio de Backend - API de Agendamento de Consultas
 
 Bem-vindo ao desafio de backend da Blue Health Tech! O desafio é uma oportunidade para demonstrar minhas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
 
