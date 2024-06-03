@@ -17,7 +17,7 @@ export interface editMedicalAppointmentOutputDTO{
 }
 
 export const editMedicalAppointSchema = z.object({
-    id: z.string().min(1).max(36),
+    id: z.string().min(1),
     token: z.string().min(1),
     name: z.string().min(1).max(100),
     description: z.string().optional(),

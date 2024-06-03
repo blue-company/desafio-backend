@@ -11,5 +11,5 @@ export interface getMedicalAppointmentOutputDTO{
 }
 
 export const getMedicalAppointSchema = z.object({
-    token: z.string().min(97).max(1400)
+    token: z.string().min(1)
 })
