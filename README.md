@@ -185,7 +185,6 @@ Desenvolver uma API RESTful para a marcação de consultas médicas. A API permi
         - Status 200 (OK) em caso de sucesso, com a lista de médicos no corpo da resposta.
         - Status 400 (Bad Request) se ocorrer algum erro.
         - Mensagens de erro:
-            - "Não foi encontrado um histórico de consultas"
             - "Não foi encontrado nenhum médico"
           
 ## Entidades e relacionamentos
