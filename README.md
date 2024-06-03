@@ -96,7 +96,7 @@ Desenvolver uma API RESTful para a marcação de consultas médicas. A API permi
     - Status 400 (Bad Request) se algum campo obrigatório estiver faltando ou se o e-mail/senha estiverem incorretos.
   
 #### Consultas 
- - **Rotas protegidas por autenticação só podem ser acessadas se o accesToken for inserido no header Authorization da seguinte forma: Bearer {accessToken}**
+ - **Rotas protegidas por autenticação só podem ser acessadas se o accessToken for inserido no header Authorization da seguinte forma: Bearer {accessToken}**
 
 -  Rota POST /api/consultation **(ROTA PROTEGIDA)**
     -  Descrição: Cria uma nova consulta
