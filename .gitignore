@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 .env
+/src/views/consultations
+instruções.md
 
 # Editor directories and files
 .vscode/*

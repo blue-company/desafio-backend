@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc && npm run copy-assets",
     "start-dev": "nodemon -e ts,json src/server.ts",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "copy-assets": "copyfiles -u 1 src/views/* src/views/consultations/**/* src/utils/assets/* dist/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/html-pdf": "^3.0.3",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -37,9 +37,11 @@
     "@types/ejs": "^3.1.5",
     "@types/express": "^4.17.21",
     "@types/fs-extra": "^11.0.4",
+    "@types/html-pdf": "^3.0.3",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
     "@types/sequelize": "^4.28.20",
+    "copyfiles": "^2.4.1",
     "typescript": "^5.4.5"
   }
 }
