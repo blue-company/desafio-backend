@@ -25,7 +25,7 @@ export class PDFGenarator{
             content: [
                 {
                         stack: [
-                        'Medical Appointment \n ',
+                        'Consulta Médica \n ',
                         {text: appointDetails.name + " \n \n \n", style: "subheader"}
             
                         ], 
@@ -45,7 +45,7 @@ export class PDFGenarator{
                     columns: [
                         { 
                             columns:[
-                                {text: "Nome of pacient: ", bold: true, width: "auto", margin: [0, 0, 10, 0]},
+                                {text: "Nome do paciente: ", bold: true, width: "auto", margin: [0, 0, 10, 0]},
                                 {text: owner},
                              ],
                              alignment: "left",
@@ -55,7 +55,7 @@ export class PDFGenarator{
                          
                          {
                              columns: [
-                                 {text: "Date of appointment: \n \n \n", bold: true},
+                                 {text: "Data da consulta: \n \n \n", bold: true},
                                  {text: date, width: "auto", margin: [10, 0, 0, 0]}
                                  ],
                                  alignment: "right"
@@ -65,7 +65,7 @@ export class PDFGenarator{
                 
                 {
                     columns: [
-                        {text: "Description: ", width: "auto", margin: [0, 0, 10, 0], bold: true},
+                        {text: "Descrição da consulta: ", width: "auto", margin: [0, 0, 10, 0], bold: true},
                         {text: `${appointDetails.description}`}
                         ]
                 }
