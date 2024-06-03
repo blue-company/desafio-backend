@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="w-screen h-screen flex flex-col items-center">
+        <div class="text-center flex flex-col justify-center items-center">
+            <img src="/src/utils/assets/Icon.png" class="my-5"/>
+            <h1 class="text-4xl text-green-600 font-bold">Agendamento confirmado!</h1>
+            <h2 class="text-xl mt-5 font-medium">Prezado(a) <span class="text-blue-500">{username}</span>, sua consulta foi agendada com sucesso!</h2>
+        </div>
+
+
+        <div class="ml-20 py-10 flex justify-center items-center text-center">
+
+
+
+            <div
+                class="bg-blue-500 px-20 py-10 border-2 border-transparent mr-20 rounded-md text-white justify-center w-96 h-56">
+
+                <div class="flex items-center mb-5 justify-center">
+                    <img  class="size-10 mr-2" src="/src/utils/assets/doctor.png"/>
+                    <p class="font-bold text-xl"> Médico:</p>
+
+
+                </div>
+                <p class="text-2xl font-medium mb-2">{doctorName}</p>
+                <p class="font-bold text-xl">{speciality}</p>
+
+            </div>
+
+            <div class="bg-blue-500 px-20 py-10 border-2 border-transparent mr-20 rounded-md text-white w-96 h-56">
+                <div class="flex justify-center items-center mb-5">
+                    <img class="size-8 mr-2" src="/src/utils/assets/calendar.png"/>
+                    <p class="font-bold">Data da consulta:</p>
+                </div>
+
+                <p class="text-2xl mb-2">DD/MM/YYYY</p>
+                <p class="text-xl font-semibold">08:00</p>
+            </div>
+            </h2>
+        </div>
+
+
+    </section>
+</body>
+
+</html>
