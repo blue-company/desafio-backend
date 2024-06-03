@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: consulta-docker
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: login-docker
+      MYSQL_PASSWORD: ${DB_USER_PASS}
+    restart: 'always'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      timeout: 10s
+      retries: 5
+    cap_add:
+      - SYS_NICE
+    volumes:
+      - ./tabelas.sql:/docker-entrypoint-initdb.d/tabelas.sql
+
+volumes:
+  db_data:

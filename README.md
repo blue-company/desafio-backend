@@ -1,52 +1,111 @@
-# Desafio de Backend - API de Marcação de Consultas
+# 📖 Apresentação
 
-Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
+O projeto "desafio-backend" é um desafio proposto pela Blue Health Tech, que envolve o desenvolvimento de uma API para cadastro de consultas com autenticação de usuários. Nesse projeto, é possível criar e acessar uma conta através de login, além de registrar novas consultas, cujo retorno inclui um PDF com os detalhes da consulta marcada. Também é possível editar, visualizar e cancelar consultas médicas. Ele está projetado em arquitetura MVC e em camadas, seprando as responsabilidade do código.
 
-## Objetivo
+Ao longo do tempo irei fazer os testes unitários e de integração da aplicação para torna-la mais completa.
 
-Desenvolver uma API RESTful para a marcação de consultas médicas. A API permitirá que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas.
 
-## Requisitos do Desafio
+### Informações Pessoais
 
-- **Autenticação:** Implemente o login de usuários utilizando JWT.
-- **Agendamento de Consultas:** Permita que os usuários agendem novas consultas.
-- **Geração de PDF:** Após agendar uma consulta, gere um PDF com os detalhes da consulta.
-- **Visualização de Consultas:** Permita que os usuários vejam informações detalhadas sobre suas consultas, a rota deve ser criptografada com um link de acesso único.
-- **Modificação e Cancelamento de Consultas:** Os usuários devem poder modificar detalhes de suas consultas ou cancelá-las.
+- Italo Rocha Oliveira
+- [Linkedin](https://www.linkedin.com/in/italorochaoliveira/).
+- [Github](https://github.com/ItaloRochaOliveira).
+- Email: italo.rocha.de.oliveira@gmail.com
 
-## Critérios Técnicos
+## 📄 Concepção do Projeto
 
-- **Banco de Dados:** Use alguma ferramenta para gerenciamento do banco de dados.
-- **Arquitetura:** Siga o padrão MVC para estruturação do projeto. 
-- **Linguagens permitidas:** PHP + Symphony |  Node Js + Express.
-- **Tratamento de Erros:** Implemente um sistema de tratamento de erros eficaz.
+### Instalando
 
-## Entregáveis
+```bash
+# Instalando o repositório localmente
+git clone git@github.com:ItaloRochaOliveira/desafio-backend.git
 
-- Código-fonte no GitHub com acesso ao repositório fornecido pela equipe da Blue.
-- Documentação no README, detalhando:
-  - Instruções de instalação e execução do projeto.
-  - Descrição das tecnologias utilizadas.
-  - Lista de rotas disponíveis e como utilizá-las.
+# Entre no diretório do projeto
+cd desafio-backend
 
-## Avaliação
+# Instalando dependências
+npm install
 
-O desafio será avaliado com base em:
+# Suba o container do banco de dados
+docker compose up -d
 
-- **Qualidade do Código:** Clareza, uso de boas práticas, padrões de projeto e segurança.
-- **Funcionalidade:** Todos os requisitos devem ser atendidos.
-- **Design da API:** Clareza, consistência, e aderência aos princípios RESTful.
-- **Documentação:** Completa e clara, facilitando a compreensão e uso da API.
+# executando o projeto
+npm run dev
 
-## Como Iniciar
+```
 
-1. Faça um fork deste repositório.
-2. Clone seu fork para sua máquina local.
-3. Siga as instruções de instalação específicas para configurar o ambiente de desenvolvimento.
-4. Comece a desenvolver, seguindo os requisitos e critérios técnicos descritos acima.
+## 🔧 Funcionalidades
 
-## Entrega
+```bash
+. Requisições:
+#------------------------------------------------
+-SignUp: criação de um usuario.
 
-Quando estiver pronto para submeter seu desafio, crie um Pull Request do seu repositório forkado para o repositório principal da Blue Company. A equipe de desenvolvimento revisará sua entrega.
+-Login: Entrar com usuário cadastrado.
+#------------------------------------------------
+-getAppointment: Puxa todas as consultas
+cadastradas no banco de dados em formato de link.
+Necessário o
+token de acesso.
 
-Boa sorte e estamos ansiosos para ver suas soluções inovadoras!
+-getAppointmentById: Retorna o link vinculada ao id
+do usuário e a da consulta. Usado no próprio back
+para gerar os links da resposta da requisição acima.
+
+-postMedicalAppointment: Método de criação de
+consultas. Nescessário o token do usuário
+cadastrado e valores.
+
+-editMedicalAppointment: Método de atualização dos
+dados cadastrados. Nescessário o token do usuário
+cadastrado, id da consulta a alterar e valores.
+
+-cancelMedicalAppointment: Método de cancelamento
+de consulta. Necessário do id da consulta e token
+do usuário.
+```
+
+
+## 📚 Bibliotecas utilizadas 
+
+```bash
+#dependencies:
+bcryptjs
+cors
+express,
+jsonwebtoken
+knex
+mysql,
+pdfmake,
+uuid
+zod
+
+#devDependencies:
+@types/bcryptjs
+@types/cors
+@types/express
+@types/jest
+@types/jsonwebtoken
+@types/knex 
+@types/mysql
+@types/node .
+@types/pdfmake
+@types/uuid
+dotenv 
+jest 
+ts-jest 
+ts-node-dev
+typescript 
+
+```
+## 💻 Programas e tecnologias utilizadas
+
+
+![VSCode](https://img.shields.io/badge/VSCODE-white?style=for-the-badge&logo=visualstudiocode&logoColor=blue)
+![PostMan](https://img.shields.io/badge/postman-orange?style=for-the-badge&logo=postman&logoColor=white)
+
+![TypesScript](https://img.shields.io/badge/TypeScript-1572B6?style=for-the-badge&logo=typescript&logoColor=white)
+![Express](https://img.shields.io/badge/Express-f8f8ff?style=for-the-badge&logo=express&logoColor=black)
+![MySQL](https://img.shields.io/badge/mysql-orange?style=for-the-badge&logo=mysql&logoColor=blue)
+![jest](https://img.shields.io/badge/jest-f8f8ff?style=for-the-badge&logo=jest&logoColor=black)
+![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
