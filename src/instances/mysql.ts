@@ -16,7 +16,6 @@ export const sequelize = new Sequelize(
 export const syncronizeSequelize = () => {
     sequelize.sync()
     .then(() => {
-        
     })
     .catch(error => {
         console.log(error)
