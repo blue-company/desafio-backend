@@ -6,10 +6,9 @@ import path from "path";
 export const scheduleConsultationController = async (req: AuthRequest, res: Response) => {
     try {
         let { consultationDate, consultationTime, doctor_id } = req.body
-        if (req.id && req.username) {
-            let newConsultation = await scheduleConsultation({ consultationDate, consultationTime, doctor_id }, req.id, req.username)
-            return res.status(201).json({ newConsultation })
-        }
+
+        let newConsultation = await scheduleConsultation({ consultationDate, consultationTime, doctor_id }, req.id, req.username)
+        return res.status(201).json({ newConsultation })
 
     } catch (err: any) {
         res.status(400).json({ err: err.message })
@@ -18,11 +17,9 @@ export const scheduleConsultationController = async (req: AuthRequest, res: Resp
 
 export const getConsultationsController = async (req: AuthRequest, res: Response) => {
     try {
-        if (req.id) {
-            let consultations = await getConsultations(req.id)
-            return res.status(200).json({ consultations })
-        }
+        let consultations = await getConsultations(req.id)
 
+        return res.status(200).json({ consultations })
     } catch (err: any) {
         return res.status(400).json({ err: err.message })
     }
@@ -32,12 +29,10 @@ export const getConsultationController = async (req: AuthRequest, res: Response)
     try {
         let { token } = req.params
 
-        
-            let consultation = await getConsultation(token)
-            let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
-            
-            return res.sendFile(pdfPath)
-        
+        let consultation = await getConsultation(token)
+        let pdfPath = path.join(__dirname, '..', 'views', consultation.details.pdf);
+
+        return res.sendFile(pdfPath)
 
     } catch (err: any) {
         return res.status(400).json({ err: err.message })
@@ -49,10 +44,8 @@ export const updateConsultationController = async (req: AuthRequest, res: Respon
         let { id } = req.params;
         let { consultationDate, consultationTime, isCompleted } = req.body;
 
-        if (req.id && req.username) {
-            let updatedConsultation = await updateConsultation(parseInt(id), req.id, req.username, { consultationDate, consultationTime, isCompleted });
-            res.status(201).json({ updatedConsultation })
-        }
+        let updatedConsultation = await updateConsultation(parseInt(id), req.id, req.username, { consultationDate, consultationTime, isCompleted });
+        res.status(201).json({ updatedConsultation })
 
     } catch (err: any) {
         res.status(400).json({ err: err.message })
@@ -62,22 +55,21 @@ export const updateConsultationController = async (req: AuthRequest, res: Respon
 export const cancelConsultationController = async (req: AuthRequest, res: Response) => {
     try {
         let { id } = req.params
-        if(req.id) {
-            await cancelConsultation(parseInt(id), req.id)
-            res.status(200).json({message: 'Consulta cancelada com sucesso'})
-        }
+        await cancelConsultation(parseInt(id), req.id)
+        res.status(200).json({ message: 'Consulta cancelada com sucesso' })
+
     } catch (err: any) {
-        res.status(400).json({err: err.message})
+        res.status(400).json({ err: err.message })
     }
 }
 
 
-export const getDoctorsController = async(req: AuthRequest, res: Response) => {
+export const getDoctorsController = async (req: AuthRequest, res: Response) => {
     try {
         let doctors = await getDoctors()
-        return res.status(200).json({doctors})
-    } catch(err: any) {
-        return res.status(400).json({err: err.message})
+        return res.status(200).json({ doctors })
+    } catch (err: any) {
+        return res.status(400).json({ err: err.message })
     }
 }
 
