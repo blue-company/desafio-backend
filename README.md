@@ -41,15 +41,26 @@ npm run dev
 
 -Login: Entrar com usuário cadastrado.
 #------------------------------------------------
--getAppointment: Puxa todas as consultas cadastradas no banco de dados em formato de link. Necessário o token de acesso.
+-getAppointment: Puxa todas as consultas
+cadastradas no banco de dados em formato de link.
+Necessário o
+token de acesso.
 
--getAppointmentById: Retorna o link vinculada ao id do usuário e a da consulta. Usado no próprio back para gerar os links da resposta da requisição acima.
+-getAppointmentById: Retorna o link vinculada ao id
+do usuário e a da consulta. Usado no próprio back
+para gerar os links da resposta da requisição acima.
 
--postMedicalAppointment: Método de criação de consultas. Nescessário o token do usuário cadastrado e valores.
+-postMedicalAppointment: Método de criação de
+consultas. Nescessário o token do usuário
+cadastrado e valores.
 
--editMedicalAppointment: Método de atualização dos dados cadastrados. Nescessário o token do usuário cadastrado, id da consulta a alterar e valores.
+-editMedicalAppointment: Método de atualização dos
+dados cadastrados. Nescessário o token do usuário
+cadastrado, id da consulta a alterar e valores.
 
--cancelMedicalAppointment: Método de cancelamento de consulta. Necessário do id da consulta e token do usuário.
+-cancelMedicalAppointment: Método de cancelamento
+de consulta. Necessário do id da consulta e token
+do usuário.
 ```
 
 
