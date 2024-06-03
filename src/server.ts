@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import userRoutes from './routes/userRoutes'
+import userRoutes from './routes/apiRoutes'
 import authRoutes from './routes/authRoutes'
 import dotenv from 'dotenv'
 import path from "path";

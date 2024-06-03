@@ -18,8 +18,8 @@ export const Auth = {
 
                     if (decoded) {
                         req.id = decoded.id,
-                            req.username = decoded.name,
-                            req.email = decoded.name
+                        req.username = decoded.name,
+                        req.email = decoded.name
                         sucess = true
                     }
                 } catch (err: any) {
