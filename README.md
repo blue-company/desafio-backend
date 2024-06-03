@@ -161,7 +161,7 @@ Desenvolver uma API RESTful para a marcação de consultas médicas. A API permi
             - "Horário inválido"
           
 - Rota DELETE /api/consultation/:id **(ROTA PROTEGIDA)**
-    - Descrição:
+    - Descrição: Cancela uma consulta que ainda não foi realizada
         - Parâmetros obrigatórios:
             - id: Id da consulta.
     - Resposta:
