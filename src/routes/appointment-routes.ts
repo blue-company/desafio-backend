@@ -1,9 +1,9 @@
 import { ensureAuthenticateUser } from "@/middlewares/ensure-authenticate-user";
 import { Router } from "express";
-import { AppointmentCancellationController } from "./appointment-cancellation-controller";
-import { AppointmentOverviewController } from "./appointment-overview-controller";
-import { AppointmentScheduleController } from "./appointment-schedule-controller";
-import { AppointmentUpdateController } from "./appointment-update-controller";
+import { AppointmentCancellationController } from "../controllers/appointment/appointment-cancellation-controller";
+import { AppointmentOverviewController } from "../controllers/appointment/appointment-overview-controller";
+import { AppointmentScheduleController } from "../controllers/appointment/appointment-schedule-controller";
+import { AppointmentUpdateController } from "../controllers/appointment/appointment-update-controller";
 
 const appointmentRoutes = Router();
 

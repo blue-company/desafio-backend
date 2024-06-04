@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { AppointmentCancellationModel } from "../../models/appointment-cancellation-model";
+import { PrismaAppointmentsRepository } from "../../repositories/prisma/prisma-appointments-repository";
+import { AppointmentCancellationService } from "../../services/appointment-cancellation-service";
 
 export class AppointmentCancellationController {
   async handle(req: Request, res: Response) {
@@ -15,7 +16,10 @@ export class AppointmentCancellationController {
     const { user_id } = id.parse(req);
     const { appointment_id } = createAppointmentParamsSchema.parse(req.params);
 
-    const appointmentCancellation = new AppointmentCancellationModel();
+    const appointmentsRepository = new PrismaAppointmentsRepository();
+    const appointmentCancellation = new AppointmentCancellationService(
+      appointmentsRepository
+    );
 
     try {
       await appointmentCancellation.execute({

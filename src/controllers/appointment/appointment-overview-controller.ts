@@ -1,6 +1,7 @@
-import { AppointmentOverviewModel } from "@/models/appointment-overview-model";
 import { Request, Response } from "express";
 import { z } from "zod";
+import { PrismaAppointmentsRepository } from "../../repositories/prisma/prisma-appointments-repository";
+import { AppointmentOverviewService } from "../../services/appointment-overview-service";
 
 export class AppointmentOverviewController {
   async handle(req: Request, res: Response) {
@@ -9,9 +10,13 @@ export class AppointmentOverviewController {
     });
 
     const { user_id } = id.parse(req);
-    const appointmentOverviewModel = new AppointmentOverviewModel();
 
-    const appointments = await appointmentOverviewModel.execute({ user_id });
+    const appointmentsRepository = new PrismaAppointmentsRepository();
+    const appointmentOverview = new AppointmentOverviewService(
+      appointmentsRepository
+    );
+
+    const appointments = await appointmentOverview.execute({ user_id });
 
     res.status(200).send(appointments);
   }

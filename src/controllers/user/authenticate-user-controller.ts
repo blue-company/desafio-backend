@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import { z } from "zod";
-import { InvalidCredencialsError } from "../../models/errors/invalid-credentials-error";
-import { UserAuthenticateModel } from "../../models/user-authenticate-model";
+import { PrismaUsersRepository } from "../../repositories/prisma/prisma-users-repository";
+import { InvalidCredencialsError } from "../../services/errors/invalid-credentials-error";
+import { UserAuthenticateService } from "../../services/user-authenticate-service";
 
 export class AuthenticateUserController {
   async handle(req: Request, res: Response) {
@@ -12,10 +13,11 @@ export class AuthenticateUserController {
     });
     const { email, password } = authUser.parse(req.body);
 
-    const userAuthenticateModel = new UserAuthenticateModel();
+    const usersRepository = new PrismaUsersRepository();
+    const userAuthenticate = new UserAuthenticateService(usersRepository);
 
     try {
-      const { user } = await userAuthenticateModel.execute({
+      const { user } = await userAuthenticate.execute({
         email,
         password,
       });

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { UserAlreadyExistsError } from "../../models/errors/user-already-exists-error";
-import { UserCreateModel } from "../../models/user-create-model";
+import { PrismaUsersRepository } from "../../repositories/prisma/prisma-users-repository";
+import { UserAlreadyExistsError } from "../../services/errors/user-already-exists-error";
+import { UserCreateService } from "../../services/user-create-service";
 
 export class CreateUserController {
   async handle(req: Request, res: Response) {
@@ -22,9 +23,10 @@ export class CreateUserController {
     try {
       const { name, email, password } = createUser.parse(req.body);
 
-      const userCreateModel = new UserCreateModel();
+      const usersRepository = new PrismaUsersRepository();
+      const userCreate = new UserCreateService(usersRepository);
 
-      await userCreateModel.execute({ name, email, password });
+      await userCreate.execute({ name, email, password });
 
       return res.status(201).send();
     } catch (err) {

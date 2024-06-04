@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { AppointmentScheduleModel } from "../../models/appointment-schedule-model";
-import { InvalidAppointmentDateError } from "../../models/errors/invalid-appointment-date-error";
+import { PrismaAppointmentsRepository } from "../../repositories/prisma/prisma-appointments-repository";
+import { AppointmentScheduleService } from "../../services/appointment-schedule-service";
+import { InvalidAppointmentDateError } from "../../services/errors/invalid-appointment-date-error";
 import { pdfGenerator } from "../../utils/pdf-generator";
 
 export class AppointmentScheduleController {
@@ -22,10 +23,13 @@ export class AppointmentScheduleController {
     const { appointment_type, appointment_date, notes } =
       createAppointment.parse(req.body);
 
-    const appointmentScheduleModel = new AppointmentScheduleModel();
+    const appointmentsRepository = new PrismaAppointmentsRepository();
+    const appointmentSchedule = new AppointmentScheduleService(
+      appointmentsRepository
+    );
 
     try {
-      const { appointment } = await appointmentScheduleModel.execute({
+      const { appointment } = await appointmentSchedule.execute({
         user_id,
         appointment_date,
         appointment_type,

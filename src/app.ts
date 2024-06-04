@@ -3,8 +3,8 @@ import "express-async-errors";
 import swaggerUi from "swagger-ui-express";
 import { ZodError } from "zod";
 import swaggerDocs from "../swagger.json";
-import { appointmentRoutes } from "./controllers/appointment/routes";
-import { userRoutes } from "./controllers/user/routes";
+import { appointmentRoutes } from "./routes/appointment-routes";
+import { userRoutes } from "./routes/user-routes";
 
 const app = express();
 

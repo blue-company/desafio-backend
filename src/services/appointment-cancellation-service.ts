@@ -1,5 +1,5 @@
 import { Appointment } from "@prisma/client";
-import { prisma } from "../db/prisma";
+import { AppointmentsRepository } from "../repositories/appointments-repository";
 
 interface AppointmentCancellationRequest {
   user_id: string;
@@ -10,21 +10,16 @@ interface AppointmentCancellationResponse {
   appointment: Appointment;
 }
 
-export class AppointmentCancellationModel {
+export class AppointmentCancellationService {
+  constructor(private appointmentsRepository: AppointmentsRepository) {}
   async execute({
     user_id,
     appointment_id,
   }: AppointmentCancellationRequest): Promise<AppointmentCancellationResponse> {
-    const appointment = await prisma.appointment.update({
-      where: {
-        id: appointment_id,
-        user_id,
-      },
-      data: {
-        status: "CANCELED",
-        updated_at: new Date(),
-      },
-    });
+    const appointment = await this.appointmentsRepository.cancel(
+      appointment_id,
+      user_id
+    );
 
     return { appointment };
   }

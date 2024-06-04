@@ -1,5 +1,5 @@
 import { Appointment } from "@prisma/client";
-import { prisma } from "../db/prisma";
+import { AppointmentsRepository } from "../repositories/appointments-repository";
 import { formatDate } from "../utils/format-date";
 
 interface AppointmentUpdateRequest {
@@ -13,7 +13,9 @@ interface AppointmentUpdateResponse {
   appointment: Appointment;
 }
 
-export class AppointmentUpdateModel {
+export class AppointmentUpdateService {
+  constructor(private appointmentsRepository: AppointmentsRepository) {}
+
   async execute({
     appointment_id,
     appointment_date,
@@ -36,12 +38,10 @@ export class AppointmentUpdateModel {
 
     data.updated_at = new Date();
 
-    const appointment = await prisma.appointment.update({
-      where: {
-        id: appointment_id,
-      },
-      data: data,
-    });
+    const appointment = await this.appointmentsRepository.update(
+      appointment_id,
+      data
+    );
 
     return { appointment };
   }

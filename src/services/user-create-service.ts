@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { hash } from "bcrypt";
-import { prisma } from "../db/prisma";
+import { UsersRepository } from "../repositories/users-repository";
 import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
 interface UserCreateRequest {
@@ -13,7 +13,9 @@ interface UserCreateResponse {
   user: User;
 }
 
-export class UserCreateModel {
+export class UserCreateService {
+  constructor(private usersRepository: UsersRepository) {}
+
   async execute({
     name,
     email,
@@ -21,23 +23,13 @@ export class UserCreateModel {
   }: UserCreateRequest): Promise<UserCreateResponse> {
     password = await hash(password, 10);
 
-    const userWithSameEmail = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
+    const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
       throw new UserAlreadyExistsError();
     }
 
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password,
-      },
-    });
+    const user = await this.usersRepository.create({ name, email, password });
 
     return { user };
   }

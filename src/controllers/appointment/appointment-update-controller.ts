@@ -1,6 +1,7 @@
-import { AppointmentUpdateModel } from "@/models/appointment-update-model";
 import { Request, Response } from "express";
 import { z } from "zod";
+import { PrismaAppointmentsRepository } from "../../repositories/prisma/prisma-appointments-repository";
+import { AppointmentUpdateService } from "../../services/appointment-update-service";
 import { formatDateForString } from "../../utils/format-date";
 import { pdfGenerator } from "../../utils/pdf-generator";
 
@@ -28,7 +29,10 @@ export class AppointmentUpdateController {
     const { appointment_type, appointment_date, notes } =
       updateAppointmentBodySchema.parse(req.body);
 
-    const appointmentUpdate = new AppointmentUpdateModel();
+    const appointmentsRepository = new PrismaAppointmentsRepository();
+    const appointmentUpdate = new AppointmentUpdateService(
+      appointmentsRepository
+    );
 
     const { appointment } = await appointmentUpdate.execute({
       appointment_id,

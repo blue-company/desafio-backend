@@ -1,6 +1,6 @@
 import { Appointment } from "@prisma/client";
 import dayjs from "dayjs";
-import { prisma } from "../db/prisma";
+import { AppointmentsRepository } from "../repositories/appointments-repository";
 import { formatDate } from "../utils/format-date";
 import { InvalidAppointmentDateError } from "./errors/invalid-appointment-date-error";
 
@@ -15,7 +15,8 @@ interface AppointmentScheduleResponse {
   appointment: Appointment;
 }
 
-export class AppointmentScheduleModel {
+export class AppointmentScheduleService {
+  constructor(private appointmentsRepository: AppointmentsRepository) {}
   async execute({
     user_id,
     appointment_type,
@@ -30,13 +31,15 @@ export class AppointmentScheduleModel {
       throw new InvalidAppointmentDateError();
     }
 
-    const appointment = await prisma.appointment.create({
-      data: {
-        appointment_type,
-        appointment_datetime,
-        status: "SCHEDULED",
-        notes,
-        user_id,
+    const appointment = await this.appointmentsRepository.create({
+      appointment_type,
+      appointment_datetime,
+      status: "SCHEDULED",
+      notes,
+      user: {
+        connect: {
+          id: user_id,
+        },
       },
     });
 

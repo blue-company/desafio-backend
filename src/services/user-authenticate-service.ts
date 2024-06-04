@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { compare } from "bcrypt";
-import { prisma } from "../db/prisma";
+import { UsersRepository } from "../repositories/users-repository";
 import { InvalidCredencialsError } from "./errors/invalid-credentials-error";
 
 interface UserAuthenticateRequest {
@@ -12,16 +12,14 @@ interface UserAuthenticateResponse {
   user: User;
 }
 
-export class UserAuthenticateModel {
+export class UserAuthenticateService {
+  constructor(private usersRepository: UsersRepository) {}
+
   async execute({
     email,
     password,
   }: UserAuthenticateRequest): Promise<UserAuthenticateResponse> {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new InvalidCredencialsError();
