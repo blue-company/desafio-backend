@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  app-node:
+    build: .
+    ports:
+      - 3000:3000
+      - 5555:5555
+    volumes:
+      - .:/home/node/app
+
+  api-desafio-backend-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=apidesafiobackend

@@ -1,0 +1,284 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API desafio backend",
+    "description": "",
+    "termsOfService": "",
+    "contact": {
+      "email": "emerson.dantaspereira@hotmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "API Test"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "summary": "Register user.",
+        "description": "New user creation route",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "Emerson",
+                    "email": "emerson.dantaspereira@hotmail.com",
+                    "password": "Edp564210."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "User already exists!"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "Login user",
+        "description": "User login route already created",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "emerson.dantaspereira@hotmail.com",
+                    "password": "Edp564210."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Invalid crendentials."
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointment": {
+      "post": {
+        "summary": "Create Appointment",
+        "description": "Route to create a new appointment",
+        "tags": ["Appointments"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              },
+              "examples": {
+                "appointment": {
+                  "value": {
+                    "appointment_type": "Consult",
+                    "appointment_date": "31/5/2024 - 11:00",
+                    "notes": "Estou doente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "summary": "Appointments Overview",
+        "description": "Route to fetch all appointments",
+        "tags": ["Appointments"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointment/{appointment_id}": {
+      "patch": {
+        "summary": "Appointments Update",
+        "description": "Route to updates appointment",
+        "tags": ["Appointments"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "description": "",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              },
+              "examples": {
+                "appointment": {
+                  "value": {
+                    "appointment_type": "Consult",
+                    "appointment_date": "31/5/2024 - 11:00",
+                    "notes": "Estou doente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Appointments Cancellation",
+        "description": "Route to cancel appointment",
+        "tags": ["Appointments"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "description": "ID appointment to cancel",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Token is missing."
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "appointment_type": {
+            "type": "string"
+          },
+          "appointment_date": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "AppointmentResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "appointment_datetime": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
