@@ -7,31 +7,31 @@ const User = require("../models/userModel.js")
 module.exports = {
 
   // Login de usuário
- async  login(req, res) {
-  try {
-    const { email, password } = req.body;
+  async login(req, res) {
+    try {
+      const { email, password } = req.body;
 
-    // Verifica se o usuário existe
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.status(400).json({ message: 'Credenciais inválidas' });
+      // Verifica se o usuário existe
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        return res.status(400).json({ message: 'Credenciais inválidas' });
+      }
+
+      // Verifica a senha
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Credenciais inválidas' });
+      }
+
+      // Gera o token JWT
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30m' });
+
+      res.status(200).json({ msg: "Autenticação realizada com sucesso!", token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
     }
-
-    // Verifica a senha
-    const isMatch = await bcrypt.compare(password, user.password); 
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Credenciais inválidas' });
-    }
-
-    // Gera o token JWT
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30m' });
-
-    res.status(200).json({ msg: "Autenticação realizada com sucesso!", token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro interno do servidor' });
-  }
-},
+  },
 
   async getUsers(req, res) {
     try {
@@ -74,10 +74,10 @@ module.exports = {
     try {
       const { name, email, password } = req.body;
       const { id } = req.params;
-       await User.update({name, email, password },{ where: { id }});
-       
-        return res.status(201).json({ message: 'Usuario atualizado com sucesso' });
-      
+      await User.update({ name, email, password }, { where: { id } });
+
+      return res.status(201).json({ message: 'Usuario atualizado com sucesso' });
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Erro interno do servidor' });
@@ -88,10 +88,10 @@ module.exports = {
   async deleteUser(req, res) {
     try {
       const { id } = req.params;
-       await User.destroy({ where: { id }});
-       
-        return res.status(200).json({ message: 'Usuario Deletado com sucesso' });
-      
+      await User.destroy({ where: { id } });
+
+      return res.status(200).json({ message: 'Usuario Deletado com sucesso' });
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Erro interno do servidor' });
