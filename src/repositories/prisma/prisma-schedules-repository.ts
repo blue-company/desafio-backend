@@ -11,4 +11,9 @@ export class PrismaSchedulesRepository implements SchedulesRepository {
     const schedules = await this.prisma.schedules.create({ data });
     return schedules;
   }
+
+  async findByIdSchedules(id: string): Promise<Schedules> {
+    const schedules = await this.prisma.schedules.findUnique({ where: { id } });
+    return schedules;
+  }
 }

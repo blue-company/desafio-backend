@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SchedulesRepository } from 'src/repositories/schedules-repository';
 import { Schedules } from './entities/schedules.entity';
 
@@ -10,5 +10,13 @@ export class SchedulesService {
     const createdSchedules = await this.schedulesRepository.create(data);
 
     return createdSchedules;
+  }
+
+  async findByIdSchedules(id: string): Promise<Schedules> {
+    const schedules = await this.schedulesRepository.findByIdSchedules(id);
+    if (!schedules) {
+      throw new NotFoundException(`ID not found`);
+    }
+    return schedules;
   }
 }
