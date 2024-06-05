@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta agendada</title>
+    <style>
+        /* Adicione estilos CSS conforme necessário */
+        * {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+        }
+        header {
+          padding: 10px;
+          text-align: center;
+        }
+        span {
+          font-weight: bold;
+        }
+        main {
+          margin-top: 20px;
+        }
+        #data-user {
+          display: flex;
+          justify-content: space-between;
+          width: 420px;
+        }
+        #data-schedules {
+          display: flex;
+          justify-content: space-between;
+          width: 600px;
+        }
+        div {
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+        p {
+          margin-top: 5px;
+        }
+        #schedules-container {
+          margin-top: 30px;
+        }
+        .card {
+          width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+      <h1>Consulta agendada</h1>
+    </header>
+    <main>
+      <div>
+        <span>Paciente:</span>
+        <h2><%= schedulesUserData.name %></h2>
+      </div>
+      <div id="data-user">
+        <div class="card">
+          <span>CPF do Paciente:</span>
+          <p><%= schedulesUserData.cpf %></p>
+        </div>
+        <div class="card">
+          <span>Nascimento:</span>
+          <p><%= schedulesUserData.dateBirth %></p>
+        </div>
+      </div>
+      <div id="schedules-container">
+        <h2>Consulta</h2>
+        <div id="data-schedules">
+          <div class="card">
+            <span>Especialidade:</span>
+            <p><%= schedulesUserData.medicalSpecialty %></p>
+          </div>
+          <div class="card">
+            <span>Data:</span>
+            <p><%= schedulesUserData.date %></p>
+          </div>
+          <div>
+            <span class="card">Hora:</span>
+            <p><%= schedulesUserData.hours %></p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Adicione mais campos conforme necessário -->
+</body>
+</html>
