@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -179,5 +180,10 @@ export class SchedulesController {
     const dateTime = new Date(dateTimeString);
     const update = await this.schedulesService.updateSchedules(id, dateTime);
     return { id: update.id };
+  }
+
+  @Delete(':id')
+  async deleteSchedules(@Param('id') id: string) {
+    await this.schedulesService.deleteSchedules(id);
   }
 }

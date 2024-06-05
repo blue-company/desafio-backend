@@ -37,4 +37,12 @@ export class SchedulesService {
     const update = await this.schedulesRepository.updateSchedules(id, dateTime);
     return update;
   }
+
+  async deleteSchedules(id: string) {
+    const schedules = await this.schedulesRepository.findByIdSchedules(id);
+    if (!schedules) {
+      throw new NotFoundException(`ID not found`);
+    }
+    return await this.schedulesRepository.deleteSchedules(id);
+  }
 }
