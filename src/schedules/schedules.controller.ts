@@ -18,6 +18,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserFromJwt } from 'src/auth/models/UserFromJwt';
 import { UserService } from 'src/user/user.service';
 import { formatCPF, toConvertHours, toDateUtc } from 'src/utils';
+import { Schedules } from './entities/schedules.entity';
 
 @Controller('schedules')
 export class SchedulesController {
@@ -120,5 +121,30 @@ export class SchedulesController {
     );
 
     return res.send(pdfBuffer);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async findAllSchedules(@CurrentUser() userToken: UserFromJwt) {
+    const schedulesAll = await this.schedulesService.findAllSchedules(
+      userToken.id,
+    );
+    const user = await this.userService.findByEmail(userToken.email);
+
+    const data = schedulesAll.map((schedules: Schedules) => {
+      return {
+        id: schedules.id,
+        userId: schedules.user_id,
+        name: user.name,
+        dateBirth: toDateUtc(user.dateBirth),
+        medicalSpecialty: schedules.medicalSpecialty,
+        date: schedules.dateTime.toLocaleDateString(),
+        hours: toConvertHours(schedules.dateTime),
+        createdAt: schedules.createdAt,
+        updatedAt: schedules.updatedAt,
+      };
+    });
+
+    return data;
   }
 }

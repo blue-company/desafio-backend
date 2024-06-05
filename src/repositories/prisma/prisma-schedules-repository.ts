@@ -7,6 +7,14 @@ import { PrismaService } from 'src/database/prisma.service';
 export class PrismaSchedulesRepository implements SchedulesRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findAllSchedules(userId: string): Promise<Schedules[]> {
+    const schedulesAll = await this.prisma.schedules.findMany({
+      where: { user_id: userId },
+    });
+
+    return schedulesAll;
+  }
+
   async create(data: Schedules): Promise<Schedules> {
     const schedules = await this.prisma.schedules.create({ data });
     return schedules;

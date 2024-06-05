@@ -19,4 +19,13 @@ export class SchedulesService {
     }
     return schedules;
   }
+
+  async findAllSchedules(userId: string): Promise<Schedules[]> {
+    const schedulesAll =
+      await this.schedulesRepository.findAllSchedules(userId);
+    if (schedulesAll.length == 0) {
+      throw new NotFoundException(`No appointments scheduled`);
+    }
+    return schedulesAll;
+  }
 }
