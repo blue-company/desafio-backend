@@ -1,0 +1,22 @@
+{
+  "name": "desafio-backend",
+  "version": "1.0.0",
+  "description": "Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.",
+  "main": "index.js",
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mysql2": "^3.10.0",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
