@@ -1,5 +1,4 @@
 import { User } from 'src/user/entities/user.entity';
-// import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 export abstract class UserRepository {
   abstract create(data: User): Promise<User>;
