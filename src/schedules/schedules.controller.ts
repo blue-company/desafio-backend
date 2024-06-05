@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Res,
   UseGuards,
@@ -19,6 +20,7 @@ import { UserFromJwt } from 'src/auth/models/UserFromJwt';
 import { UserService } from 'src/user/user.service';
 import { formatCPF, toConvertHours, toDateUtc } from 'src/utils';
 import { Schedules } from './entities/schedules.entity';
+import { UpdateSchedules } from './dto/update-schedules.dto';
 
 @Controller('schedules')
 export class SchedulesController {
@@ -78,7 +80,7 @@ export class SchedulesController {
     return res.send(pdfBuffer);
   }
 
-  @Get(':id')
+  @Get('pdf/:id')
   @UseGuards(JwtAuthGuard)
   async generatePDFSchedulesId(
     @Param('id') id: string,
@@ -123,6 +125,26 @@ export class SchedulesController {
     return res.send(pdfBuffer);
   }
 
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async findByIdSchedules(
+    @Param('id') id: string,
+    @CurrentUser() userToken: UserFromJwt,
+  ) {
+    const schedules = await this.schedulesService.findByIdSchedules(id);
+    const user = await this.userService.findByEmail(userToken.email);
+
+    const schedulesUserData = {
+      cpf: formatCPF(user.cpf),
+      name: user.name.toUpperCase(),
+      medicalSpecialty: schedules.medicalSpecialty.toUpperCase(),
+      dateBirth: toDateUtc(user.dateBirth),
+      date: schedules.dateTime.toLocaleDateString(),
+      hours: toConvertHours(schedules.dateTime),
+    };
+    return schedulesUserData;
+  }
+
   @Get()
   @UseGuards(JwtAuthGuard)
   async findAllSchedules(@CurrentUser() userToken: UserFromJwt) {
@@ -146,5 +168,16 @@ export class SchedulesController {
     });
 
     return data;
+  }
+
+  @Patch(':id')
+  async updateSchedules(
+    @Body() updateSchedules: UpdateSchedules,
+    @Param('id') id: string,
+  ) {
+    const dateTimeString = `${updateSchedules.date}T${updateSchedules.hours}`;
+    const dateTime = new Date(dateTimeString);
+    const update = await this.schedulesService.updateSchedules(id, dateTime);
+    return { id: update.id };
   }
 }

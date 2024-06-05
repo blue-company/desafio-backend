@@ -28,4 +28,13 @@ export class SchedulesService {
     }
     return schedulesAll;
   }
+
+  async updateSchedules(id: string, dateTime: Date): Promise<Schedules> {
+    const schedules = await this.schedulesRepository.findByIdSchedules(id);
+    if (!schedules) {
+      throw new NotFoundException(`ID not found`);
+    }
+    const update = await this.schedulesRepository.updateSchedules(id, dateTime);
+    return update;
+  }
 }
