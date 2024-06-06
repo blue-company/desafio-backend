@@ -9,6 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
 import * as puppeteer from 'puppeteer';
 import * as ejs from 'ejs';
@@ -23,6 +24,7 @@ import { formatCPF, toConvertHours, toDateUtc } from 'src/utils';
 import { Schedules } from './entities/schedules.entity';
 import { UpdateSchedules } from './dto/update-schedules.dto';
 
+@ApiTags('Schedules')
 @Controller('schedules')
 export class SchedulesController {
   constructor(
@@ -32,6 +34,7 @@ export class SchedulesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   async create(
     @Body() createSchedulesDto: CreateSchedulesDto,
     @CurrentUser() userToken: UserFromJwt,
@@ -83,6 +86,7 @@ export class SchedulesController {
 
   @Get('pdf/:id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   async generatePDFSchedulesId(
     @Param('id') id: string,
     @CurrentUser() userToken: UserFromJwt,
@@ -128,6 +132,7 @@ export class SchedulesController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   async findByIdSchedules(
     @Param('id') id: string,
     @CurrentUser() userToken: UserFromJwt,
@@ -148,6 +153,7 @@ export class SchedulesController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   async findAllSchedules(@CurrentUser() userToken: UserFromJwt) {
     const schedulesAll = await this.schedulesService.findAllSchedules(
       userToken.id,
@@ -172,6 +178,7 @@ export class SchedulesController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('access-token')
   async updateSchedules(
     @Body() updateSchedules: UpdateSchedules,
     @Param('id') id: string,
@@ -183,6 +190,7 @@ export class SchedulesController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('access-token')
   async deleteSchedules(@Param('id') id: string) {
     await this.schedulesService.deleteSchedules(id);
   }
