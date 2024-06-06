@@ -13,5 +13,7 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
   - Jwt;
   - Class-validator;
   - Bcrypt;
+  - Postgresql;
+  - Docker;
   - eslint;
   - vscode;
