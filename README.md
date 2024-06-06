@@ -116,5 +116,25 @@ Rota para lista todas as consultas do usuário.
 
 Rota para disponibilizar dados em PDF da consulta escolhida.
 
+**GET /schedules/:id**
+
+Rota para disponibilizar dados da consulta escolhida.
+
+**PATCH /schedules/:id**
+
+Rota para modificar data ou hora da consulta. É necessário fornecer ambos os valores no corpo da requisição, mesmo que não se pretenda modificar uma das opções, pois isso assegura um melhor time zone para o banco de dados.
+
+corpo da requesição:
+
+    {
+      "date": "AAAA-MM-DD",
+      "hours": "HH:MM:SS"
+    }
+
+
+**DELETE /schedules/:id**
+
+Rota utilizada para cancelar uma consulta, na prática, excluindo a consulta agendada.
+
 </details>
 
