@@ -6,15 +6,12 @@ const appointmentController = require('./controllers/appointmentController.js');
 
 
 
-router.get('/',(req, res) => {
-    return res.send("deu certo")
-})
-
 // Auth
 router.post('/api/auth/login', userController.login);
 
+
 //user
-router.get('/api/', protect , userController.getUsers);
+router.get('/api/',userController.getUsers);
 router.post('/api/register', userController.createUser);
 router.put('/api/:id', userController.updateUser);
 router.delete('/api/:id', userController.deleteUser);
@@ -22,9 +19,13 @@ router.delete('/api/:id', userController.deleteUser);
 //appointment
 router.post('/api/appointments', protect, appointmentController.createAppointment);
 router.get('/api/appointments', protect, appointmentController.getAppointments);
+router.get('/api/appointments/:id', protect, appointmentController.getAppointmentById);
 
 // router.put('/api/appointments', protect, appointmentController.createAppointment);
 // router.delete('/api/appointments', protect, appointmentController.createAppointment);
 
+// Rota para baixar o PDF da consulta
+// abrir uma aba mostrando o pdf e disponiilizando para salvar
+router.get('/api/pdfs/:idconsulta',protect, appointmentController.getPdf)
 
 module.exports  = router;
