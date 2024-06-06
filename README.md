@@ -5,8 +5,7 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
 
 ## Desafio de Backend - API de Marcação de Consultas de Willian Alves.
 
-file:///home/willian/Imagens/Capturas%20de%20tela/Captura%20de%20tela%20de%202024-04-16%2018-03-58.png
-
+./Captura de tela de 2024-06-05 22-51-26.png
 
 #### Tecnologias utilizadas:
 
