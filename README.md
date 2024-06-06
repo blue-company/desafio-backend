@@ -1,52 +1,142 @@
-# Desafio de Backend - API de Marcação de Consultas
+### Observação
 
-Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
+Este repositório contem o **Desafio de Backend - API de Marcação de Consultas**, meu **linkedin** é  _[Willian Alves Batista](https://www.linkedin.com/in/willian-alves-batista-60aa6a180/)_, e o contato/whatsApp é **(27) 997366918**.
 
-## Objetivo
+<br>
 
-Desenvolver uma API RESTful para a marcação de consultas médicas. A API permitirá que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas.
+## Desafio de Backend - API de Marcação de Consultas.
 
-## Requisitos do Desafio
+![](./captura.png)
 
-- **Autenticação:** Implemente o login de usuários utilizando JWT.
-- **Agendamento de Consultas:** Permita que os usuários agendem novas consultas.
-- **Geração de PDF:** Após agendar uma consulta, gere um PDF com os detalhes da consulta.
-- **Visualização de Consultas:** Permita que os usuários vejam informações detalhadas sobre suas consultas, a rota deve ser criptografada com um link de acesso único.
-- **Modificação e Cancelamento de Consultas:** Os usuários devem poder modificar detalhes de suas consultas ou cancelá-las.
+#### Tecnologias utilizadas:
 
-## Critérios Técnicos
+  - TypeScript;
+  - Node.js;
+  - Nest.js;
+  - Jwt;
+  - Class-validator;
+  - Bcrypt;
+  - Postgresql;
+  - Docker;
+  - Restful;
+  - eslint;
+  - vscode;
 
-- **Banco de Dados:** Use alguma ferramenta para gerenciamento do banco de dados.
-- **Arquitetura:** Siga o padrão MVC para estruturação do projeto. 
-- **Linguagens permitidas:** PHP + Symphony |  Node Js + Express.
-- **Tratamento de Erros:** Implemente um sistema de tratamento de erros eficaz.
 
-## Entregáveis
+## Inciando o projeto
 
-- Código-fonte no GitHub com acesso ao repositório fornecido pela equipe da Blue.
-- Documentação no README, detalhando:
-  - Instruções de instalação e execução do projeto.
-  - Descrição das tecnologias utilizadas.
-  - Lista de rotas disponíveis e como utilizá-las.
+<details>
+<summary><span style="font-size: 50px; font-weight: bold">Descrição</span></summary>
+<br>
+  
+:warning: **É necessário ter o docker-compose e Node.js instalado na maquina.**
 
-## Avaliação
+Para iniciar o projeto, basta baixar ou clonar este repositório.
 
-O desafio será avaliado com base em:
+Acesse a raiz do projeto, abra o terminal, em seguida digite:
 
-- **Qualidade do Código:** Clareza, uso de boas práticas, padrões de projeto e segurança.
-- **Funcionalidade:** Todos os requisitos devem ser atendidos.
-- **Design da API:** Clareza, consistência, e aderência aos princípios RESTful.
-- **Documentação:** Completa e clara, facilitando a compreensão e uso da API.
+    npm run start:docker
+</details>
 
-## Como Iniciar
+<br>
 
-1. Faça um fork deste repositório.
-2. Clone seu fork para sua máquina local.
-3. Siga as instruções de instalação específicas para configurar o ambiente de desenvolvimento.
-4. Comece a desenvolver, seguindo os requisitos e critérios técnicos descritos acima.
+### Swagger UI - Documentação interativa
 
-## Entrega
+<details>
+<summary><span style="font-size: 50px; font-weight: bold">Descrição</span></summary>
+<br>
 
-Quando estiver pronto para submeter seu desafio, crie um Pull Request do seu repositório forkado para o repositório principal da Blue Company. A equipe de desenvolvimento revisará sua entrega.
+Com o projeto em execução, o Swagger fica disponível em http://localhost:4000/api . Esta documentação da API permite visualizar de forma simples todos os endpoints, seus requisitos obrigatórios e suas respostas. Além disso, também é possível realizar testes.
+  
+</details>
 
-Boa sorte e estamos ansiosos para ver suas soluções inovadoras!
+<br>
+
+## API lista de rotas disponíveis e como utilizá-las.
+
+<details>
+<summary><span style="font-size: 50px; font-weight: bold">Descrição</span></summary>
+
+<br>
+
+**Observação:** Com o projeto em execução, a API fica disponível em http://localhost:4000
+
+Na raiz do projeto tem o arquivo Insomnia_2024-06-05.json para usar no Insomnia, assim facilita os testes na API.
+
+### Users
+
+**POST /user**
+
+Rota para criar usuário.
+
+corpo da requesição:
+
+    {
+      "email": "exemple@email.com",
+      "password": "P@ssw0rd",
+      "name": "Willian Alves Batista",
+      "cpf": "15784763222",
+      "dateBirth": "AAAA-MM-DD"
+    }
+
+### Auth
+
+**POST /login**
+
+Rota para obter o Token, que será necessário para as próximas requisições.
+
+corpo da requesição:
+
+    {
+      "email": "exemple@email.com",
+      "password": "P@ssw0rd"
+    }
+
+
+### Schedules
+
+**Observação:** Todos os seguintes endpoints exigem um token para acesso.
+
+**POST /schedules**
+
+Rota para agendar consulta, após criada retorna o PDF com dados da consulta.
+
+corpo da requesição:
+
+    {
+      "date": "AAAA-MM-DD",
+      "hours": "HH:MM:SS",
+      "medicalSpecialty": "Clínico geral"
+    }
+
+**GET /schedules**
+
+Rota para lista todas as consultas do usuário.
+
+
+**GET /schedules/pdf/:id**
+
+Rota para disponibilizar dados em PDF da consulta escolhida.
+
+**GET /schedules/:id**
+
+Rota para disponibilizar dados da consulta escolhida.
+
+**PATCH /schedules/:id**
+
+Rota para modificar data ou hora da consulta. É necessário fornecer ambos os valores no corpo da requisição, mesmo que não se pretenda modificar uma das opções, pois isso assegura um melhor time zone para o banco de dados.
+
+corpo da requesição:
+
+    {
+      "date": "AAAA-MM-DD",
+      "hours": "HH:MM:SS"
+    }
+
+
+**DELETE /schedules/:id**
+
+Rota utilizada para cancelar uma consulta, na prática, excluindo a consulta agendada.
+
+</details>
+
