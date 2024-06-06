@@ -18,3 +18,5 @@ package-lock.json
 # Arquivos de IDE
 .vscode/
 databaseConfig.js
+
+./pdfs
