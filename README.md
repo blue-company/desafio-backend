@@ -18,6 +18,7 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
   - Bcrypt;
   - Postgresql;
   - Docker;
+  - Restful;
   - eslint;
   - vscode;
 
@@ -58,7 +59,23 @@ Com o projeto em execução, o Swagger fica disponível em http://localhost:4000
 
 <br>
 
+**Observação:** Com o projeto em execução, a API fica disponível em http://localhost:4000/api
+
 ### Users
+
+POST /user
+
+Rota para criar usuário.
+
+corpo da requesição:
+
+    {
+      "email": "exemple@email.com",
+      "password": "P@ssw0rd",
+      "name": "Willian Alves Batista",
+      "cpf": "15784763222",
+      "dateBirth": "AAAA-MM-DD"
+    }
   
 </details>
 
