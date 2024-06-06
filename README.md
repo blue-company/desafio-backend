@@ -19,7 +19,7 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
   - vscode;
 
 <details>
-<summary><span style="font-size: 30px; font-weight: bold">Inciando o projeto</span></summary>
+<summary><span style="font-size: 50px; font-weight: bold">Inciando o projeto</span></summary>
 </details>
 
 ## Inciando o projeto
