@@ -61,6 +61,8 @@ Com o projeto em execução, o Swagger fica disponível em http://localhost:4000
 
 **Observação:** Com o projeto em execução, a API fica disponível em http://localhost:4000
 
+Na raiz do projeto tem o arquivo Insomnia_2024-06-05.json para usar no Insomnia, assim facilita os testes na API.
+
 ### Users
 
 **POST /user**
