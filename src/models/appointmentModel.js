@@ -1,16 +1,14 @@
-
 const { Model, DataTypes } = require('sequelize');
 
 class Appointment extends Model {
     static init(sequelize) {
         super.init({
-        
             date: {
-                type: DataTypes.DATE,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             time: {
-                type: DataTypes.TIME,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             address: {
@@ -24,8 +22,14 @@ class Appointment extends Model {
             description: {
                 type: DataTypes.STRING
             }
-            // appointments:
-        }, { sequelize });
+        }, {
+            sequelize,
+            modelName: 'Appointment'
+        });
+    }
+
+    static associate(models) {
+        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     }
 }
 

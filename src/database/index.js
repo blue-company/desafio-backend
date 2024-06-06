@@ -13,8 +13,12 @@ connection
   });
 
 const User = require('../models/userModel.js')
+const Appointment = require('../models/appointmentModel.js')
 User.init(connection)
+Appointment.init(connection)
 
+Appointment.associate(connection.models);
+User.associate(connection.models);
 
 
 module.exports = connection;
