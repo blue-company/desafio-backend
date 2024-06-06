@@ -18,6 +18,10 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
   - eslint;
   - vscode;
 
+<details>
+<summary><span style="font-size: 20px;">Inciando o projeto</span></summary>
+</details>
+
 ## Inciando o projeto
 
 :warning: **É necessário ter o docker-compose instalado.**
