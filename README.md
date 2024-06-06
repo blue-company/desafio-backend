@@ -59,11 +59,11 @@ Com o projeto em execução, o Swagger fica disponível em http://localhost:4000
 
 <br>
 
-**Observação:** Com o projeto em execução, a API fica disponível em http://localhost:4000/api
+**Observação:** Com o projeto em execução, a API fica disponível em http://localhost:4000
 
 ### Users
 
-POST /user
+**POST /user**
 
 Rota para criar usuário.
 
@@ -76,6 +76,45 @@ corpo da requesição:
       "cpf": "15784763222",
       "dateBirth": "AAAA-MM-DD"
     }
-  
+
+### Auth
+
+**POST /login**
+
+Rota para obter o Token, que será necessário para as próximas requisições.
+
+corpo da requesição:
+
+    {
+      "email": "exemple@email.com",
+      "password": "P@ssw0rd"
+    }
+
+
+### Schedules
+
+**Observação:** Todos os seguintes endpoints exigem um token para acesso.
+
+**POST /schedules**
+
+Rota para agendar consulta, após criada retorna o PDF com dados da consulta.
+
+corpo da requesição:
+
+    {
+      "date": "AAAA-MM-DD",
+      "hours": "HH:MM:SS",
+      "medicalSpecialty": "Clínico geral"
+    }
+
+**GET /schedules**
+
+Rota para lista todas as consultas do usuário.
+
+
+**GET /schedules/pdf/:id**
+
+Rota para disponibilizar dados em PDF da consulta escolhida.
+
 </details>
 
