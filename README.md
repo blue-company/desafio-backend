@@ -23,6 +23,7 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
 
 <details>
 <summary><span style="font-size: 50px; font-weight: bold">Inciando o projeto</span></summary>
+<br>
   
 :warning: **É necessário ter o docker-compose instalado.**
 
