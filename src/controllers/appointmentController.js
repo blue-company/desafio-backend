@@ -86,5 +86,33 @@ console.log("aquiiiiiiiiiii")
   
       return res.status(404).send('Arquivo não encontrado');
     }
+    },
+   
+  async updateAppointment(req, res) {
+  const { id } = req.params;
+  const { date, time, address , doctor, description, } = req.body;
+
+  try {
+    const appointment = await Appointment.findOne({ where: { id, user_id: req.user } });
+
+    if (!appointment) {
+      return res.status(404).json({ message: 'Compromisso não encontrado ou não autorizado' });
     }
+
+    // atualiza campos
+    appointment.date = date || appointment.date;
+    appointment.time = time || appointment.time;
+    appointment.address = address || address.date;
+    appointment.doctor = doctor || doctor.date;
+    appointment.description = description || appointment.description;
+
+    await appointment.save();
+
+    res.status(200).json(appointment);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro ao atualizar compromisso' });
+  }
+  }
+  
 }
