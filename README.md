@@ -17,3 +17,14 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
   - Docker;
   - eslint;
   - vscode;
+
+## Inciando o projeto
+
+:warning: **É necessário ter o docker-compose instalado.**
+
+Para iniciar o projeto, basta baixar ou clonar este repositório.
+
+Acesse a raiz do projeto, abra o terminal, em seguida digite:
+
+    docker-compose -f docker-compose.yml up -d
+
