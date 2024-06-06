@@ -29,13 +29,13 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
 <summary><span style="font-size: 50px; font-weight: bold">Descrição</span></summary>
 <br>
   
-:warning: **É necessário ter o docker-compose instalado.**
+:warning: **É necessário ter o docker-compose e Node.js instalado na maquina.**
 
 Para iniciar o projeto, basta baixar ou clonar este repositório.
 
 Acesse a raiz do projeto, abra o terminal, em seguida digite:
 
-    docker-compose -f docker-compose.yml up -d
+    npm run start:docker
 </details>
 
 <br>
