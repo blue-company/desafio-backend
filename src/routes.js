@@ -20,8 +20,8 @@ router.delete('/api/:id', userController.deleteUser);
 router.post('/api/appointments', protect, appointmentController.createAppointment);
 router.get('/api/appointments', protect, appointmentController.getAppointments);
 router.get('/api/appointments/:id', protect, appointmentController.getAppointmentById);
+router.put('/api/appointments/:id', protect, appointmentController.updateAppointment);
 
-// router.put('/api/appointments', protect, appointmentController.createAppointment);
 // router.delete('/api/appointments', protect, appointmentController.createAppointment);
 
 // Rota para baixar o PDF da consulta
