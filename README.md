@@ -4,7 +4,7 @@ Este repositório contem o **Desafio de Backend - API de Marcação de Consultas
 
 <br>
 
-## Desafio de Backend - API de Marcação de Consultas de Willian Alves.
+## Desafio de Backend - API de Marcação de Consultas.
 
 ![](./captura.png)
 
