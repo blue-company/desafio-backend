@@ -49,12 +49,14 @@ Com o projeto em execução, o Swagger fica disponível em http://localhost:4000
   
 </details>
 
+<br>
+
 ## API lista de rotas disponíveis e como utilizá-las.
 
 <details>
 <summary><span style="font-size: 50px; font-weight: bold">Descrição</span></summary>
-<br>
 
+<br>
 
 ### Users
   
