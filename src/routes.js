@@ -10,7 +10,7 @@ const appointmentController = require('./controllers/appointmentController.js');
 router.post('/api/auth/login', userController.login);
 
 
-//user
+// rota de user para facilitar testes na api
 router.get('/api/',userController.getUsers);
 router.post('/api/register', userController.createUser);
 router.put('/api/:id', userController.updateUser);
@@ -21,8 +21,7 @@ router.post('/api/appointments', protect, appointmentController.createAppointmen
 router.get('/api/appointments', protect, appointmentController.getAppointments);
 router.get('/api/appointments/:id', protect, appointmentController.getAppointmentById);
 router.put('/api/appointments/:id', protect, appointmentController.updateAppointment);
-
-// router.delete('/api/appointments', protect, appointmentController.createAppointment);
+router.delete('/api/appointments/:id', protect, appointmentController.deleteAppointment);
 
 // Rota para baixar o PDF da consulta
 // abrir uma aba mostrando o pdf e disponiilizando para salvar

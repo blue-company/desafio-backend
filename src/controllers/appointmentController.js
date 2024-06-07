@@ -113,6 +113,24 @@ console.log("aquiiiiiiiiiii")
     console.error(err);
     res.status(500).json({ message: 'Erro ao atualizar compromisso' });
   }
-  }
+  },
+
+ async deleteAppointment(req, res){
+    const { id } = req.params;
   
+    try {
+      const appointment = await Appointment.findOne({ where: { id, user_id: req.user } });
+  
+      if (!appointment) {
+        return res.status(404).json({ message: 'Consulta não encontrada ou não autorizada' });
+      }
+  
+      await appointment.destroy();
+  
+      res.status(200).json({ message: 'consulta removida com sucesso' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Erro ao excluir consulta' });
+    }
+  }
 }
