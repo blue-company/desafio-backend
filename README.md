@@ -26,8 +26,17 @@ API RESTful para a marcação de consultas médicas. A API permite que usuários
 
   
 
-Esta API foi projetada com base no desafio proposto para vaga de desenvolvedor backend da empresa Blue Company. Utilizando Nodejs e Express. Sequelize como ferramenta para auxilio do banco de dados em Mysql.
-
+Esta API foi projetada com base no desafio proposto para vaga de desenvolvedor backend da empresa Blue Company. 
+### Tecnologias Utilizadas 
+ Este projeto foi desenvolvido utilizando as seguintes tecnologias: 
+ - **Node.js**: Plataforma de desenvolvimento backend JavaScript. 
+ - **Express**: Framework web para Node.js, utilizado na construção de APIs.
+ -  **Sequelize**: ORM (Object-Relational Mapping) para Node.js, utilizado para facilitar a interação com o banco de dados MySQL. 
+ -  **MySQL**: Sistema de gerenciamento de banco de dados relacional. 
+ - **bcrypt**: Biblioteca para criptografia de senhas. 
+ -  **dotenv**: Biblioteca para carregar variáveis de ambiente a partir de um arquivo `.env`.
+ - **jsonwebtoken**: Biblioteca para geração e verificação de tokens de autenticação. 
+ -  **pdfkit**: Biblioteca para geração de arquivos PDF.
   
 
 ## Recursos
