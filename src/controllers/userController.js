@@ -65,7 +65,11 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(password, salt);
       const newUser = await User.create({ name, email, password: hashedPassword });
 
-      res.status(201).json({ message: 'Usuário registrado com sucesso', user: newUser });
+        // Convertendo o usuário para um objeto JavaScript e removendo a senha
+    const userObject = newUser.get({ plain: true });
+    delete userObject.password;
+
+      res.status(201).json({ message: 'Usuário registrado com sucesso', userObject });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Erro interno do servidor' });

@@ -1,74 +1,268 @@
+
 # API de Marcação de Consultas
 
+  
+
 API RESTful para a marcação de consultas médicas. A API permite que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas
+
+  
 
 ## Sumário
 
 - [Introdução](#introdução)
-- [Recursos](#recursos)
-- [Organização das pastas](#organização-das-pastas)
-- [Autenticação](#autenticação)
-- [Endpoints](#endpoints)
-- [Inicialização](#inicialização)
-- [Erros Comuns](#erros-comuns)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
 
+- [Recursos](#recursos)
+
+- [Autenticação](#autenticação)
+
+- [Endpoints](#endpoints)
+
+- [Inicialização](#inicialização)
+
+  
+  
 
 ## Introdução
 
+  
+
 Esta API foi projetada com base no desafio proposto para vaga de desenvolvedor backend da empresa Blue Company. Utilizando Nodejs e Express. Sequelize como ferramenta para auxilio do banco de dados em Mysql.
 
+  
+
 ## Recursos
-- CRUD de usuários 
+
+- CRUD de usuários
+
 - Marcação de consultas
+
 - Atualização de consultas
+
 - Cancelamento de consultas
+
 - Obter todas consultas de um usuário
+
 - Obter detalhes da consulta por um id especifico
+
 - Obter pdf de uma consulta especifica
 
-
+  
 ## Autenticação
 
+  
+
 A API utiliza autenticação baseada em tokens. Para acessar os endpoints protegidos, necessita-se incluir um token de autenticação no cabeçalho das requisições.
-O token e gerado ao fazer login. 
+
+O token e gerado ao fazer login.
+
 ### Exemplo de Cabeçalho de Autenticação
 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+  
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+  
 
 ## Endpoints
 
-### Marcar Consulta
+  ### Cadastrar usuário  "POST-http://localhost:5000/api/register"
+  -  **Descrição:** Faz o cadastro  do usuário.
+		
+
+   **Body da requisição**:
+
+     {
+      "name": "jess",
+      "email": "jess@example.com",
+      "password": "123456"
+    }
+
+  **resposta**:
+	
+
+       {
+      "message": "Usuário registrado com sucesso",
+      "userObject": {
+        "createdAt": "2024-06-08T13:54:39.040Z",
+        "updatedAt": "2024-06-08T13:54:39.041Z",
+        "id": 1,
+        "name": "jess",
+        "email": "jess@example.com"
+      }
+    }
+		
+### Login  "POST-http://localhost:5000/api/auth/login"
+
+		 
+-  **Descrição:** Faz o login do usuário e recebe um token.
+
+-  **Parâmetros:**
+
+-  `email(obrigatório)`;
+
+-  `password(obrigatório);`
+
+  exemplo JSON: `{
+  "email":"jess@example.com",
+  "password": "123456"
+}`
+
+**Resposta**:
+
+    {
+      "msg": "Autenticação realizada com sucesso!",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzE3ODUzNDIwLCJleHAiOjE3MTc4NTUyMjB9.bKbm87Xv8Hwtad8hpTfWSMl12N_DoO68bEg-_anNOrM"
+    }
 
 
-- **Descrição:** Marca uma nova consulta.
-- **Parâmetros:**
-  - `paciente_id` (obrigatório): ID do paciente
-  - `data_hora` (obrigatório): Data e hora da consulta no formato ISO 8601
-  - `especialidade` (opcional): Especialidade médica
+Obs: Os seguintes endpoints precisam de token para acesso:
+  - **Headers:**
+   Authorization: "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+*token gerado no login.
 
-### Atualizar Consulta
+### Criar consulta “POST-http://localhost:5000/api/appointments”
+
+  *Ao criar uma consulta. Um arquivo pdf e criado em /pdfs, com o id da consulta, que pode ser obtido através da rota get , para obter o pdf.
+
+-  **Body da requisição:**
+     {
+          "date": "07/05/2024",
+          "time": "15:00",
+          "address": "avenida blue company, 190",
+          "doctor": "Doctors",
+          "description": "alguma descrição"
+     }
 
 
-- **Descrição:** Atualiza uma consulta existente.
-- **Parâmetros:**
-  - `id` (obrigatório): ID da consulta
-  - `data_hora` (opcional): Nova data e hora da consulta no formato ISO 8601
-  - `especialidade` (opcional): Nova especialidade médica
+-  **Resposta :**
 
-### Cancelar Consulta
+    {
+      "message": "Consulta criada com sucesso",
+      "appointment": {
+        "id": 1,
+        "date": "07/05/2024",
+        "time": "15:00",
+        "address": "avenda blue company, 190",
+        "doctor": "Doctors",
+        "description": "alguma descricao",
+        "user_id": 1,
+        "updatedAt": "2024-06-08T14:13:19.487Z",
+        "createdAt": "2024-06-08T14:13:19.487Z"
+      }
+    }
+
+  
+
+### Atualizar Consulta "Put-http://localhost:5000/api/appointments/:id"
+
+  
+-  **Descrição:** Atualiza um consulta existente com base em seu id.
+
+-  **Body da requisição:**
+
+      {
+      "date": "06/05/2024",
+      "time": "15:00",
+      "address": "avenda blue company, 190",
+      "doctor": "Doctors",
+      "description": "alguma descrição"
+    }
+
+  -  **Resposta da  requisição:**
+       {
+      "id": 1,
+      "date": "06/05/2024",
+      "time": "15:00",
+      "address": "avenida blue company, 190",
+      "doctor": "Doctors",
+      "description": "alguma descrição",
+      "createdAt": "2024-06-08T14:08:35.000Z",
+      "updatedAt": "2024-06-08T15:20:41.211Z",
+      "user_id": 1
+    }
+
+### Excluir Consulta "DELETE-http://localhost:5000/api/appointments/:id"
+
+  -  **Descrição:** Remove uma consulta existente com base em seu ID.
+  -  **Resposta da  requisição:**
+
+    {
+      "message": "consulta removida com sucesso"
+    }
+
+### Obter Consulta por ID "GET-http://localhost:5000/api/appointments/:id"
+-   **Descrição:** Obtêm detalhes de um consulta de um usuário com base no id da consulta.
+-   **Resposta da requisição:**
+
+    {
+      "id": 1,
+      "date": "06/05/2024",
+      "time": "15:00",
+      "address": "avenda blue company, 190",
+      "doctor": "Doctors",
+      "description": "alguma descricao",
+      "createdAt": "2024-06-08T14:08:35.000Z",
+      "updatedAt": "2024-06-08T15:20:41.000Z",
+      "user_id": 1
+    }
+
+### Obter Todas as Consultas "GET-http://localhost:5000/api/appointments"
+  **Descrição:** Obtêm um array com todas consultas referentes ao usuário.
+-   **Resposta da requisição:**
+
+     {
+        "id": 1,
+        "date": "02/05/2024",
+        "time": "11:00",
+        "address": "avenida blue company, 190",
+        "doctor": "Doctors",
+        "description": " Get earlier dont be late",
+        "createdAt": "2024-06-06T13:04:33.000Z",
+        "updatedAt": "2024-06-06T13:04:33.000Z",
+        "user_id": 1,
+        "user": {
+          "id": 1,
+          "name": "Jes",
+          "password": "$2b$10$zyzDxlGFfU3H8kmJ.ZeJ7uz80nGFjIcaCTExmeC8rp3f58x34DWSO",
+          "email": "jess@example.com",
+          "createdAt": "2024-06-05T21:32:17.000Z",
+          "updatedAt": "2024-06-05T21:32:17.000Z"
+        }
+     }
+    
+
+### Obter pdf  "GET-http://localhost:5000/api/pdfs/:idconsulta"
+  **Descrição:** Obtêm o pdf referente ao id da consulta e a disponibiliza para download.
+  ![Pdf detalhes da consulta](./appointmentDetail.png)
+
+## Inicialização 
+Neste projeto e necessário ter instalado o MySQL server, assim como o Mysql Workbench para melhor visualização das informações 
+```bash
+    # Clone o repositório do projeto
+    $ git clone git@github.com:MatheusMena/desafio-backend.git
+
+    # Entre no diretório do projeto
+    $ cd desafio-backend
+
+    # Instale as dependências:
+    $ npm install
+
+    # Crie um arquivo `.env` na raiz do projeto e configure as variáveis de ambiente necessárias.
+    
+         # DB_HOST=localhost
+    		 # DB_USERNAME=root
+    		 # DB_PASSWORD=sua_senha
+    		 # DB_DATABASE=nome_do_banco
+    		 # JWT_SECRET=sua_chave_secreta
+    		 # PORT=3000
+
+    # Substitua `localhost`, `root`, `sua_senha`, `nome_do_banco` , `sua_chave_secreta, ` e 3000  pelos valores apropriados para o seu ambiente.
+
+    # Execute o servidor:
+    $ npm start
 
 
-- **Descrição:** Marca uma nova consulta.
-- **Parâmetros:**
-  - `paciente_id` (obrigatório): ID do paciente
-  - `data_hora` (obrigatório): Data e hora da consulta no formato ISO 8601
-  - `especialidade` (opcional): Especialidade médica
-
-### Atualizar Consulta
-
-## Inicialização
-		Para iniciar o projeto clone este repositorio
-		para teste o projeto e necessario ter sql server instalado em sua maquina.
-		(read me em desenvolvimento)
+    # Teste a API:
+    
+    # Você pode usar ferramentas como [Postman](https://www.postman.com/) ou [Insomnia](https://insomnia.rest/) para testar as rotas da API. ou thunderClient , extensao do vscode
+```
