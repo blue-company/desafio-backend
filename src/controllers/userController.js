@@ -33,6 +33,7 @@ module.exports = {
     }
   },
 
+    // obtem usuarios
   async getUsers(req, res) {
     try {
 
@@ -48,6 +49,7 @@ module.exports = {
     }
   },
 
+    // cria o usuario
   async createUser(req, res) {
     try {
       const { name, email, password } = req.body;
@@ -69,7 +71,7 @@ module.exports = {
       res.status(500).json({ message: 'Erro interno do servidor' });
     }
   },
-
+    // altera usuario
   async updateUser(req, res) {
     try {
       const { name, email, password } = req.body;
@@ -84,7 +86,7 @@ module.exports = {
     }
   },
 
-
+  // exclui usuario
   async deleteUser(req, res) {
     try {
       const { id } = req.params;

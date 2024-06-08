@@ -19,4 +19,4 @@ package-lock.json
 .vscode/
 databaseConfig.js
 
-./pdfs
+.src/pdfs

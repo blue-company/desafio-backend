@@ -11,3 +11,5 @@ module.exports = {
         underscored: true
     }       
 };
+
+// configuracoes do banco de dados.

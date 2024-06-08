@@ -5,19 +5,31 @@ class Appointment extends Model {
         super.init({
             date: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    isDate: true 
+                }
             },
             time: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    is: /^\d{2}:\d{2}$/ //(HH:MM)
+                }
             },
             address: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: true 
+                }
             },
             doctor: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notEmpty: true 
+                }
             },
             description: {
                 type: DataTypes.STRING

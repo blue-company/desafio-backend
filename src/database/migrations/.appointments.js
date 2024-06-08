@@ -1,5 +1,8 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable('appointments', {
       id: {
         type: Sequelize.INTEGER,
@@ -10,10 +13,15 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'users', key: 'id' },
+        references: { 
+          model: 'users', 
+          key: 'id' 
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       date: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,  // Alterado para Sequelize.DATE
         allowNull: true,
       },
       time: {
@@ -35,15 +43,17 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')  
       },
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')  
       }
     });
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: async (queryInterface, Sequelize) => {
     return queryInterface.dropTable('appointments');
   }
 };
