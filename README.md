@@ -1,52 +1,53 @@
-# Desafio de Backend - API de Marcação de Consultas
+Projeto XYZ
+Este é um projeto exemplo que utiliza Node.js, TypeScript, Express, Prisma, MySQL e Yarn.
 
-Bem-vindo ao desafio de backend da Blue Health Tech! Este desafio é uma oportunidade para demonstrar suas habilidades de desenvolvimento de API, compreensão de conceitos de backend, e capacidade de aplicar boas práticas de engenharia de software.
+Participante:
+Nome: Pedro Henrique Braga
+e-mail: ph191196@gmail.com
 
-## Objetivo
+Ferramentas Utilizadas
+Node.js: Plataforma para execução do JavaScript do lado do servidor.
 
-Desenvolver uma API RESTful para a marcação de consultas médicas. A API permitirá que usuários façam login, agendem consultas, visualizem detalhes de suas consultas em PDF, e modifiquem ou cancelem essas consultas.
+Explicação: Node.js permite executar código JavaScript fora do navegador, possibilitando a construção de aplicações server-side.
+TypeScript: Superset de JavaScript que adiciona tipagem estática ao JavaScript.
 
-## Requisitos do Desafio
+Explicação: TypeScript melhora a manutenção do código ao detectar erros em tempo de compilação e fornecer sugestões durante o desenvolvimento.
+Express: Framework web minimalista para Node.js.
 
-- **Autenticação:** Implemente o login de usuários utilizando JWT.
-- **Agendamento de Consultas:** Permita que os usuários agendem novas consultas.
-- **Geração de PDF:** Após agendar uma consulta, gere um PDF com os detalhes da consulta.
-- **Visualização de Consultas:** Permita que os usuários vejam informações detalhadas sobre suas consultas, a rota deve ser criptografada com um link de acesso único.
-- **Modificação e Cancelamento de Consultas:** Os usuários devem poder modificar detalhes de suas consultas ou cancelá-las.
+Explicação: Express simplifica a criação de APIs e aplicações web com Node.js, fornecendo uma estrutura robusta para lidar com rotas, requisições e respostas.
+Prisma: ORM (Object-Relational Mapping) moderno para Node.js e TypeScript.
 
-## Critérios Técnicos
+Explicação: Prisma facilita o acesso e manipulação de bancos de dados relacionais através de um modelo de dados declarativo e geração automática de código.
+MySQL: Sistema de gerenciamento de banco de dados relacional.
 
-- **Banco de Dados:** Use alguma ferramenta para gerenciamento do banco de dados.
-- **Arquitetura:** Siga o padrão MVC para estruturação do projeto. 
-- **Linguagens permitidas:** PHP + Symphony |  Node Js + Express.
-- **Tratamento de Erros:** Implemente um sistema de tratamento de erros eficaz.
+Explicação: MySQL é amplamente utilizado para armazenamento e gerenciamento de dados estruturados, sendo compatível com uma variedade de aplicações.
+Yarn: Gerenciador de pacotes rápido, confiável e seguro para JavaScript.
 
-## Entregáveis
+Explicação: Yarn gerencia as dependências do projeto de forma eficiente, garantindo consistência e reproducibilidade no ambiente de desenvolvimento.
+Passo a Passo
+Instalação
 
-- Código-fonte no GitHub com acesso ao repositório fornecido pela equipe da Blue.
-- Documentação no README, detalhando:
-  - Instruções de instalação e execução do projeto.
-  - Descrição das tecnologias utilizadas.
-  - Lista de rotas disponíveis e como utilizá-las.
+Instale o Node.js: Node.js
+Instale o Yarn: Yarn
+Instale o MySQL: MySQL
+Configuração
 
-## Avaliação
+Crie um arquivo .env na raiz do projeto e configure as variáveis necessárias (como na .env.example)
+Execute o seguinte comando para instalar as dependências usando o comando yarn
 
-O desafio será avaliado com base em:
+otas
 
-- **Qualidade do Código:** Clareza, uso de boas práticas, padrões de projeto e segurança.
-- **Funcionalidade:** Todos os requisitos devem ser atendidos.
-- **Design da API:** Clareza, consistência, e aderência aos princípios RESTful.
-- **Documentação:** Completa e clara, facilitando a compreensão e uso da API.
+Login:
 
-## Como Iniciar
+Método: POST
+Descrição: Rota para autenticar o usuário.
+Cadastrar Usuário:
 
-1. Faça um fork deste repositório.
-2. Clone seu fork para sua máquina local.
-3. Siga as instruções de instalação específicas para configurar o ambiente de desenvolvimento.
-4. Comece a desenvolver, seguindo os requisitos e critérios técnicos descritos acima.
+Método: POST
+Descrição: Rota para criar um novo usuário.
+Localizar Usuário:
 
-## Entrega
-
-Quando estiver pronto para submeter seu desafio, crie um Pull Request do seu repositório forkado para o repositório principal da Blue Company. A equipe de desenvolvimento revisará sua entrega.
-
-Boa sorte e estamos ansiosos para ver suas soluções inovadoras!
+Método: GET
+Descrição: Rota para buscar informações de um usuário específico.
+Consulta - CRUD Completo
+Para operações CRUD completo utilizando Prisma e Express, consulte a documentação específica de cada ferramenta para implementar as rotas e controladores necessários.

@@ -1,0 +1,30 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    consult Consult[]
+    name String
+    age Int
+    sexo String
+    email String @unique
+    password String
+    createAt DateTime @default(now())
+}
+
+model Consult {
+    id Int @id @default(autoincrement())
+    protocol String @unique
+    doctor String
+    dateRequest DateTime
+    observation String 	@db.VarChar(500)
+    user User @relation(fields: [idConsult], references: [id])
+    idConsult Int 
+    createAt DateTime @default(now())
+}

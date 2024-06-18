@@ -1,0 +1,29 @@
+{
+  "name": "projeto_blue",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Pedro",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.15.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.2",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "env": "^0.0.2",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pdfkit": "^0.15.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/pdfkit": "^0.13.4",
+    "prisma": "^5.15.0"
+  }
+}
